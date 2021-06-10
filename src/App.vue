@@ -1,10 +1,17 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link :to="{ name: 'home' }">Wallet</router-link> |
+    <router-link to="/about">About</router-link> |
+    <router-link to="/test">Test</router-link>
   </div>
   <router-view/>
 </template>
+
+<script>
+  import "nes.css/css/nes.min.css";
+
+  export default {}
+</script>
 
 <style>
 #app {
