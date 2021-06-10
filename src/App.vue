@@ -1,37 +1,44 @@
 <template>
   <div id="nav">
-    <router-link :to="{ name: 'home' }">Wallet</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/test">Test</router-link>
+    <router-link
+      :to="{ name: 'home' }"
+      v-slot="{ href, navigate, isActive, isExactActive }"
+      custom
+    >
+      <nav-option
+        :href="href"
+        :is-active="isActive"
+        :is-exact-active="isExactActive"
+        :navigate="navigate"
+        title="Wallet"
+      />
+    </router-link> |
+    <router-link
+      :to="{ name: 'about' }"
+      v-slot="{ href, navigate, isActive, isExactActive }"
+      custom
+    >
+      <nav-option
+        :href="href"
+        :is-active="isActive"
+        :is-exact-active="isExactActive"
+        :navigate="navigate"
+        title="About"
+      />
+    </router-link>
   </div>
   <router-view/>
 </template>
 
 <script>
+  import NavOption from './components/NavOption.vue';
+
+  import "bootstrap/dist/css/bootstrap.min.css"
   import "nes.css/css/nes.min.css";
 
-  export default {}
+  export default {
+    components: {
+      NavOption
+    }
+  }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
