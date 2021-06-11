@@ -1,11 +1,14 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Wallet from '../views/Wallet.vue'
+
+Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    name: 'wallet',
+    component: Wallet
   },
   {
     path: '/protocol',
@@ -17,8 +20,7 @@ const routes = [
   }
 ]
 
-const router = createRouter({
-  history: createWebHashHistory(),
+const router = new VueRouter({
   routes
 })
 

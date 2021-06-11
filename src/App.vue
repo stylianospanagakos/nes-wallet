@@ -2,8 +2,9 @@
   <div class="p-5 mx-auto" style="max-width: 900px">
     <div id="nav">
       <router-link
-        :to="{ name: 'home' }"
+        :to="{ name: 'wallet' }"
         v-slot="{ href, navigate, isActive, isExactActive }"
+        exact
         custom
       >
         <nav-option
