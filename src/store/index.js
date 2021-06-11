@@ -21,6 +21,16 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    updateFormField(state, { section, field, payload }) {
+      if (typeof payload === 'boolean') {
+        state[section].form[field] = payload;
+      } else {
+        state[section].form[field] = {
+          ...state[section].form[field],
+          ...payload
+        }
+      }
+    }
   },
   actions: {
   },

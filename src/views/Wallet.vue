@@ -1,18 +1,18 @@
 <template>
   <div>
-    <container title="Search Criteria" :disabled="true">
+    <container title="Search Criteria" :disabled="wallet.form.loading">
       <div class="row align-items-center">
         <div class="col-sm">
           <select-input
             placeholder="Chain"
             :options="options"
-            v-model="chainId"
+            v-model="chainIdValue"
           />
         </div>
         <div class="col-sm">
           <input-text
             placeholder="Address"
-            v-model="address"
+            v-model="addressValue"
           />
         </div>
       </div>
@@ -20,7 +20,7 @@
         <div class="col-sm">
           <check-box
             label="Show TXs"
-            v-model="showBalances"
+            v-model="showTransactionsValue"
           />
         </div>
         <div class="col-sm">
@@ -31,7 +31,7 @@
       </div>
     </container>
 
-    <div v-if="loading" class="my-5 text-center">
+    <div v-if="wallet.form.loading" class="my-5 text-center">
       <img class="nes-avatar is-rounded is-large" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
       <p class="mt-3">Loading...</p>
     </div>
@@ -161,6 +161,7 @@ import SelectInput from '../components/SelectInput.vue';
 import InputText from '../components/InputText.vue';
 import CheckBox from '../components/CheckBox.vue';
 import ActionButton from '../components/ActionButton.vue';
+import {mapState, mapMutations} from 'vuex';
 
 export default {
   data() {
@@ -178,7 +179,53 @@ export default {
       loading: false   
     }
   },
+  computed: {
+    ...mapState(['wallet']),
+    chainIdValue: {
+      get() {
+        return this.wallet.form.chainId.value;
+      },
+      set(value) {
+        this.updateFormField({
+          section: 'wallet',
+          field: 'chainId',
+          payload: {
+            value,
+            error: ''
+          }
+        });
+      }
+    },
+    addressValue: {
+      get() {
+        return this.wallet.form.address.value;
+      },
+      set(value) {
+        this.updateFormField({
+          section: 'wallet',
+          field: 'address',
+          payload: {
+            value,
+            error: ''
+          }
+        });
+      }
+    },
+    showTransactionsValue: {
+      get() {
+        return this.wallet.form.showTransactions;
+      },
+      set(value) {
+        this.updateFormField({
+          section: 'wallet',
+          field: 'showTransactions',
+          payload: value
+        });
+      }
+    }
+  },
   methods: {
+    ...mapMutations(['updateFormField']),
     searchClicked() {
       alert('test');
     }
