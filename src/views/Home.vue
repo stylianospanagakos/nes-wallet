@@ -41,13 +41,17 @@
     </p>
     <div class="row align-items-center">
       <div class="col">
-        <p>Total: $3204.50</p>
+        <p class="my-0">Total: $3204.50</p>
       </div>
       <div class="col text-end">
-        <button type="button" class="nes-btn is-primary">Expand Details</button>
+        <button
+          type="button"
+          class="nes-btn is-primary"
+          @click="expanded = !expanded"
+        >{{ expanded ? 'Hide' : 'Expand' }} Details</button>
       </div>
     </div>
-    <div class="nes-table-responsive mt-4">
+    <div v-show="expanded" class="nes-table-responsive mt-4">
       <table class="nes-table is-bordered is-centered">
         <thead>
           <tr>
@@ -157,6 +161,10 @@
 <script>
 
 export default {
-
+  data() {
+    return {
+      expanded: false
+    }
+  }
 }
 </script>
