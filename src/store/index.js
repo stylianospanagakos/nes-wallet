@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     wallet: {
       form: {
+        chainOptions: [],
         chainId: {
           value: '',
           error: ''

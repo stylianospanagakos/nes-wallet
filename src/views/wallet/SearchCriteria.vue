@@ -4,7 +4,7 @@
         <div class="col-sm">
           <select-input
             placeholder="Chain"
-            :options="options"
+            :options="wallet.chainOptions"
             v-model="chainIdValue"
           />
         </div>
@@ -52,7 +52,7 @@ export default {
           field: 'chainId',
           payload: {
             value,
-            error: ''
+            error: this.isFieldEmpty(value)
           }
         });
       }
@@ -67,7 +67,7 @@ export default {
           field: 'address',
           payload: {
             value,
-            error: ''
+            error: this.isFieldEmpty(value)
           }
         });
       }
@@ -87,6 +87,9 @@ export default {
   },
   methods: {
     ...mapMutations(['updateFormField']),
+    isFieldEmpty(value) {
+        return value.length ? '' : 'Field cannot be empty';
+    },
     searchClicked() {
       alert('test');
     }
