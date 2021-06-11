@@ -6,12 +6,14 @@
             placeholder="Chain"
             :options="wallet.chainOptions"
             v-model="chainIdValue"
+            :error="wallet.form.chainId.error"
           />
         </div>
         <div class="col-sm">
           <input-text
             placeholder="Address"
             v-model="addressValue"
+            :error="wallet.form.address.error"
           />
         </div>
       </div>
