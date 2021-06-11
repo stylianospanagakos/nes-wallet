@@ -1,6 +1,6 @@
 <template>
   <div>
-    <container title="Search Criteria">
+    <container title="Search Criteria" :disabled="true">
       <div class="row align-items-center">
         <div class="col-sm">
           <select-input
@@ -32,7 +32,7 @@
     </container>
 
     <div class="my-5 text-center">
-      <img class="nes-avatar is-rounded is-large" alt="Gravatar image example" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
+      <img class="nes-avatar is-rounded is-large" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
       <p class="mt-3">Loading...</p>
     </div>
 
