@@ -1,14 +1,22 @@
 <template>
     <div class="nes-select py-2">
         <select :value="value" @input="$emit('input', $event.target.value)">
-            <option disabled :value="null">{{ placeholder }}</option>
-            <option :v-for="option in options" :value="option.id" :selected="value === option.id">{{ option.value }}</option>
+            <option selected disabled :value="null">{{ placeholder }}</option>
+            <option
+                v-for="option in options"
+                :value="option.value"
+                :key="option.value"
+                :selected="value === option.value"
+            >{{ option.title }}</option>
         </select>
     </div>
 </template>
 
 <script>
 export default {
+    created() {
+        console.log(this.options);
+    },
     props: {
         placeholder: {
             type: String,
