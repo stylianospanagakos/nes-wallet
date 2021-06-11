@@ -12,7 +12,7 @@
             v-model="chainId"
           />
         </div>
-        <div class="col-sm py-2">
+        <div class="col-sm">
           <input-text
             placeholder="Address"
             v-model="address"
@@ -20,11 +20,11 @@
         </div>
       </div>
       <div class="row align-items-center">
-        <div class="col-sm py-2">
-          <label>
-            <input type="checkbox" class="nes-checkbox" checked />
-            <span>Show Balances</span>
-          </label>
+        <div class="col-sm">
+          <check-box
+            label="Show Balances"
+            v-model="showBalances"
+          />
         </div>
         <div class="col-sm py-2">
           <button type="button" class="nes-btn is-primary">Search</button>
@@ -162,6 +162,7 @@
 <script>
 import SelectInput from '../components/SelectInput.vue';
 import InputText from '../components/InputText.vue';
+import CheckBox from '../components/CheckBox.vue';
 
 export default {
   data() {
@@ -169,6 +170,7 @@ export default {
       expanded: false,
       chainId: '',
       address: '',
+      showBalances: false,
       options: [
         {
           title: 'Fantom Opera',
@@ -179,7 +181,8 @@ export default {
   },
   components: {
     SelectInput,
-    InputText
+    InputText,
+    CheckBox
   }
 }
 </script>
