@@ -26,8 +26,10 @@
             v-model="showBalances"
           />
         </div>
-        <div class="col-sm py-2">
-          <button type="button" class="nes-btn is-primary">Search</button>
+        <div class="col-sm">
+          <action-button
+            @click="searchClicked"
+          >Search</action-button>
         </div>
       </div>
     </div>
@@ -163,6 +165,7 @@
 import SelectInput from '../components/SelectInput.vue';
 import InputText from '../components/InputText.vue';
 import CheckBox from '../components/CheckBox.vue';
+import ActionButton from '../components/ActionButton.vue';
 
 export default {
   data() {
@@ -179,10 +182,16 @@ export default {
       ]      
     }
   },
+  methods: {
+    searchClicked() {
+      alert('test');
+    }
+  },
   components: {
     SelectInput,
     InputText,
-    CheckBox
+    CheckBox,
+    ActionButton
   }
 }
 </script>
