@@ -31,7 +31,10 @@
       </div>
     </container>
 
-    <div class="my-5"></div>
+    <div class="my-5 text-center">
+      <img class="nes-avatar is-rounded is-large" alt="Gravatar image example" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
+      <p class="mt-3">Loading...</p>
+    </div>
 
     <container title="Balances">
       <div class="row align-items-center">

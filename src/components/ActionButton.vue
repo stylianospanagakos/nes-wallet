@@ -1,12 +1,20 @@
 <template>
     <div class="py-2">
         <button
+            v-if="!loading"
             type="button"
             :class="`nes-btn is-${theme}`"
             :disabled="disabled"
             @click="click"
         >
             <slot></slot>
+        </button>
+        <button
+            v-else
+            type="button"
+            :class="`nes-btn is-${theme}`"
+        >
+            Loading...
         </button>
     </div>
 </template>
@@ -19,6 +27,10 @@ export default {
             default: 'primary'
         },
         disabled: {
+            type: Boolean,
+            default: false
+        },
+        loading: {
             type: Boolean,
             default: false
         }
