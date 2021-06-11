@@ -13,9 +13,10 @@
           />
         </div>
         <div class="col-sm py-2">
-          <div class="nes-field">
-            <input type="text" id="name_field" placeholder="Address" class="nes-input">
-          </div>
+          <input-text
+            placeholder="Address"
+            v-model="address"
+          />
         </div>
       </div>
       <div class="row align-items-center">
@@ -160,15 +161,14 @@
 
 <script>
 import SelectInput from '../components/SelectInput.vue';
+import InputText from '../components/InputText.vue';
 
 export default {
-  created() {
-    console.log(process.env.VUE_APP_COVALENT_API_KEY);
-  },
   data() {
     return {
       expanded: false,
       chainId: '',
+      address: '',
       options: [
         {
           title: 'Fantom Opera',
@@ -178,7 +178,8 @@ export default {
     }
   },
   components: {
-    SelectInput
+    SelectInput,
+    InputText
   }
 }
 </script>

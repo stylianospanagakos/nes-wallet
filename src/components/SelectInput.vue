@@ -14,9 +14,6 @@
 
 <script>
 export default {
-    created() {
-        console.log(this.options);
-    },
     props: {
         placeholder: {
             type: String,

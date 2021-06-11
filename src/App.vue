@@ -4,6 +4,7 @@
       <router-link
         :to="{ name: 'wallet' }"
         v-slot="{ href, navigate, isActive, isExactActive }"
+        exact
         custom
       >
         <nav-option
