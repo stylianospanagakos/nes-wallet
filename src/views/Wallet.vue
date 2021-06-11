@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="nes-container with-title">
-      <p class="title">
-        Search Criteria
-      </p>
+    <container title="Search Criteria">
       <div class="row align-items-center">
         <div class="col-sm">
           <select-input
@@ -32,7 +29,7 @@
           >Search</action-button>
         </div>
       </div>
-    </div>
+    </container>
 
     <div class="my-5"></div>
     
@@ -162,6 +159,7 @@
 </template>
 
 <script>
+import Container from '../components/Container.vue';
 import SelectInput from '../components/SelectInput.vue';
 import InputText from '../components/InputText.vue';
 import CheckBox from '../components/CheckBox.vue';
@@ -188,6 +186,7 @@ export default {
     }
   },
   components: {
+    Container,
     SelectInput,
     InputText,
     CheckBox,
