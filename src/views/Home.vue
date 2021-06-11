@@ -58,7 +58,7 @@
             <th>Name</th>
             <th>Amount</th>
             <th>Balance</th>
-            <th>Contract</th>
+            <th>History</th>
           </tr>
         </thead>
         <tbody>
@@ -161,6 +161,9 @@
 <script>
 
 export default {
+  created() {
+    console.log(process.env.VUE_APP_COVALENT_API_KEY);
+  },
   data() {
     return {
       expanded: false
