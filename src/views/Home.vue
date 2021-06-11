@@ -33,6 +33,58 @@
   </div>
 
   <div class="my-5"></div>
+  
+  <div class="nes-container with-title">
+    <p class="title">
+      <img class="nes-avatar is-rounded" alt="Gravatar image example" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
+      Balances
+    </p>
+    <div class="row align-items-center">
+      <div class="col">
+        <p>Total: $3204.50</p>
+      </div>
+      <div class="col text-end">
+        <button type="button" class="nes-btn is-primary">Expand Details</button>
+      </div>
+    </div>
+    <div class="nes-table-responsive mt-4">
+      <table class="nes-table is-bordered is-centered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Balance</th>
+            <th>Contract</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Fantom (FTM)</td>
+            <td>20.8384</td>
+            <td>$5.79</td>
+            <td class="text-center">
+              <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
+                View
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Uniswap V2 (UNI-V2)</td>
+            <td>13.5622</td>
+            <td>$2.45</td>
+            <td class="text-center">
+              <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
+                View
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="my-5"></div>
+
   <div class="nes-container with-title">
     <p class="title">
       <img class="nes-avatar is-rounded" alt="Gravatar image example" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
@@ -57,7 +109,7 @@
               <span class="nes-text is-success">Success</span>
             </td>
             <td>2 Jun 21, 17:37</td>
-            <td>
+            <td class="text-center">
               <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
                 View
               </button>
@@ -80,7 +132,7 @@
               <span class="nes-text is-error">Fail</span>
             </td>
             <td>2 Jun 21, 17:37</td>
-            <td>
+            <td class="text-center">
               <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
                 View
               </button>
