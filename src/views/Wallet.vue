@@ -19,7 +19,7 @@
       <div class="row align-items-center">
         <div class="col-sm">
           <check-box
-            label="Show Balances"
+            label="Show TXs"
             v-model="showBalances"
           />
         </div>
@@ -32,12 +32,8 @@
     </container>
 
     <div class="my-5"></div>
-    
-    <div class="nes-container with-title">
-      <p class="title">
-        <img class="nes-avatar is-rounded" alt="Gravatar image example" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
-        Balances
-      </p>
+
+    <container title="Balances">
       <div class="row align-items-center">
         <div class="col">
           <p class="my-0">Total: $3204.50</p>
@@ -84,15 +80,11 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </container>
 
     <div class="my-5"></div>
 
-    <div class="nes-container with-title">
-      <p class="title">
-        <img class="nes-avatar is-rounded" alt="Gravatar image example" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
-        TXs
-      </p>
+    <container title="TXs">
       <div class="nes-table-responsive">
         <table class="nes-table is-bordered is-centered">
           <thead>
@@ -154,7 +146,7 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </container>
   </div>
 </template>
 

@@ -7,7 +7,7 @@
                 :checked="value"
                 @change="$emit('input', $event.target.checked)"
             />
-            <span>Show Balances</span>
+            <span>{{ label }}</span>
           </label>
     </div>
 </template>
