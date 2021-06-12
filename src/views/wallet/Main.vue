@@ -129,7 +129,7 @@
 <script>
 import SearchCriteria from './SearchCriteria.vue';
 import Container from '../../components/Container.vue';
-import {mapState} from 'vuex';
+import {mapGetters} from 'vuex';
 
 export default {
   data() {
@@ -148,7 +148,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['wallet']),
+    ...mapGetters(['wallet']),
   },
   components: {
     SearchCriteria,

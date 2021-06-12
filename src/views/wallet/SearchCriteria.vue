@@ -39,11 +39,11 @@ import SelectInput from '../../components/SelectInput.vue';
 import InputText from '../../components/InputText.vue';
 import CheckBox from '../../components/CheckBox.vue';
 import ActionButton from '../../components/ActionButton.vue';
-import {mapState, mapMutations} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
   computed: {
-    ...mapState(['wallet']),
+    ...mapGetters(['wallet']),
     chainIdValue: {
       get() {
         return this.wallet.form.chainId.value;
@@ -93,7 +93,11 @@ export default {
         return value.length ? '' : 'Field cannot be empty';
     },
     searchClicked() {
-      alert('test');
+        this.updateFormField({
+          section: 'wallet',
+          field: 'loading',
+          payload: true
+        });
     }
   },
   components: {
