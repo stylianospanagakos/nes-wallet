@@ -21,7 +21,7 @@ export default new Vuex.Store({
           loading: false
         }
       },
-      loading: false
+      loading: true
     }
   },
   getters: {
@@ -39,6 +39,9 @@ export default new Vuex.Store({
           ...payload
         }
       }
+    },
+    toggleAppLoading({ app }, payload) {
+      app.loading = payload;
     }
   },
   actions: {
