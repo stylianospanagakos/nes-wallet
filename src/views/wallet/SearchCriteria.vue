@@ -3,7 +3,7 @@
       <div class="row align-items-center">
         <div class="col-sm">
           <select-input
-            placeholder="Chain"
+            placeholder="Network"
             :options="networkOptions"
             v-model="chainIdValue"
             :error="wallet.form.chainId.error"

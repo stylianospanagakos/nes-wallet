@@ -32,7 +32,7 @@ export default new Vuex.Store({
             return Object.keys(app.networks).map(id => {
                 return {
                     value: id,
-                    text: app.networks[id].label
+                    title: app.networks[id].label
                 }
             });
         },
