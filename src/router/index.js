@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Wallet from '../views/Wallet.vue'
+import Wallet from '../views/wallet/Main.vue'
 
 Vue.use(VueRouter)
 

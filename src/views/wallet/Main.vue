@@ -1,40 +1,11 @@
 <template>
   <div>
-    <container title="Search Criteria" :disabled="true">
-      <div class="row align-items-center">
-        <div class="col-sm">
-          <select-input
-            placeholder="Chain"
-            :options="options"
-            v-model="chainId"
-          />
-        </div>
-        <div class="col-sm">
-          <input-text
-            placeholder="Address"
-            v-model="address"
-          />
-        </div>
-      </div>
-      <div class="row align-items-center">
-        <div class="col-sm">
-          <check-box
-            label="Show TXs"
-            v-model="showBalances"
-          />
-        </div>
-        <div class="col-sm">
-          <action-button
-            @click="searchClicked"
-          >Search</action-button>
-        </div>
-      </div>
-    </container>
+    <search-criteria/>
 
-    <div v-if="loading" class="my-5 text-center">
-      <img class="nes-avatar is-rounded is-large" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
-      <p class="mt-3">Loading...</p>
-    </div>
+    <icon-loading
+      v-if="wallet.form.loading"
+      iconURL="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png"
+    />
 
     <div v-else class="my-5">
       <container title="Balances">
@@ -156,11 +127,10 @@
 </template>
 
 <script>
-import Container from '../components/Container.vue';
-import SelectInput from '../components/SelectInput.vue';
-import InputText from '../components/InputText.vue';
-import CheckBox from '../components/CheckBox.vue';
-import ActionButton from '../components/ActionButton.vue';
+import SearchCriteria from './SearchCriteria.vue';
+import IconLoading from '../../components/IconLoading.vue';
+import Container from '../../components/Container.vue';
+import {mapGetters} from 'vuex';
 
 export default {
   data() {
@@ -178,17 +148,13 @@ export default {
       loading: false   
     }
   },
-  methods: {
-    searchClicked() {
-      alert('test');
-    }
+  computed: {
+    ...mapGetters(['wallet']),
   },
   components: {
+    SearchCriteria,
     Container,
-    SelectInput,
-    InputText,
-    CheckBox,
-    ActionButton
+    IconLoading
   }
 }
 </script>

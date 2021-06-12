@@ -2,6 +2,7 @@
     <div class="nes-field">
         <input
             class="nes-input"
+            :class="{'is-error': error.length}"
             :type="type"
             :placeholder="placeholder"
             :value="value"
@@ -22,6 +23,10 @@ export default {
             default: ''
         },
         value: {
+            type: String,
+            default: ''
+        },
+        error: {
             type: String,
             default: ''
         }
