@@ -7,7 +7,11 @@
             :iconURL="networkLogo"
         />
 
-        <div v-else class="my-5">
+        <p v-else-if="wallet.form.responseError.length" class="nes-text is-error my-3 text-center">
+            {{ wallet.form.responseError }}
+        </p>
+
+        <div v-else-if="showResponseContainer" class="my-5">
             <container title="Balances">
                 <div class="row align-items-center">
                     <div class="col">
@@ -141,12 +145,15 @@ export default {
     computed: {
         ...mapState(['app']),
         ...mapGetters(['wallet']),
-        networkLogo({ app }) {
-            const chainId = app.wallet.form.chainId.value;
+        networkLogo() {
+            const chainId = this.app.wallet.form.chainId.value;
             if (chainId) {
-                return app.networks[chainId].logo_url;
+                return this.app.networks[chainId].logo_url;
             }
             return '';
+        },
+        showResponseContainer() {
+            return this.app.wallet.balance !== null && this.app.wallet.transactions !== null;
         }
     },
     components: {

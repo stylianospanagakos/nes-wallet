@@ -26,13 +26,8 @@ export default new Vuex.Store({
                     loading: false,
                     responseError: ''
                 },
-                balances: {
-                    items: []
-                },
-                transactions: {
-                    items: [],
-                    visible: false
-                }
+                balances: null,
+                transactions: null
             }
         }
     },
@@ -76,9 +71,9 @@ export default new Vuex.Store({
                 
         //     }
         // },
-        // updateTransactions({ app }, { items, error }) {
-
-        // },
+        addTransactions({ app }, payload) {
+            app.wallet.transactions = payload;
+        },
         toggleAppLoading({ app }, payload) {
             app.loading = payload;
         }
