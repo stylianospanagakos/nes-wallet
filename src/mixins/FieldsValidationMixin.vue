@@ -11,7 +11,7 @@ export default {
                 valid = valid && !error;
 
                 // update field's error only if it exists
-                if (!!error) {
+                if (error.length) {
                     this.updateFormField({
                         section,
                         field,
