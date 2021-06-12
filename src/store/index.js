@@ -26,8 +26,13 @@ export default new Vuex.Store({
                     loading: false,
                     responseError: ''
                 },
-                balances: null,
-                transactions: null
+                balances: {
+                    items: null
+                },
+                transactions: {
+                    items: null,
+                    visible: false
+                }
             }
         }
     },
@@ -63,16 +68,12 @@ export default new Vuex.Store({
                 }
             }
         },
-        // updateBalances({ app }, { items, error }) {
-        //     if (items) {
-
-        //     }
-        //     if (error.length) {
-                
-        //     }
-        // },
-        addTransactions({ app }, payload) {
-            app.wallet.transactions = payload;
+        updateBalances({ app }, payload) {
+            app.wallet.balances.items = payload;
+        },
+        updateTransactions({ app }, { items, visible }) {
+            app.wallet.transactions.items = items;
+            app.wallet.transactions.visible = visible;
         },
         toggleAppLoading({ app }, payload) {
             app.loading = payload;
@@ -95,18 +96,26 @@ export default new Vuex.Store({
                 payload: true
             });
 
+            // clean response error message
+            commit('updateFormField', {
+                section: 'wallet',
+                field: 'responseError',
+                payload: ''
+            });
+
             try {
                 // get balances
                 const balances = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
-                // if (!balances.error) {
-                    
-                // }
+                commit('updateBalances', balances.data.data.items);
 
                 // get transactions if selected
                 if (showTransactions) {
                     const transactions = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]));
-                    console.log(balances.data, transactions.data);
+                    commit('updateTransactions', {items: transactions.data.data.items, visible: true});
+                } else {
+                    commit('updateTransactions', {items: null, visible: false});
                 }
+                
             } catch (error) {
                 commit('updateFormField', {
                     section: 'wallet',

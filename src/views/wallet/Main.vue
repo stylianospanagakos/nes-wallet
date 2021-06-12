@@ -153,7 +153,10 @@ export default {
             return '';
         },
         showResponseContainer() {
-            return this.app.wallet.balance !== null && this.app.wallet.transactions !== null;
+            if (this.app.wallet.transactions.visible) {
+                return this.app.wallet.balances.items !== null && this.app.wallet.transactions.items !== null;
+            }
+            return this.app.wallet.balances.items !== null;
         }
     },
     components: {
