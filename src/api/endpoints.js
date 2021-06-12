@@ -1,4 +1,9 @@
 /**
+ * Get all chains.
+ */
+export const CHAINS = 'chains/';
+
+/**
  * Return a list of all ERC20 and NFT token balances along with their current spot prices.
  * Note: Token holder balances exclude passive rewards through static reflection.
  */

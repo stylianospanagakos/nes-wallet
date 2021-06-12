@@ -2,10 +2,10 @@
   <div>
     <search-criteria/>
 
-    <div v-if="wallet.form.loading" class="my-5 text-center">
-      <img class="nes-avatar is-rounded is-large" src="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png" style="image-rendering: pixelated;">
-      <p class="mt-3">Loading...</p>
-    </div>
+    <icon-loading
+      v-if="wallet.form.loading"
+      iconURL="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png"
+    />
 
     <div v-else class="my-5">
       <container title="Balances">
@@ -128,6 +128,7 @@
 
 <script>
 import SearchCriteria from './SearchCriteria.vue';
+import IconLoading from '../../components/IconLoading.vue';
 import Container from '../../components/Container.vue';
 import {mapGetters} from 'vuex';
 
@@ -152,7 +153,8 @@ export default {
   },
   components: {
     SearchCriteria,
-    Container
+    Container,
+    IconLoading
   }
 }
 </script>
