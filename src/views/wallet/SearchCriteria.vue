@@ -100,8 +100,9 @@ export default {
                 { section: 'wallet', field: 'address', value: this.addressValue, rule: this.isFieldEmpty }
             ])) {
                 this.fetchWalletInfo({
-                    chain_id: this.chainIdValue,
-                    address: this.addressValue
+                    chainId: this.chainIdValue,
+                    address: this.addressValue,
+                    showTransactions: this.showTransactionsValue
                 });
             }
         }

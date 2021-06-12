@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS} from '../config/endpoints';
+import {CHAINS, TOKEN_BALANCES, TRANSACTIONS} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
 import axios from '../lib/axios';
+import { vsprintf } from 'sprintf-js';
 
 Vue.use(Vuex)
 
@@ -74,12 +75,21 @@ export default new Vuex.Store({
             }
             commit('toggleAppLoading', false);
         },
-        async fetchWalletInfo({ commit }) {
+        async fetchWalletInfo({ commit }, { chainId, address, showTransactions }) {
             commit('updateFormField', {
                 section: 'wallet',
                 field: 'loading',
                 payload: true
             });
+
+            // get balances
+            const balances = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+
+            // get transactions if selected
+            if (showTransactions) {
+                const transactions = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]));
+                console.log(balances.data, transactions.data);
+            }
         }
     },
     modules: {
