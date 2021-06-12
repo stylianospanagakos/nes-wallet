@@ -28,7 +28,8 @@ export default new Vuex.Store({
                     responseError: ''
                 },
                 balances: {
-                    items: null
+                    items: null,
+                    total: 0
                 },
                 transactions: {
                     items: null,
@@ -70,7 +71,9 @@ export default new Vuex.Store({
             }
         },
         updateBalances({ app }, payload) {
+            app.wallet.balances.total = 0;
             app.wallet.balances.items = payload.map(item => {
+                app.wallet.balances.total += item.quote;
                 return {
                     ...item,
                     balance_formatted: formatTokenBalance(item.balance, item.contract_decimals),

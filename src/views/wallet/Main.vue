@@ -15,7 +15,7 @@
             <container title="Balances">
                 <div class="row align-items-center">
                     <div class="col">
-                        <p class="my-0">Total: $3204.50</p>
+                        <p class="my-0">Total: ${{ totalBalance }}</p>
                     </div>
                     <div class="col text-end">
                         <button
@@ -135,6 +135,7 @@ import SearchCriteria from './SearchCriteria.vue';
 import IconLoading from '../../components/IconLoading.vue';
 import Container from '../../components/Container.vue';
 import {mapState, mapGetters} from 'vuex';
+import {formatFiatValue} from '../../lib/helpers';
 
 export default {
     data() {
@@ -157,6 +158,9 @@ export default {
                 return this.app.wallet.balances.items !== null && this.app.wallet.transactions.items !== null;
             }
             return this.app.wallet.balances.items !== null;
+        },
+        totalBalance() {
+            return formatFiatValue(this.app.wallet.balances.total);
         }
     },
     components: {
