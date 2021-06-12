@@ -28,6 +28,14 @@ export default new Vuex.Store({
         }
     },
     getters: {
+        networkOptions({ app }) {
+            return Object.keys(app.networks).map(id => {
+                return {
+                    value: id,
+                    text: app.networks[id].label
+                }
+            });
+        },
         wallet({ app }) {
             return app.wallet;
         }

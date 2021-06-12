@@ -4,7 +4,7 @@
         <div class="col-sm">
           <select-input
             placeholder="Chain"
-            :options="wallet.chainOptions"
+            :options="networkOptions"
             v-model="chainIdValue"
             :error="wallet.form.chainId.error"
           />
@@ -43,7 +43,7 @@ import {mapGetters, mapMutations} from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters(['wallet']),
+    ...mapGetters(['wallet', 'networkOptions']),
     chainIdValue: {
       get() {
         return this.wallet.form.chainId.value;
