@@ -9,7 +9,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         app: {
-            networks: [],
+            networks: {},
             loading: true,
             wallet: {
                 form: {
@@ -33,8 +33,8 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        addNetwork({ app }, payload) {
-
+        addNetwork({ app }, { chain_id, logo_url, label }) {
+            Vue.set(app.networks, chain_id, { logo_url, label });
         },
         updateFormField({ app }, { section, field, payload }) {
             if (typeof payload === 'boolean') {
