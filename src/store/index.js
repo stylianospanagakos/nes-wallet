@@ -60,6 +60,8 @@ export default new Vuex.Store({
     },
     actions: {
         async fetchChains({ commit }) {
+            commit('toggleAppLoading', true);
+
             const response = await axios.get(CHAINS);
             if (!response.error) {
                 const { items } = response.data.data;
