@@ -40,7 +40,7 @@ import InputText from '../../components/InputText.vue';
 import CheckBox from '../../components/CheckBox.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import ValidationMixin from '../../mixins/FieldsValidationMixin.vue';
-import {mapGetters, mapMutations} from 'vuex';
+import {mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     computed: {
@@ -90,6 +90,7 @@ export default {
     },
     methods: {
         ...mapMutations(['updateFormField']),
+        ...mapActions(['fetchWalletInfo']),
         isFieldEmpty(value) {
             return value.length ? '' : 'Field cannot be empty';
         },
@@ -98,7 +99,10 @@ export default {
                 { section: 'wallet', field: 'chainId', value: this.chainIdValue, rule: this.isFieldEmpty },
                 { section: 'wallet', field: 'address', value: this.addressValue, rule: this.isFieldEmpty }
             ])) {
-                console.log('test');
+                this.fetchWalletInfo({
+                    chain_id: this.chainIdValue,
+                    address: this.addressValue
+                });
             }
         }
     },

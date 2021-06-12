@@ -73,6 +73,13 @@ export default new Vuex.Store({
                 });
             }
             commit('toggleAppLoading', false);
+        },
+        async fetchWalletInfo({ commit }) {
+            commit('updateFormField', {
+                section: 'wallet',
+                field: 'loading',
+                payload: true
+            });
         }
     },
     modules: {
