@@ -70,6 +70,7 @@ export default new Vuex.Store({
                     }
                 });
             }
+            commit('toggleAppLoading', false);
         }
     },
     modules: {

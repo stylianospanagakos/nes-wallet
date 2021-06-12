@@ -2,7 +2,7 @@
     <div v-if="app.loading">
         <icon-loading/>
     </div>
-    <div v-else class="p-5 mx-auto" style="max-width: 900px">
+    <div v-else-if="networkOptions.length" class="p-5 mx-auto" style="max-width: 900px">
         <div id="nav">
             <router-link
                 :to="{ name: 'wallet' }"
@@ -36,12 +36,15 @@
             <router-view/>
         </div>
   </div>
+  <div v-else class="text-center p-5">
+      <p>Apologies, there seems to be an issue with our service at the moment.</p>
+  </div>
 </template>
 
 <script>
     import NavOption from './components/NavOption.vue';
     import IconLoading from './components/IconLoading.vue';
-    import {mapState, mapActions} from 'vuex';
+    import {mapState, mapGetters, mapActions} from 'vuex';
 
     import "bootstrap/dist/css/bootstrap.min.css"
     import "nes.css/css/nes.min.css";
@@ -51,7 +54,8 @@
             this.fetchChains();
         },
         computed: {
-            ...mapState(['app'])
+            ...mapState(['app']),
+            ...mapGetters(['networkOptions'])
         },
         methods: {
             ...mapActions(['fetchChains'])
