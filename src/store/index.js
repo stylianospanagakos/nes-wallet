@@ -47,8 +47,9 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        async fetchChains({ commit }) {
+        async fetchChains() {
             const response = await axios.get(CHAINS);
+            console.log(response);
         }
     },
     modules: {
