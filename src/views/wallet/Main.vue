@@ -63,7 +63,7 @@
 
             <div class="my-5"></div>
 
-            <container title="TXs">
+            <container v-if="wallet.transactions.visible" title="TXs">
                 <div class="nes-table-responsive">
                     <table class="nes-table is-bordered is-centered">
                         <thead>
