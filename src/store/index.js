@@ -39,6 +39,13 @@ export default new Vuex.Store({
         },
         wallet({ app }) {
             return app.wallet;
+        },
+        networkLogo({ app }) {
+            const chainId = app.wallet.form.chainId.value;
+            if (chainId) {
+                return app.networks[chainId].logo_url;
+            }
+            return '';
         }
     },
     mutations: {

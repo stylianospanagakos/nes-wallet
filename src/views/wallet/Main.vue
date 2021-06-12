@@ -4,7 +4,7 @@
 
     <icon-loading
       v-if="wallet.form.loading"
-      iconURL="https://www.covalenthq.com/static/images/icons/display-icons/fantom-ftm-logo.png"
+      :iconURL="networkLogo"
     />
 
     <div v-else class="my-5">
@@ -149,7 +149,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['wallet']),
+    ...mapGetters(['wallet', 'networkLogo']),
   },
   components: {
     SearchCriteria,
