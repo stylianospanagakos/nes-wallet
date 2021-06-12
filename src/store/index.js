@@ -24,6 +24,15 @@ export default new Vuex.Store({
                     },
                     showTransactions: false,
                     loading: false
+                },
+                balances: {
+                    items: [],
+                    error: ''
+                },
+                transactions: {
+                    items: [],
+                    visible: false,
+                    error: ''
                 }
             }
         }
