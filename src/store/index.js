@@ -23,16 +23,15 @@ export default new Vuex.Store({
                         error: ''
                     },
                     showTransactions: false,
-                    loading: false
+                    loading: false,
+                    responseError: ''
                 },
                 balances: {
-                    items: [],
-                    error: ''
+                    items: []
                 },
                 transactions: {
                     items: [],
-                    visible: false,
-                    error: ''
+                    visible: false
                 }
             }
         }
@@ -51,11 +50,16 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        addNetwork({ app }, { chain_id, logo_url, label }) {
-            Vue.set(app.networks, chain_id, { logo_url, label });
+        addNetworks({ app }, payload) {
+            payload.forEach(({chain_id, logo_url, label}) => {
+                // for now, we only want to process the mainnet chain ids
+                if (MAINNET_IDS.includes(parseInt(chain_id))) {
+                    Vue.set(app.networks, chain_id, { logo_url, label });
+                }
+            });
         },
         updateFormField({ app }, { section, field, payload }) {
-            if (typeof payload === 'boolean') {
+            if (typeof payload === 'boolean' || typeof payload === 'string') {
                 app[section].form[field] = payload;
             } else {
                 app[section].form[field] = {
@@ -64,6 +68,17 @@ export default new Vuex.Store({
                 }
             }
         },
+        // updateBalances({ app }, { items, error }) {
+        //     if (items) {
+
+        //     }
+        //     if (error.length) {
+                
+        //     }
+        // },
+        // updateTransactions({ app }, { items, error }) {
+
+        // },
         toggleAppLoading({ app }, payload) {
             app.loading = payload;
         }
@@ -74,13 +89,7 @@ export default new Vuex.Store({
 
             const response = await axios.get(CHAINS);
             if (!response.error) {
-                const { items } = response.data.data;
-                items.forEach(item => {
-                    // for now, we only want to process the mainnet chain ids
-                    if (MAINNET_IDS.includes(parseInt(item.chain_id))) {
-                        commit('addNetwork', item);
-                    }
-                });
+                commit('addNetworks', response.data.data.items);
             }
             commit('toggleAppLoading', false);
         },
@@ -91,13 +100,30 @@ export default new Vuex.Store({
                 payload: true
             });
 
-            // get balances
-            const balances = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+            try {
+                // get balances
+                const balances = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+                // if (!balances.error) {
+                    
+                // }
 
-            // get transactions if selected
-            if (showTransactions) {
-                const transactions = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]));
-                console.log(balances.data, transactions.data);
+                // get transactions if selected
+                if (showTransactions) {
+                    const transactions = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]));
+                    console.log(balances.data, transactions.data);
+                }
+            } catch (error) {
+                commit('updateFormField', {
+                    section: 'wallet',
+                    field: 'responseError',
+                    payload: error.response.data.error_message
+                });
+            } finally {
+                commit('updateFormField', {
+                    section: 'wallet',
+                    field: 'loading',
+                    payload: false
+                });
             }
         }
     },
