@@ -41,14 +41,20 @@
 <script>
     import NavOption from './components/NavOption.vue';
     import IconLoading from './components/IconLoading.vue';
-    import {mapState} from 'vuex';
+    import {mapState, mapActions} from 'vuex';
 
     import "bootstrap/dist/css/bootstrap.min.css"
     import "nes.css/css/nes.min.css";
 
     export default {
+        created() {
+            this.fetchChains();
+        },
         computed: {
             ...mapState(['app'])
+        },
+        methods: {
+            ...mapActions(['fetchChains'])
         },
         components: {
             NavOption,

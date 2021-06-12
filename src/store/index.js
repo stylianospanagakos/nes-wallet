@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS} from '../api/endpoints';
+import {CHAINS} from '../config/endpoints';
+import {MAINNET_IDS} from '../config/supported_chains';
 import axios from '../lib/axios';
 
 Vue.use(Vuex)
@@ -8,9 +9,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         app: {
+            networks: [],
+            loading: true,
             wallet: {
                 form: {
-                    chainOptions: [],
                     chainId: {
                         value: '',
                         error: ''
@@ -22,8 +24,7 @@ export default new Vuex.Store({
                     showTransactions: false,
                     loading: false
                 }
-            },
-            loading: true
+            }
         }
     },
     getters: {
@@ -32,6 +33,9 @@ export default new Vuex.Store({
         }
     },
     mutations: {
+        addNetwork({ app }, payload) {
+
+        },
         updateFormField({ app }, { section, field, payload }) {
             if (typeof payload === 'boolean') {
                 app[section].form[field] = payload;
@@ -47,9 +51,17 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        async fetchChains() {
+        async fetchChains({ commit }) {
             const response = await axios.get(CHAINS);
-            console.log(response);
+            if (!response.error) {
+                const { items } = response.data.data;
+                items.forEach(item => {
+                    // for now, we only want to process the mainnet chain ids
+                    if (MAINNET_IDS.includes(parseInt(item.chain_id))) {
+                        commit('addNetwork', item);
+                    }
+                });
+            }
         }
     },
     modules: {
