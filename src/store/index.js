@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {CHAINS, TOKEN_BALANCES, TRANSACTIONS} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
+import {formatTokenBalance, formatFiatValue} from '../lib/helpers';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
 
@@ -69,7 +70,13 @@ export default new Vuex.Store({
             }
         },
         updateBalances({ app }, payload) {
-            app.wallet.balances.items = payload;
+            app.wallet.balances.items = payload.map(item => {
+                return {
+                    ...item,
+                    balance_formatted: formatTokenBalance(item.balance, item.contract_decimals),
+                    quote_formatted: formatFiatValue(item.quote)
+                }
+            });
         },
         updateTransactions({ app }, { items, visible }) {
             app.wallet.transactions.items = items;
