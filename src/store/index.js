@@ -71,7 +71,7 @@ export default new Vuex.Store({
                 }
             }
         },
-        updateBalances({ app }, payload) {
+        addBalances({ app }, payload) {
             app.wallet.balances.total = 0;
             app.wallet.balances.items = payload.map(item => {
                 app.wallet.balances.total += item.quote;
@@ -82,9 +82,8 @@ export default new Vuex.Store({
                 }
             });
         },
-        updateTransactions({ app }, { items, visible }) {
-            app.wallet.transactions.items = items;
-            app.wallet.transactions.items = items.map(item => {
+        addTransactions({ app }, payload) {
+            app.wallet.transactions.items = payload.map(item => {
                 return {
                     ...item,
                     type: item.from_address.toLowerCase() === app.wallet.form.address.value.toLowerCase() ? 'Out' : 'In',
@@ -93,7 +92,14 @@ export default new Vuex.Store({
                     created_at: moment.utc(item.block_signed_at).local().format('MMM Do, YY, HH:mm')
                 }
             });
-            app.wallet.transactions.visible = visible;
+            app.wallet.transactions.visible = true;
+        },
+        resetWallet({ app }) {
+            app.wallet.form.responseError = '';
+            app.wallet.balances.items = null;
+            app.wallet.balances.total = 0;
+            app.wallet.transactions.items = null;
+            app.wallet.transactions.visible = false;
         },
         toggleAppLoading({ app }, payload) {
             app.loading = payload;
@@ -116,26 +122,19 @@ export default new Vuex.Store({
                 payload: true
             });
 
-            // clean response error message
-            commit('updateFormField', {
-                section: 'wallet',
-                field: 'responseError',
-                payload: ''
-            });
+            // reset wallet attributes
+            commit('resetWallet')
 
             try {
                 // get balances
                 const balances = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
-                commit('updateBalances', balances.data.data.items);
+                commit('addBalances', balances.data.data.items);
 
                 // get transactions if selected
                 if (showTransactions) {
                     const transactions = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]));
-                    commit('updateTransactions', {items: transactions.data.data.items, visible: true});
-                } else {
-                    commit('updateTransactions', {items: null, visible: false});
+                    commit('addTransactions', transactions.data.data.items);
                 }
-                
             } catch (error) {
                 commit('updateFormField', {
                     section: 'wallet',
