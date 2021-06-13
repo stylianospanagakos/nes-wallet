@@ -6,7 +6,15 @@
                 v-model="addressValue"
                 :error="form.address.error"
             />
-            <menu class="dialog-menu">
+            <select-input
+                placeholder="Network"
+                :options="networkOptions"
+                label-key="label"
+                value-key="chain_id"
+                v-model="chainIdValue"
+                :error="form.chainId.error"
+            />
+            <menu class="dialog-menu mb-0">
                 <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
                 <action-button class="d-inline-block" @click="clicked">Save</action-button>
             </menu>
@@ -16,12 +24,14 @@
 
 <script>
 import InputText from '../../components/InputText.vue';
+import SelectInput from '../../components/SelectInput.vue';
 import ActionButton from '../../components/ActionButton.vue';
-import {mapState, mapMutations} from 'vuex';
+import {mapState, mapGetters, mapMutations} from 'vuex';
 
 export default {
     computed: {
         ...mapState(['form']),
+        ...mapGetters(['networkOptions']),
         addressValue: {
             get() {
                 return this.form.address.value;
@@ -36,6 +46,20 @@ export default {
                 });
             }
         },
+        chainIdValue: {
+            get() {
+                return this.form.chainId.value;
+            },
+            set(value) {
+                this.updateFormField({
+                field: 'chainId',
+                payload: {
+                    value,
+                    error: this.isFieldEmpty(value)
+                }
+                });
+            }
+        }
     },
     methods: {
         ...mapMutations(['updateFormField']),
@@ -51,6 +75,7 @@ export default {
     },
     components: {
         InputText,
+        SelectInput,
         ActionButton
     }    
 }

@@ -41,10 +41,10 @@ export default new Vuex.Store({
     },
     mutations: {
         addNetworks(state, payload) {
-            payload.forEach(({chain_id, logo_url, label}) => {
+            payload.forEach(network => {
                 // for now, we only want to process the mainnet chain ids
-                if (MAINNET_IDS.includes(parseInt(chain_id))) {
-                    Vue.set(state.networks, chain_id, { logo_url, label });
+                if (MAINNET_IDS.includes(parseInt(network.chain_id))) {
+                    Vue.set(state.networks, network.chain_id, network);
                 }
             });
         },
