@@ -24,7 +24,7 @@ export default new Vuex.Store({
                         value: '',
                         error: ''
                     },
-                    showTransactions: false,
+                    showTransactions: true,
                     loading: false,
                     responseError: ''
                 },
