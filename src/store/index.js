@@ -5,6 +5,7 @@ import {MAINNET_IDS} from '../config/supported_chains';
 import {formatTokenBalance, formatFiatValue} from '../lib/helpers';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
+import moment from 'moment';
 
 Vue.use(Vuex)
 
@@ -83,6 +84,15 @@ export default new Vuex.Store({
         },
         updateTransactions({ app }, { items, visible }) {
             app.wallet.transactions.items = items;
+            app.wallet.transactions.items = items.map(item => {
+                return {
+                    ...item,
+                    type: item.from_address.toLowerCase() === app.wallet.form.address.value.toLowerCase() ? 'Out' : 'In',
+                    balance_formatted: formatTokenBalance(item.value, 18),
+                    quote_formatted: formatFiatValue(item.quote),
+                    created_at: moment.utc(item.block_signed_at).local().format('MMM Do, YY, HH:mm')
+                }
+            });
             app.wallet.transactions.visible = visible;
         },
         toggleAppLoading({ app }, payload) {
