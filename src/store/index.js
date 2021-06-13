@@ -89,7 +89,7 @@ export default new Vuex.Store({
                     type: item.from_address.toLowerCase() === app.wallet.form.address.value.toLowerCase() ? 'Out' : 'In',
                     balance_formatted: formatTokenBalance(item.value, 18),
                     quote_formatted: formatFiatValue(item.quote),
-                    created_at: moment.utc(item.block_signed_at).local().format('MMM Do, YY, HH:mm')
+                    created_at: moment.utc(item.block_signed_at).local().format('Do MMM YYYY, HH:mm')
                 }
             });
             app.wallet.transactions.visible = true;
