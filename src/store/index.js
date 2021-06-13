@@ -12,7 +12,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         networks: {},
-        wallet: {},
+        wallets: {},
         loading: true,
         form: {
             chainId: {
@@ -30,7 +30,12 @@ export default new Vuex.Store({
     getters: {
         networkOptions({ networks }) {
             return Object.keys(networks).map(item => {
-                return {...item};
+                return {...networks[item]};
+            });
+        },
+        walletItems({ wallets }) {
+            return Object.keys(wallets).map(key => {
+                return {...wallets[key]};
             });
         }
     },
