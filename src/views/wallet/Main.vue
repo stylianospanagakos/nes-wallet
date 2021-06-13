@@ -36,20 +36,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Fantom (FTM)</td>
-                                <td>20.8384</td>
-                                <td>$5.79</td>
-                                <td class="text-center">
-                                    <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
-                                    View
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Uniswap V2 (UNI-V2)</td>
-                                <td>13.5622</td>
-                                <td>$2.45</td>
+                            <tr v-for="item in wallet.balances.items" :key="item.contract_address">
+                                <td>{{ item.contract_name }} ({{ item.contract_ticker_symbol }})</td>
+                                <td>{{ item.balance_formatted }}</td>
+                                <td>${{ item.quote_formatted }}</td>
                                 <td class="text-center">
                                     <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
                                     View
@@ -154,13 +144,13 @@ export default {
             return '';
         },
         showResponseContainer() {
-            if (this.app.wallet.transactions.visible) {
-                return this.app.wallet.balances.items !== null && this.app.wallet.transactions.items !== null;
+            if (this.wallet.transactions.visible) {
+                return this.wallet.balances.items !== null && this.wallet.transactions.items !== null;
             }
-            return this.app.wallet.balances.items !== null;
+            return this.wallet.balances.items !== null;
         },
         totalBalance() {
-            return formatFiatValue(this.app.wallet.balances.total);
+            return formatFiatValue(this.wallet.balances.total);
         }
     },
     components: {
