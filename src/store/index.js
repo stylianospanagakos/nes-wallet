@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS} from '../config/endpoints';
+import {CHAINS, TOKEN_BALANCES} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
 // import {formatTokenBalance, formatFiatValue} from '../lib/helpers';
 import axios from '../lib/axios';
-// import { vsprintf } from 'sprintf-js';
+import { vsprintf } from 'sprintf-js';
 // import moment from 'moment';
 
 Vue.use(Vuex)
@@ -71,6 +71,26 @@ export default new Vuex.Store({
                 commit('addNetworks', response.data.data.items);
             }
             commit('toggleAppLoading', false);
+        },
+        async fetchBalance({ commit }, { chainId, address }) {
+            commit('updateFormField', {
+                field: 'loading',
+                payload: true
+            });
+
+            try {
+                await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+            } catch (error) {
+                commit('updateFormField', {
+                    field: 'loading',
+                    payload: false
+                });
+                commit('updateFormField', {
+                    field: 'responseError',
+                    payload: error.response.data.message
+                });
+                throw new Error(error.response.data.message);
+            }
         }
     },
     modules: {

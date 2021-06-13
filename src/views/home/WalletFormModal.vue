@@ -1,6 +1,6 @@
 <template>
     <dialog class="nes-dialog is-rounded">
-        <form method="dialog">
+        <form @submit.prevent method="dialog">
             <input-text
                 placeholder="Address"
                 v-model="addressValue"
@@ -27,7 +27,7 @@ import InputText from '../../components/InputText.vue';
 import SelectInput from '../../components/SelectInput.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import FieldsValidationMixin from '../../mixins/FieldsValidationMixin.vue';
-import {mapState, mapGetters, mapMutations} from 'vuex';
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     computed: {
@@ -53,23 +53,29 @@ export default {
             },
             set(value) {
                 this.updateFormField({
-                field: 'chainId',
-                payload: {
-                    value,
-                    error: this.isFieldEmpty(value)
-                }
+                    field: 'chainId',
+                    payload: {
+                        value,
+                        error: this.isFieldEmpty(value)
+                    }
                 });
             }
         }
     },
     methods: {
         ...mapMutations(['updateFormField']),
+        ...mapActions(['fetchBalance']),
         clicked() {
             if (this.validateForm([
                 { field: 'chainId', value: this.chainIdValue, rule: this.isFieldEmpty },
                 { field: 'address', value: this.addressValue, rule: this.isFieldEmpty }
             ])) {
-                this.closeModal();
+                this.fetchBalance({
+                    chainId: this.chainIdValue,
+                    address: this.addressValue
+                }).then(() => {
+                    this.closeModal();
+                });
             }
         },
         closeModal() {
