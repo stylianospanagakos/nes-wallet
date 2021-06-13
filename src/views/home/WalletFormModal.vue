@@ -1,6 +1,7 @@
 <template>
     <dialog class="nes-dialog is-rounded">
-        <form @submit.prevent method="dialog">
+        <icon-loading v-if="form.loading" :iconURL="networkLogo"/>
+        <form v-else @submit.prevent method="dialog">
             <input-text
                 placeholder="Address"
                 v-model="addressValue"
@@ -26,12 +27,13 @@
 import InputText from '../../components/InputText.vue';
 import SelectInput from '../../components/SelectInput.vue';
 import ActionButton from '../../components/ActionButton.vue';
+import IconLoading from '../../components/IconLoading.vue';
 import FieldsValidationMixin from '../../mixins/FieldsValidationMixin.vue';
 import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['form']),
+        ...mapState(['form', 'networks']),
         ...mapGetters(['networkOptions']),
         addressValue: {
             get() {
@@ -60,6 +62,13 @@ export default {
                     }
                 });
             }
+        },
+        networkLogo() {
+            const chainId = this.form.chainId.value;
+            if (chainId) {
+                return this.networks[chainId].logo_url;
+            }
+            return '';
         }
     },
     methods: {
@@ -88,7 +97,8 @@ export default {
     components: {
         InputText,
         SelectInput,
-        ActionButton
+        ActionButton,
+        IconLoading
     },
     mixins: [FieldsValidationMixin]
 }
