@@ -58,6 +58,14 @@ export default new Vuex.Store({
                 }
             }
         },
+        resetForm({ form }) {
+            form.chainId.value = '';
+            form.chainId.error = '';
+            form.address.value = '';
+            form.address.error = '';
+            form.loading = false;
+            form.responseError = '';
+        },
         toggleAppLoading(state, payload) {
             state.loading = payload;
         }

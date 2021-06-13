@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="text-end">
-            <action-button @click="$refs.walletForm.$el.showModal()">+ Wallet</action-button>
+            <action-button @click="openModal">+ Wallet</action-button>
             <wallet-form-modal ref="walletForm"/>
         </div>
         <div v-if="walletItems.length">
@@ -19,22 +19,17 @@
 import WalletFormModal from './WalletFormModal.vue';
 import Wallet from './Wallet.vue';
 import ActionButton from '../../components/ActionButton.vue';
-import {mapGetters} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
     computed: {
-        ...mapGetters(['walletItems']),
-        networkLogo() {
-            const chainId = this.wallet.form.chainId.value;
-            if (chainId) {
-                return this.app.networks[chainId].logo_url;
-            }
-            return '';
-        }
+        ...mapGetters(['walletItems'])
     },
     methods: {
-        clicked() {
-            console.log('test');
+        ...mapMutations(['resetForm']),
+        openModal() {
+            this.resetForm();
+            this.$refs.walletForm.$el.showModal();
         }
     },
     components: {
