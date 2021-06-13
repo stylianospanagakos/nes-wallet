@@ -4,7 +4,7 @@
             <icon-loading/>
         </div>
         <div v-else-if="networkOptions.length">
-            <div id="nav">
+            <div v-if="false" id="nav">
                 <router-link
                     :to="{ name: 'home' }"
                     v-slot="{ href, navigate, isActive, isExactActive }"
@@ -33,7 +33,7 @@
                     />
                 </router-link>
             </div>
-            <div class="py-5">
+            <div>
                 <router-view/>
             </div>
         </div>
