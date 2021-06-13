@@ -22,9 +22,6 @@ import ActionButton from '../../components/ActionButton.vue';
 import {mapGetters} from 'vuex';
 
 export default {
-    created() {
-        console.log(this.$refs);
-    },
     computed: {
         ...mapGetters(['walletItems']),
         networkLogo() {

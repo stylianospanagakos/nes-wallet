@@ -15,6 +15,7 @@
                 v-model="chainIdValue"
                 :error="form.chainId.error"
             />
+            <p class="nes-text is-error text-center my-3">{{ form.responseError }}</p>
             <menu class="dialog-menu mb-0">
                 <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
                 <action-button class="d-inline-block" @click="clicked">Save</action-button>
@@ -84,6 +85,8 @@ export default {
                     address: this.addressValue
                 }).then(() => {
                     this.closeModal();
+                }).catch(error => {
+                    console.error(error.message);
                 });
             }
         },

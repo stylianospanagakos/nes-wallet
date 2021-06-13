@@ -87,9 +87,9 @@ export default new Vuex.Store({
                 });
                 commit('updateFormField', {
                     field: 'responseError',
-                    payload: error.response.data.message
+                    payload: error.response.data.error_message
                 });
-                throw new Error(error.response.data.message);
+                throw new Error(error.response.data.error_message);
             }
         }
     },
