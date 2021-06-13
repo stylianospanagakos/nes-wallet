@@ -26,6 +26,7 @@
 import InputText from '../../components/InputText.vue';
 import SelectInput from '../../components/SelectInput.vue';
 import ActionButton from '../../components/ActionButton.vue';
+import FieldsValidationMixin from '../../mixins/FieldsValidationMixin.vue';
 import {mapState, mapGetters, mapMutations} from 'vuex';
 
 export default {
@@ -64,7 +65,12 @@ export default {
     methods: {
         ...mapMutations(['updateFormField']),
         clicked() {
-            this.closeModal();
+            if (this.validateForm([
+                { field: 'chainId', value: this.chainIdValue, rule: this.isFieldEmpty },
+                { field: 'address', value: this.addressValue, rule: this.isFieldEmpty }
+            ])) {
+                this.closeModal();
+            }
         },
         closeModal() {
             this.$parent.$refs.walletForm.$el.close();
@@ -77,7 +83,8 @@ export default {
         InputText,
         SelectInput,
         ActionButton
-    }    
+    },
+    mixins: [FieldsValidationMixin]
 }
 </script>
 
