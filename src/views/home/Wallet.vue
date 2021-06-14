@@ -9,7 +9,8 @@
                 <button
                     type="button"
                     class="nes-btn is-primary"
-                >Show Details</button>
+                    @click="expanded = !expanded"
+                >{{ expanded ? 'Hide' : 'Show' }} Details</button>
             </div>
         </div>
     </container>
@@ -23,6 +24,11 @@ export default {
         data: {
             type: Object,
             required: true
+        }
+    },
+    data() {
+        return {
+            expanded: false
         }
     },
     components: {
