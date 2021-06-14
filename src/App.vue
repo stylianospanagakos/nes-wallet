@@ -1,12 +1,12 @@
 <template>
     <div class="container-boundaries p-5 mx-auto">
-        <div v-if="app.loading">
+        <div v-if="loading">
             <icon-loading/>
         </div>
         <div v-else-if="networkOptions.length">
-            <div id="nav">
+            <div v-if="false" id="nav">
                 <router-link
-                    :to="{ name: 'wallet' }"
+                    :to="{ name: 'home' }"
                     v-slot="{ href, navigate, isActive, isExactActive }"
                     exact
                     custom
@@ -16,7 +16,7 @@
                         :is-active="isActive"
                         :is-exact-active="isExactActive"
                         :navigate="navigate"
-                        title="Wallet"
+                        title="Home"
                     />
                 </router-link> |
                 <router-link
@@ -33,7 +33,7 @@
                     />
                 </router-link>
             </div>
-            <div class="py-5">
+            <div>
                 <router-view/>
             </div>
         </div>
@@ -60,7 +60,7 @@
             this.fetchChains();
         },
         computed: {
-            ...mapState(['app']),
+            ...mapState(['loading']),
             ...mapGetters(['networkOptions'])
         },
         methods: {

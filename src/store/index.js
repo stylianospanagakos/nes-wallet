@@ -1,108 +1,103 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS, TOKEN_BALANCES, TRANSACTIONS} from '../config/endpoints';
+import {CHAINS, TOKEN_BALANCES} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
-import {formatTokenBalance, formatFiatValue} from '../lib/helpers';
+import {formatTokenBalance, formatFiatValue, formatAddress} from '../lib/helpers';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
-import moment from 'moment';
+// import moment from 'moment';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        app: {
-            networks: {},
-            loading: true,
-            wallet: {
-                form: {
-                    chainId: {
-                        value: '',
-                        error: ''
-                    },
-                    address: {
-                        value: '',
-                        error: ''
-                    },
-                    showTransactions: true,
-                    loading: false,
-                    responseError: ''
-                },
-                balances: {
-                    items: null,
-                    total: 0
-                },
-                transactions: {
-                    items: null,
-                    visible: false
-                }
-            }
+        networks: {},
+        wallets: {},
+        loading: true,
+        form: {
+            chainId: {
+                value: '',
+                error: ''
+            },
+            address: {
+                value: '',
+                error: ''
+            },
+            loading: false,
+            responseError: ''
         }
     },
     getters: {
-        networkOptions({ app }) {
-            return Object.keys(app.networks).map(id => {
-                return {
-                    value: id,
-                    title: app.networks[id].label
-                }
+        networkOptions({ networks }) {
+            return Object.keys(networks).map(item => {
+                return {...networks[item]};
             });
         },
-        wallet({ app }) {
-            return app.wallet;
+        walletItems({ wallets }) {
+            return Object.keys(wallets).map(key => {
+                return {
+                    ...wallets[key],
+                    key
+                };
+            });
         }
     },
     mutations: {
-        addNetworks({ app }, payload) {
-            payload.forEach(({chain_id, logo_url, label}) => {
+        addNetworks(state, payload) {
+            payload.forEach(network => {
                 // for now, we only want to process the mainnet chain ids
-                if (MAINNET_IDS.includes(parseInt(chain_id))) {
-                    Vue.set(app.networks, chain_id, { logo_url, label });
+                if (MAINNET_IDS.includes(parseInt(network.chain_id))) {
+                    Vue.set(state.networks, network.chain_id, network);
                 }
             });
         },
-        updateFormField({ app }, { section, field, payload }) {
+        updateFormField({ form }, { field, payload }) {
             if (typeof payload === 'boolean' || typeof payload === 'string') {
-                app[section].form[field] = payload;
+                form[field] = payload;
             } else {
-                app[section].form[field] = {
-                    ...app[section].form[field],
+                form[field] = {
+                    ...form[field],
                     ...payload
                 }
             }
         },
-        addBalances({ app }, payload) {
-            app.wallet.balances.total = 0;
-            app.wallet.balances.items = payload.map(item => {
-                app.wallet.balances.total += item.quote;
-                return {
+        resetForm({ form }) {
+            form.chainId.value = '';
+            form.chainId.error = '';
+            form.address.value = '';
+            form.address.error = '';
+            form.loading = false;
+            form.responseError = '';
+        },
+        addWallet(state, { chain_id, address, items }) {
+            // create wallet key
+            const key = `${chain_id.toString()}_${address}`;
+            let wallet = {
+                fiat_balance: 0,
+                address: {
+                    full: address,
+                    truncated: formatAddress(address)
+                },
+                logo_url: state.networks[chain_id].logo_url,
+                tokens: []
+            };
+            items.forEach(item => {
+                // format values
+                let balance = formatTokenBalance(item.balance, item.contract_decimals);
+                let quote = formatFiatValue(item.quote);
+                // update wallet's fiat balance
+                wallet.fiat_balance += item.quote;
+                wallet.tokens.push({
                     ...item,
-                    balance_formatted: formatTokenBalance(item.balance, item.contract_decimals),
-                    quote_formatted: formatFiatValue(item.quote)
-                }
+                    balance,
+                    quote
+                });
             });
+            wallet.fiat_balance = formatFiatValue(wallet.fiat_balance);
+            Vue.set(state.wallets, key, wallet);
         },
-        addTransactions({ app }, payload) {
-            app.wallet.transactions.items = payload.map(item => {
-                return {
-                    ...item,
-                    type: item.from_address.toLowerCase() === app.wallet.form.address.value.toLowerCase() ? 'Out' : 'In',
-                    balance_formatted: formatTokenBalance(item.value, 18),
-                    quote_formatted: formatFiatValue(item.quote),
-                    created_at: moment.utc(item.block_signed_at).local().format('Do MMM YYYY, HH:mm')
-                }
-            });
-            app.wallet.transactions.visible = true;
-        },
-        resetWallet({ app }) {
-            app.wallet.form.responseError = '';
-            app.wallet.balances.items = null;
-            app.wallet.balances.total = 0;
-            app.wallet.transactions.items = null;
-            app.wallet.transactions.visible = false;
-        },
-        toggleAppLoading({ app }, payload) {
-            app.loading = payload;
+        toggleAppLoading(state, payload) {
+            state.loading = payload;
         }
     },
     actions: {
@@ -115,38 +110,25 @@ export default new Vuex.Store({
             }
             commit('toggleAppLoading', false);
         },
-        async fetchWalletInfo({ commit }, { chainId, address, showTransactions }) {
+        async fetchBalance({ commit }, { chainId, address }) {
             commit('updateFormField', {
-                section: 'wallet',
                 field: 'loading',
                 payload: true
             });
 
-            // reset wallet attributes
-            commit('resetWallet')
-
             try {
-                // get balances
-                const balances = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
-                commit('addBalances', balances.data.data.items);
-
-                // get transactions if selected
-                if (showTransactions) {
-                    const transactions = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]));
-                    commit('addTransactions', transactions.data.data.items);
-                }
+                const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+                commit('addWallet', data.data);
             } catch (error) {
                 commit('updateFormField', {
-                    section: 'wallet',
-                    field: 'responseError',
-                    payload: error.response.data.error_message
-                });
-            } finally {
-                commit('updateFormField', {
-                    section: 'wallet',
                     field: 'loading',
                     payload: false
                 });
+                commit('updateFormField', {
+                    field: 'responseError',
+                    payload: error.response.data.error_message
+                });
+                throw new Error(error.response.data.error_message);
             }
         }
     },

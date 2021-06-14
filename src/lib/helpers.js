@@ -8,3 +8,7 @@ export const formatTokenBalance = (balance, decimals) => {
 export const formatFiatValue = (quote) => {
     return parseFloat(quote).toFixed(2);
 }
+
+export const formatAddress = (address) => {
+    return `${address.slice(0, 14)}...${address.slice(-5)}`;
+}

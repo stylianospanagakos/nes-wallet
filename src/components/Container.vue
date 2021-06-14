@@ -1,7 +1,10 @@
 <template>
-    <div class="nes-container with-title" :class="{disabled: disabled}">
-      <p class="title">{{ title }}</p>
-      <slot></slot>
+    <div class="nes-container with-title my-5" :class="{disabled: disabled}">
+        <p class="title">
+            <img v-if="iconURL.length" class="nes-avatar is-rounded is-medium" :src="iconURL" style="image-rendering: pixelated;"/>
+            {{ title }}
+        </p>
+        <slot></slot>
     </div>
 </template>
 
@@ -11,6 +14,10 @@ export default {
         title: {
             type: String,
             default: 'Title'
+        },
+        iconURL: {
+            type: String,
+            default: ''
         },
         disabled: {
             type: Boolean,

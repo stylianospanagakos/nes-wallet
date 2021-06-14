@@ -3,7 +3,7 @@
         <button
             v-if="!loading"
             type="button"
-            :class="`nes-btn is-${theme}`"
+            :class="`nes-btn ${!plain ? 'is-' + theme : ''}`"
             :disabled="disabled"
             @click="click"
         >
@@ -12,7 +12,7 @@
         <button
             v-else
             type="button"
-            :class="`nes-btn is-${theme}`"
+            :class="`nes-btn ${!plain ? 'is-' + theme : ''}`"
         >
             Loading...
         </button>
@@ -25,6 +25,10 @@ export default {
         theme: {
             type: String,
             default: 'primary'
+        },
+        plain: {
+            type: Boolean,
+            default: false
         },
         disabled: {
             type: Boolean,
