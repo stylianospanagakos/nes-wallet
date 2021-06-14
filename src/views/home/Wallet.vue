@@ -3,24 +3,23 @@
         <div class="row align-items-center">
             <div class="col">
                 <p class="my-0">Total: ${{ data.fiat_balance }}</p>
+                <small class="nes-text is-primary">Includes {{ tokensLength }} Token{{ tokensLength === 1 ? '' : 's' }}</small>
                 <small class="d-block text-muted my-1">{{ data.address.truncated }}</small>
             </div>
             <div class="col text-end">
-                <button
-                    type="button"
-                    class="nes-btn is-primary"
+                <action-button
                     @click="expanded = !expanded"
-                >{{ expanded ? 'Hide' : 'Show' }} Details</button>
+                >{{ expanded ? 'Hide' : 'View' }} Details</action-button>
             </div>
         </div>
         <div v-show="expanded" class="nes-table-responsive mt-4">
-            <table class="nes-table is-bordered is-centered">
+            <table class="nes-table w-100 is-bordered is-centered m-0">
                 <thead>
                     <tr>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Balance</th>
-                    <th>History</th>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                        <th>History</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,7 +27,7 @@
                         <td>{{ token.contract_name }} ({{ token.contract_ticker_symbol }})</td>
                         <td>{{ token.balance }}</td>
                         <td>${{ token.quote }}</td>
-                        <td class="text-center">
+                        <td>
                             <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
                             View
                             </button>
@@ -36,12 +35,18 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="text-center mt-4">
+                <action-button
+                    theme="error"
+                >Delete Wallet</action-button>
+            </div>
         </div>
     </container>
 </template>
 
 <script>
 import Container from '../../components/Container.vue';
+import ActionButton from '../../components/ActionButton.vue';
 
 export default {
     props: {
@@ -55,8 +60,14 @@ export default {
             expanded: false
         }
     },
+    computed: {
+        tokensLength() {
+            return this.data.tokens.length;
+        }
+    },
     components: {
-        Container
+        Container,
+        ActionButton
     }
 }
 </script>
@@ -64,5 +75,12 @@ export default {
 <style scoped>
     small.d-block {
         word-break: break-all;
+    }
+    .nes-table {
+        table-layout: auto;
+        border: 4px solid #212529;
+    }
+    .nes-table {
+        text-align: center;
     }
 </style>
