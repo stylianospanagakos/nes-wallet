@@ -9,8 +9,33 @@
                 <button
                     type="button"
                     class="nes-btn is-primary"
-                >Show Details</button>
+                    @click="expanded = !expanded"
+                >{{ expanded ? 'Hide' : 'Show' }} Details</button>
             </div>
+        </div>
+        <div v-show="expanded" class="nes-table-responsive mt-4">
+            <table class="nes-table is-bordered is-centered">
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Balance</th>
+                    <th>History</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="token in data.tokens" :key="token.contract_address">
+                        <td>{{ token.contract_name }} ({{ token.contract_ticker_symbol }})</td>
+                        <td>{{ token.balance }}</td>
+                        <td>${{ token.quote }}</td>
+                        <td class="text-center">
+                            <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
+                            View
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </container>
 </template>
@@ -23,6 +48,11 @@ export default {
         data: {
             type: Object,
             required: true
+        }
+    },
+    data() {
+        return {
+            expanded: false
         }
     },
     components: {
