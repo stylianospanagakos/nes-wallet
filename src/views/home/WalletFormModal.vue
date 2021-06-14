@@ -30,6 +30,7 @@ import SelectInput from '../../components/SelectInput.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
 import FieldsValidationMixin from '../../mixins/FieldsValidationMixin.vue';
+import LocalStorageMixin from '../../mixins/LocalStorageMixin.vue';
 import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
@@ -84,7 +85,7 @@ export default {
                     chainId: this.chainIdValue,
                     address: this.addressValue
                 }).then((response) => {
-                    console.log(response);
+                    this.saveStorageItem('wallets', response);
                     this.closeModal();
                 }).catch(error => {
                     console.error(error.message);
@@ -104,7 +105,7 @@ export default {
         ActionButton,
         IconLoading
     },
-    mixins: [FieldsValidationMixin]
+    mixins: [FieldsValidationMixin, LocalStorageMixin]
 }
 </script>
 
