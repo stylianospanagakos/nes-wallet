@@ -51,6 +51,7 @@
     import IconLoading from './components/IconLoading.vue';
     import ActionButton from './components/ActionButton.vue';
     import LocalStorageMixin from './mixins/LocalStorageMixin.vue';
+    import {WALLETS_KEY} from './config/local_storage';
     import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
     import "bootstrap/dist/css/bootstrap.min.css"
@@ -59,9 +60,9 @@
     export default {
         created() {
             // get wallets
-            const wallets = this.getStorageItem('wallets');
+            const wallets = this.getStorageItem(WALLETS_KEY);
             if (!wallets) {
-                this.saveStorageItem('wallets', {});
+                this.saveStorageItem(WALLETS_KEY, {});
             }
             // add wallets to store
             Object.keys(wallets).forEach(key => {
