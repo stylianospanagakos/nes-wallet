@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="token in data.tokens" :key="token.contract_address">
+                    <tr v-for="token in data.tokens" :key="`${token.contract_ticker_symbol}${token.contract_address}`">
                         <td>{{ token.contract_name }} ({{ token.contract_ticker_symbol }})</td>
                         <td>{{ token.balance }}</td>
                         <td>${{ token.quote }}</td>
@@ -38,7 +38,15 @@
             <div class="text-center mt-4">
                 <action-button
                     theme="error"
+                    @click="$refs[data.key].showModal()"
                 >Delete Wallet</action-button>
+                <dialog :ref="data.key" class="nes-dialog is-rounded">
+                    <p class="nes-text is-error text-center my-3">Are you sure you want to delete this wallet?</p>
+                    <menu class="dialog-menu mb-0">
+                        <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
+                        <action-button class="d-inline-block" theme="error" @click="deleted">Delete</action-button>
+                    </menu>
+                </dialog>
             </div>
         </div>
     </container>
@@ -63,6 +71,14 @@ export default {
     computed: {
         tokensLength() {
             return this.data.tokens.length;
+        }
+    },
+    methods: {
+        closeModal() {
+            this.$refs[this.data.key].close();
+        },
+        deleted() {
+            console.log('delete');
         }
     },
     components: {

@@ -66,6 +66,8 @@ export default new Vuex.Store({
             }
         },
         resetForm({ form }) {
+            form.name.value = '';
+            form.name.error = '';
             form.chainId.value = '';
             form.chainId.error = '';
             form.address.value = '';
