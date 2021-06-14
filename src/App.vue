@@ -50,6 +50,7 @@
     import NavOption from './components/NavOption.vue';
     import IconLoading from './components/IconLoading.vue';
     import ActionButton from './components/ActionButton.vue';
+    import LocalStorageMixin from './mixins/LocalStorageMixin.vue';
     import {mapState, mapGetters, mapActions} from 'vuex';
 
     import "bootstrap/dist/css/bootstrap.min.css"
@@ -57,6 +58,9 @@
 
     export default {
         created() {
+            if (!this.getStorageItem('wallets')) {
+                this.saveStorageItem('wallets', {});
+            }
             this.fetchChains();
         },
         computed: {
@@ -66,6 +70,7 @@
         methods: {
             ...mapActions(['fetchChains'])
         },
+        mixins: [LocalStorageMixin],
         components: {
             NavOption,
             IconLoading,
