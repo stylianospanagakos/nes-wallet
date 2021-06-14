@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {CHAINS, TOKEN_BALANCES} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
-// import {formatTokenBalance, formatFiatValue} from '../lib/helpers';
+import {formatTokenBalance, formatFiatValue, formatAddress} from '../lib/helpers';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
 // import moment from 'moment';
@@ -66,6 +66,32 @@ export default new Vuex.Store({
             form.loading = false;
             form.responseError = '';
         },
+        addWallet(state, { chain_id, address, items }) {
+            // create wallet key
+            const key = `${chain_id.toString()}_${address}`;
+            let wallet = {
+                fiat_balance: 0,
+                address: {
+                    full: address,
+                    truncated: formatAddress(address)
+                },
+                logo_url: state.networks[chain_id].logo_url,
+                tokens: []
+            };
+            items.forEach(item => {
+                // format values
+                let balance = formatTokenBalance(item.balance, item.contract_decimals);
+                let quote = formatFiatValue(item.quote);
+                // update wallet's fiat balance
+                wallet.fiat_balance += item.quote;
+                wallet.tokens.push({
+                    ...item,
+                    balance,
+                    quote
+                });
+            });
+            Vue.set(state.wallets, key, wallet);
+        },
         toggleAppLoading(state, payload) {
             state.loading = payload;
         }
@@ -87,7 +113,8 @@ export default new Vuex.Store({
             });
 
             try {
-                await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+                const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+                commit('addWallet', data.data);
             } catch (error) {
                 commit('updateFormField', {
                     field: 'loading',
