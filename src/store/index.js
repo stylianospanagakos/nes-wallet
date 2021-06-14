@@ -35,7 +35,10 @@ export default new Vuex.Store({
         },
         walletItems({ wallets }) {
             return Object.keys(wallets).map(key => {
-                return {...wallets[key]};
+                return {
+                    ...wallets[key],
+                    key
+                };
             });
         }
     },
@@ -90,6 +93,7 @@ export default new Vuex.Store({
                     quote
                 });
             });
+            wallet.fiat_balance = formatFiatValue(wallet.fiat_balance);
             Vue.set(state.wallets, key, wallet);
         },
         toggleAppLoading(state, payload) {

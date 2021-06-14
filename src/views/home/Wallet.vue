@@ -1,9 +1,9 @@
 <template>
-    <container title="Test" iconURL="https://www.covalenthq.com/static/images/icons/display-icons/ethereum-eth-logo.png">
+    <container title="Test" :iconURL="data.logo_url">
         <div class="row align-items-center">
             <div class="col">
-                <p class="my-0">Total: $50</p>
-                <small class="text-muted">0xF11766c3726f...40b06</small>
+                <p class="my-0">Total: ${{ data.fiat_balance }}</p>
+                <small class="text-muted">{{ data.address.truncated }}</small>
             </div>
             <div class="col text-end">
                 <button
@@ -19,6 +19,12 @@
 import Container from '../../components/Container.vue';
 
 export default {
+    props: {
+        data: {
+            type: Object,
+            required: true
+        }
+    },
     components: {
         Container
     }

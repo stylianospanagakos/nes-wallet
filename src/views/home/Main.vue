@@ -5,9 +5,11 @@
             <wallet-form-modal ref="walletForm"/>
         </div>
         <div v-if="walletItems.length">
-            <wallet/>
-            <wallet/>
-            <wallet/>
+            <wallet
+                v-for="wallet in walletItems"
+                :key="wallet.key"
+                :data="wallet"
+            />
         </div>
         <div v-else class="text-center my-5">
             <p>You haven't added any wallets yet.</p>
