@@ -74,6 +74,7 @@ export default new Vuex.Store({
             const key = `${chain_id.toString()}_${address}`;
             let wallet = {
                 fiat_balance: 0,
+                chain_id,
                 address: {
                     full: address,
                     truncated: formatAddress(address)
