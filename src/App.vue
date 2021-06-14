@@ -50,13 +50,26 @@
     import NavOption from './components/NavOption.vue';
     import IconLoading from './components/IconLoading.vue';
     import ActionButton from './components/ActionButton.vue';
-    import {mapState, mapGetters, mapActions} from 'vuex';
+    import LocalStorageMixin from './mixins/LocalStorageMixin.vue';
+    import {WALLETS_KEY} from './config/local_storage';
+    import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
     import "bootstrap/dist/css/bootstrap.min.css"
     import "nes.css/css/nes.min.css";
 
     export default {
         created() {
+            // get wallets
+            const wallets = this.getStorageItem(WALLETS_KEY);
+            if (!wallets) {
+                this.saveStorageItem(WALLETS_KEY, {});
+            }
+            // add wallets to store
+            Object.keys(wallets).forEach(key => {
+                this.addWallet(wallets[key]);
+            });
+
+            // fetch available networks
             this.fetchChains();
         },
         computed: {
@@ -64,8 +77,10 @@
             ...mapGetters(['networkOptions'])
         },
         methods: {
+            ...mapMutations(['addWallet']),
             ...mapActions(['fetchChains'])
         },
+        mixins: [LocalStorageMixin],
         components: {
             NavOption,
             IconLoading,
