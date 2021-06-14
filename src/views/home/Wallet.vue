@@ -55,6 +55,7 @@
 <script>
 import Container from '../../components/Container.vue';
 import ActionButton from '../../components/ActionButton.vue';
+import {mapMutations} from 'vuex';
 
 export default {
     props: {
@@ -74,10 +75,12 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['removeWallet']),
         closeModal() {
             this.$refs[this.data.key].close();
         },
         deleted() {
+            this.removeWallet(this.data.key);
             console.log('delete');
         }
     },

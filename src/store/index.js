@@ -78,6 +78,9 @@ export default new Vuex.Store({
         addWallet(state, payload) {
             Vue.set(state.wallets, payload.key, payload);
         },
+        removeWallet(state, payload) {
+            Vue.delete(state.wallets, payload);
+        },
         toggleAppLoading(state, payload) {
             state.loading = payload;
         }
