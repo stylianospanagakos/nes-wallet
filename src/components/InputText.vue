@@ -1,5 +1,5 @@
 <template>
-    <div class="nes-field">
+    <div class="nes-field py-2">
         <input
             class="nes-input"
             :class="{'is-error': error.length}"

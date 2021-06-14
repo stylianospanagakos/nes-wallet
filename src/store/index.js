@@ -15,6 +15,10 @@ export default new Vuex.Store({
         wallets: {},
         loading: true,
         form: {
+            name: {
+                value: '',
+                error: ''
+            },
             chainId: {
                 value: '',
                 error: ''
@@ -86,7 +90,7 @@ export default new Vuex.Store({
             }
             commit('toggleAppLoading', false);
         },
-        async fetchBalance({ commit, state }, { chainId, address }) {
+        async fetchBalance({ commit, state }, { name, chainId, address }) {
             commit('updateFormField', {
                 field: 'loading',
                 payload: true
@@ -94,7 +98,11 @@ export default new Vuex.Store({
 
             try {
                 const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
-                const wallet = createWallet(state.networks, data.data);
+                const wallet = createWallet({
+                    ...data.data,
+                    name,
+                    network: state.networks[chainId] 
+                });
                 commit('addWallet', wallet);
                 return wallet;
             } catch (error) {

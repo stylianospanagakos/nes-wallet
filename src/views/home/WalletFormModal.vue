@@ -3,6 +3,11 @@
         <icon-loading v-if="form.loading" :iconURL="networkLogo"/>
         <form v-else @submit.prevent method="dialog">
             <input-text
+                placeholder="Name"
+                v-model="nameValue"
+                :error="form.name.error"
+            />
+            <input-text
                 placeholder="Address"
                 v-model="addressValue"
                 :error="form.address.error"
@@ -38,6 +43,20 @@ export default {
     computed: {
         ...mapState(['form', 'networks']),
         ...mapGetters(['networkOptions']),
+        nameValue: {
+            get() {
+                return this.form.name.value;
+            },
+            set(value) {
+                this.updateFormField({
+                    field: 'name',
+                    payload: {
+                        value,
+                        error: this.isFieldEmpty(value)
+                    }
+                });
+            }
+        },
         addressValue: {
             get() {
                 return this.form.address.value;
@@ -79,10 +98,12 @@ export default {
         ...mapActions(['fetchBalance']),
         clicked() {
             if (this.validateForm([
+                { field: 'name', value: this.nameValue, rule: this.isFieldEmpty },
                 { field: 'chainId', value: this.chainIdValue, rule: this.isFieldEmpty },
                 { field: 'address', value: this.addressValue, rule: this.isFieldEmpty }
             ])) {
                 this.fetchBalance({
+                    name: this.nameValue,
                     chainId: this.chainIdValue,
                     address: this.addressValue
                 }).then((response) => {
