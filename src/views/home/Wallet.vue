@@ -3,7 +3,7 @@
         <div class="row align-items-center">
             <div class="col">
                 <p class="my-0">Total: ${{ data.fiat_balance }}</p>
-                <small class="text-muted">{{ data.address.truncated }}</small>
+                <small class="d-block text-muted my-1">{{ data.address.truncated }}</small>
             </div>
             <div class="col text-end">
                 <button
@@ -30,3 +30,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    small.d-block {
+        word-break: break-all;
+    }
+</style>
