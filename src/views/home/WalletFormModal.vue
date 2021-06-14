@@ -83,7 +83,8 @@ export default {
                 this.fetchBalance({
                     chainId: this.chainIdValue,
                     address: this.addressValue
-                }).then(() => {
+                }).then((response) => {
+                    console.log(response);
                     this.closeModal();
                 }).catch(error => {
                     console.error(error.message);

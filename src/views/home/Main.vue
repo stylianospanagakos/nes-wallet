@@ -24,9 +24,6 @@ import ActionButton from '../../components/ActionButton.vue';
 import {mapGetters, mapMutations} from 'vuex';
 
 export default {
-    created() {
-        console.log(localStorage);
-    },
     computed: {
         ...mapGetters(['walletItems'])
     },
