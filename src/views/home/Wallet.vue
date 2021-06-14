@@ -1,5 +1,5 @@
 <template>
-    <container title="Test" :iconURL="data.logo_url">
+    <container :title="data.name" :iconURL="data.logo_url">
         <div class="row align-items-center">
             <div class="col">
                 <p class="my-0">Total: ${{ data.fiat_balance }}</p>

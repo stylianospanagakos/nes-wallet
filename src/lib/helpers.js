@@ -13,9 +13,10 @@ export const formatAddress = (address) => {
     return `${address.slice(0, 14)}...${address.slice(-5)}`;
 }
 
-export const createWallet = (networks, { chain_id, address, items }) => {
+export const createWallet = (networks, { name, chain_id, address, items }) => {
     let wallet = {
         key: `${chain_id.toString()}_${address}`,
+        name,
         fiat_balance: 0,
         chain_id,
         address: {
