@@ -64,13 +64,14 @@
                         }
                     },
                     tooltip: {
+                        enabled: true,
                         style: {
                             fontSize: '12px',
-                            fontFamily: 'Poppins'
+                            fontFamily: 'Press Start 2P'
                         },
                         x: {
                             formatter: (value, series) => {
-                                return moment(this.data[series.dataPointIndex].x).format("MMM 'YY");
+                                return moment(this.data[series.dataPointIndex].x).format("DD MMM 'YY");
                             }
                         },
                         y: {

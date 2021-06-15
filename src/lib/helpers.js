@@ -78,5 +78,8 @@ export const createToken = ({ contract_decimals, contract_address, contract_name
             y: [openFormatted, highFormatted, lowFormatted, closeFormatted]
         });
     });
+    // reverse order of history items
+    token.history.line.reverse();
+    token.history.candle.reverse();
     return token;
 }
