@@ -9,6 +9,7 @@
             <div class="col text-end">
                 <action-button
                     class="d-inline-block"
+                    @click="$router.push({name: 'wallet', params: {uuid: data.uuid}})"
                 >View</action-button>
                 <action-button
                     class="d-inline-block ms-2"
