@@ -6,7 +6,13 @@
                 <small class="d-block text-muted my-2">{{ data.contract_address.truncated }}</small>
             </div>
             <div class="col text-end">
-                <action-button>Show History</action-button>
+                <line-graph
+                    label="Balance"
+                    :data="data.history.line"
+                    main-color="#5578eb"
+                    alt-color="#e1edd9"
+                />
+                <action-button v-if="false">Show History</action-button>
             </div>
         </div>
     </container>
@@ -15,6 +21,7 @@
 <script>
 import Container from '../../components/Container.vue';
 import ActionButton from '../../components/ActionButton.vue';
+import LineGraph from '../../components/graphs/LineGraph.vue';
 import {mapMutations} from 'vuex';
 
 export default {
@@ -35,6 +42,7 @@ export default {
     },
     components: {
         Container,
+        LineGraph,
         ActionButton
     }
 }
