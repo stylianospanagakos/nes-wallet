@@ -28,19 +28,12 @@ export const createWallet = ({ chain_id, address, items, name, network }) => {
             truncated: formatAddress(address)
         },
         logo_url: network.logo_url,
-        tokens: []
+        tokens_count: 0
     };
     items.forEach(item => {
-        // format values
-        let balance = formatTokenBalance(item.balance, item.contract_decimals);
-        let quote = formatFiatValue(item.quote);
         // update wallet's fiat balance
         wallet.fiat_balance += item.quote;
-        wallet.tokens.push({
-            ...item,
-            balance,
-            quote
-        });
+        wallet.tokens_count++;
     });
     wallet.fiat_balance = formatFiatValue(wallet.fiat_balance);
     return wallet;

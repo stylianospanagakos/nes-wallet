@@ -3,7 +3,7 @@
         <div class="row align-items-center">
             <div class="col">
                 <p class="my-0">Total: ${{ data.fiat_balance }}</p>
-                <small class="d-block nes-text is-primary my-2">Holds {{ tokensLength }} Token{{ tokensLength === 1 ? '' : 's' }}</small>
+                <small class="d-block nes-text is-primary my-2">Holds {{ data.tokens_count }} Token{{ data.tokens_count === 1 ? '' : 's' }}</small>
                 <small class="d-block text-muted">{{ data.address.truncated }}</small>
             </div>
             <div class="col text-end">
@@ -38,11 +38,6 @@ export default {
         data: {
             type: Object,
             required: true
-        }
-    },
-    computed: {
-        tokensLength() {
-            return this.data.tokens.length;
         }
     },
     methods: {

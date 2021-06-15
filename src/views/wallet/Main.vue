@@ -30,8 +30,6 @@ export default {
     created() {
         if (this.wallet) {
             console.log('exists');
-        } else {
-            console.log('not exists');
         }
     },
     computed: {
