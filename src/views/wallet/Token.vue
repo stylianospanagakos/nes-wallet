@@ -1,21 +1,21 @@
 <template>
     <container :title="data.contract_ticker_symbol" :iconURL="data.logo_url">
         <div class="row align-items-center">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <p class="my-0">Balance: {{ data.balance }}</p>
                 <small class="d-block text-muted my-2">{{ data.contract_address.truncated }}</small>
+                <action-button class="mt-3">Show Transfers</action-button>
             </div>
-            <div v-if="data.history.line.length" class="col-md-4 text-end">
+            <div v-if="data.history.line.length" class="col-md-6 text-end">
                 <line-graph
-                    width="200px"
                     label="Balance"
                     :data="data.history.line"
                     main-color="#5578eb"
                     alt-color="#e1edd9"
                 />
             </div>
-            <div v-else class="col-md-4 text-end">
-                <p class="nes-text is-disabled">No data</p>
+            <div v-else class="col-md-6 text-end">
+                <p class="nes-text is-disabled">No available data</p>
             </div>
         </div>
     </container>
@@ -24,6 +24,7 @@
 <script>
 import Container from '../../components/Container.vue';
 import LineGraph from '../../components/graphs/LineGraph.vue';
+import ActionButton from '../../components/ActionButton.vue';
 import {mapMutations} from 'vuex';
 
 export default {
@@ -44,7 +45,8 @@ export default {
     },
     components: {
         Container,
-        LineGraph
+        LineGraph,
+        ActionButton
     }
 }
 </script>
