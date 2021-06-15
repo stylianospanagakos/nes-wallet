@@ -109,6 +109,9 @@ export default new Vuex.Store({
         addToken({ details }, payload) {
             details.tokens.push(payload);
         },
+        resetTokens({ details }) {
+            details.tokens = [];
+        },
         toggleDetailsLoading(state, payload) {
             state.details.loading = payload;
         },
@@ -156,6 +159,7 @@ export default new Vuex.Store({
         },
         async fetchBalanceHistory({ commit }, { chainId, address }) {
             commit('toggleDetailsLoading', true);
+            commit('resetTokens');
 
             try {
                 const { data } = await axios.get(vsprintf(HISTORICAL_PORTFOLIO, [chainId, address]));

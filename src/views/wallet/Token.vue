@@ -5,14 +5,17 @@
                 <p class="my-0">Balance: {{ data.balance }}</p>
                 <small class="d-block text-muted my-2">{{ data.contract_address.truncated }}</small>
             </div>
-            <div class="col-md-4 text-end">
+            <div v-if="data.history.line.length" class="col-md-4 text-end">
                 <line-graph
+                    width="200px"
                     label="Balance"
                     :data="data.history.line"
                     main-color="#5578eb"
                     alt-color="#e1edd9"
                 />
-                <action-button v-if="false">Show History</action-button>
+            </div>
+            <div v-else class="col-md-4 text-end">
+                <p class="nes-text is-disabled">No data</p>
             </div>
         </div>
     </container>
@@ -20,7 +23,6 @@
 
 <script>
 import Container from '../../components/Container.vue';
-import ActionButton from '../../components/ActionButton.vue';
 import LineGraph from '../../components/graphs/LineGraph.vue';
 import {mapMutations} from 'vuex';
 
@@ -42,8 +44,7 @@ export default {
     },
     components: {
         Container,
-        LineGraph,
-        ActionButton
+        LineGraph
     }
 }
 </script>
