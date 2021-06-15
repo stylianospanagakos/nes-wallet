@@ -144,12 +144,13 @@ export default new Vuex.Store({
 
             try {
                 const { data } = await axios.get(vsprintf(HISTORICAL_PORTFOLIO, [chainId, address]));
-                console.log(data.items);
                 data.items.forEach(item => {
                     commit('addToken', createToken(item));
                 });
             } catch (error) {
                 console.log(error);
+            } finally {
+                commit('toggleDetailsLoading', false);
             }
         }
     },
