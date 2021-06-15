@@ -1,3 +1,5 @@
+import {v4 as uuidv4} from 'uuid';
+
 export const formatTokenBalance = (balance, decimals) => {
     const value = decimals > 0 ?
         parseInt(balance) / Math.pow(10, decimals) :
@@ -14,8 +16,10 @@ export const formatAddress = (address) => {
 }
 
 export const createWallet = ({ chain_id, address, items, name, network }) => {
+    const key = `${chain_id.toString()}_${address}`;
     let wallet = {
-        key: `${chain_id.toString()}_${address}`,
+        key,
+        uuid: uuidv4(key),
         name,
         fiat_balance: 0,
         chain_id,
