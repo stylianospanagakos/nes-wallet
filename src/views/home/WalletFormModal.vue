@@ -1,5 +1,5 @@
 <template>
-    <dialog class="nes-dialog is-rounded">
+    <dialog class="nes-dialog is-rounded mx-auto my-5">
         <icon-loading v-if="form.loading" :iconURL="networkLogo"/>
         <form v-else @submit.prevent method="dialog">
             <input-text
@@ -128,9 +128,3 @@ export default {
     mixins: [FieldsValidationMixin, LocalStorageMixin]
 }
 </script>
-
-<style scoped>
-    .nes-dialog {
-        top: -45%;
-    }
-</style>

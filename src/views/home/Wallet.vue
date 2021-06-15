@@ -3,13 +3,12 @@
         <div class="row align-items-center">
             <div class="col">
                 <p class="my-0">Total: ${{ data.fiat_balance }}</p>
-                <small class="nes-text is-primary">Includes {{ tokensLength }} Token{{ tokensLength === 1 ? '' : 's' }}</small>
-                <small class="d-block text-muted my-1">{{ data.address.truncated }}</small>
+                <small class="d-block nes-text is-primary my-2">Holds {{ tokensLength }} Token{{ tokensLength === 1 ? '' : 's' }}</small>
+                <small class="d-block text-muted">{{ data.address.truncated }}</small>
             </div>
             <div class="col text-end">
                 <action-button
                     class="d-inline-block"
-                    @click="expanded = !expanded"
                 >View</action-button>
                 <action-button
                     class="d-inline-block ms-2"

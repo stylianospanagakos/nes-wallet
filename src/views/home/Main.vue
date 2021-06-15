@@ -15,6 +15,9 @@
                 :key="wallet.key"
                 :data="wallet"
             />
+            <p v-if="!filteredWallets.length" class="text-center my-5">
+                No wallets found for '{{ searchTextValue }}'.
+            </p>
         </div>
         <div v-else class="text-center my-5">
             <p>You haven't added any wallets yet.</p>
