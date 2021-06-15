@@ -60,7 +60,7 @@ export default {
     methods: {
         ...mapMutations(['resetForm', 'updateSearchText']),
         openModal() {
-            this.resetForm();
+            this.resetForm('home');
             this.$refs.walletForm.$el.showModal();
         }
     },

@@ -4,7 +4,7 @@ export default {
         validateForm(fields) {
             let valid = true;
 
-            fields.forEach(({ field, value, rule }) => {
+            fields.forEach(({ section, field, value, rule }) => {
                 let error = rule(value);
 
                 // update valid value
@@ -13,6 +13,7 @@ export default {
                 // update field's error only if it exists
                 if (error.length) {
                     this.updateFormField({
+                        section,
                         field,
                         payload: {error}
                     });

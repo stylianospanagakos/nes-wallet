@@ -73,14 +73,29 @@ export default new Vuex.Store({
             }
         },
         resetForm(state, payload) {
-            state[payload].form.name.value = '';
-            state[payload].form.name.error = '';
-            state[payload].form.chainId.value = '';
-            state[payload].form.chainId.error = '';
-            state[payload].form.address.value = '';
-            state[payload].form.address.error = '';
-            state[payload].form.loading = false;
-            state[payload].form.responseError = '';
+            const form = state[payload].form;
+            Object.keys(form).forEach(field => {
+                switch (typeof form[field]) {
+                    case 'string':
+                        form[field] = '';
+                        break;
+                    case 'boolean':
+                        form[field] = false;
+                        break;
+                    case 'number':
+                        form[field] = 0;
+                        break;
+                    default:
+                        if (Array.isArray(form[field])) {
+                            form[field] = [];
+                        } else {
+                            form[field] = {
+                                value: '',
+                                error: ''
+                            }
+                        }
+                }
+            });
         },
         addWallet(state, payload) {
             Vue.set(state.wallets, payload.key, payload);
