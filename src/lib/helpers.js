@@ -47,20 +47,31 @@ export const createToken = ({ contract_decimals, contract_address, contract_name
         balance: holdings.length ?
             formatTokenBalance(holdings[0].close.balance, contract_decimals) :
             formatTokenBalance(0),
-        history: []
+        history: {
+            line: [],
+            candle: []
+        }
     }
     holdings.forEach(({timestamp, open, high, low, close}) => {
+        let date = new Date(timestamp),
+            openFormatted = formatTokenBalance(open.balance, contract_decimals),
+            highFormatted = formatTokenBalance(high.balance, contract_decimals),
+            lowFormatted = formatTokenBalance(low.balance, contract_decimals),
+            closeFormatted = formatTokenBalance(close.balance, contract_decimals);
+
+        /**
+         * Line chart format [{ x: date, y: 76 }]
+         */
+        token.history.line.push({
+            x: date,
+            y: closeFormatted
+        });
         /**
          * Candle chart format: [{ x: date, y: [O,H,L,C] }]
          */
-        token.history.push({
-            x: new Date(timestamp),
-            y: [
-                formatTokenBalance(open.balance, contract_decimals),
-                formatTokenBalance(high.balance, contract_decimals),
-                formatTokenBalance(low.balance, contract_decimals),
-                formatTokenBalance(close.balance, contract_decimals)
-            ]
+        token.history.candle.push({
+            x: date,
+            y: [openFormatted, highFormatted, lowFormatted, closeFormatted]
         });
     });
     return token;
