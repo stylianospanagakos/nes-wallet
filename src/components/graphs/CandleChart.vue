@@ -9,6 +9,7 @@
 
 <script>
     import VueApexCharts from 'vue-apexcharts';
+    import moment from 'moment';
 
     export default {
         props: {
@@ -51,7 +52,7 @@
                         }
                     },
                     stroke: {
-                        width: 2
+                        width: 1,
                     },
                     tooltip: {
                         enabled: true,
@@ -61,21 +62,18 @@
                             const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex]
                             const c = w.globals.seriesCandleC[seriesIndex][dataPointIndex]
                             return (
-                            '<div class="apexcharts-tooltip-candlestick" style="font-size:0.7rem;">' +
-                            '<div>O: <span class="value">' +
-                            o +
-                            '</span></div>' +
-                            '<div>H: <span class="value">' +
-                            h +
-                            '</span></div>' +
-                            '<div>L: <span class="value">' +
-                            l +
-                            '</span></div>' +
-                            '<div>C: <span class="value">' +
-                            c +
-                            '</span></div>' +
-                            '</div>'
-                            )
+                                `<div class="apexcharts-tooltip-candlestick">
+                                    <div class="apexcharts-tooltip-candlestick__header apexcharts-tooltip-title p-2">
+                                        ${w.globals.categoryLabels[dataPointIndex]}
+                                    </div>
+                                    <div class="apexcharts-tooltip-candlestick__body p-2">
+                                        <div class="apexcharts-tooltip-text">O: <span>${o}</span></div>
+                                        <div class="apexcharts-tooltip-text">H: <span>${h}</span></div>
+                                        <div class="apexcharts-tooltip-text">L: <span>${l}</span></div>
+                                        <div class="apexcharts-tooltip-text">C: <span>${c}</span></div>
+                                    </div>
+                                </div>`
+                            );
                         }
                     },
                     dataLabels: {
@@ -90,7 +88,9 @@
                     },
                     xaxis: {
                         labels: {
-                            show: false
+                            formatter: function(val) {
+                                return moment(val).format("DD MMM 'YY");
+                            }
                         },
                         tooltip: {
                             enabled: false
@@ -106,11 +106,6 @@
                         labels: {
                             show: false
                         }
-                    },
-                    plotOptions: {
-                        bar: {
-                            columnWidth: '20%'
-                        }
                     }
                 },
                 series: [{
@@ -125,6 +120,9 @@
 </script>
 
 <style>
+    .apexcharts-tooltip-candlestick__header, .apexcharts-tooltip-candlestick__body {
+        font-size: 12px;
+    }
     .apexcharts-tooltip.apexcharts-theme-light {
         box-shadow: 0 0 50px 0 rgb(82 63 105 / 15%);
         border: 0!important;
