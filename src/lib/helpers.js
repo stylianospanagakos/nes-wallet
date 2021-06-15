@@ -39,11 +39,15 @@ export const createWallet = ({ chain_id, address, items, name, network }) => {
     return wallet;
 }
 
-export const createToken = ({ contract_decimals, contract_address, contract_name, contract_ticker_symbol, holdings }) => {
+export const createToken = ({ contract_decimals, contract_address, contract_name, contract_ticker_symbol, holdings, logo_url }) => {
     let token = {
-        contract_address,
+        contract_address: {
+            full: contract_address,
+            truncated: formatAddress(contract_address)
+        },
         contract_name,
         contract_ticker_symbol,
+        logo_url,
         balance: holdings.length ?
             formatTokenBalance(holdings[0].close.balance, contract_decimals) :
             formatTokenBalance(0),

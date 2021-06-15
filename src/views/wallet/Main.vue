@@ -14,6 +14,13 @@
             <div v-if="details.loading">
                 <icon-loading :iconURL="wallet.logo_url"/>
             </div>
+            <div v-else>
+                <token
+                    v-for="token in details.tokens"
+                    :key="`${token.contract_address}${token.contract_ticker_symbol}`"
+                    :data="token"
+                />
+            </div>
         </div>
         <div v-else class="text-center">
             <p class="nes-text is-error">Invalid wallet.</p>
@@ -28,6 +35,7 @@
 <script>
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
+import Token from './Token.vue';
 import {mapState, mapGetters, mapActions} from 'vuex';
 
 export default {
@@ -51,7 +59,8 @@ export default {
     },
     components: {
         ActionButton,
-        IconLoading
+        IconLoading,
+        Token
     }
 }
 </script>
