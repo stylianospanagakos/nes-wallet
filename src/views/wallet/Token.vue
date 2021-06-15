@@ -1,11 +1,11 @@
 <template>
     <container :title="data.contract_ticker_symbol" :iconURL="data.logo_url">
         <div class="row align-items-center">
-            <div class="col">
+            <div class="col-md-8">
                 <p class="my-0">Balance: {{ data.balance }}</p>
                 <small class="d-block text-muted my-2">{{ data.contract_address.truncated }}</small>
             </div>
-            <div class="col text-end">
+            <div class="col-md-4 text-end">
                 <line-graph
                     label="Balance"
                     :data="data.history.line"
