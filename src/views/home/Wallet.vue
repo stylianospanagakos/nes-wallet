@@ -28,14 +28,13 @@
                         <td>{{ token.balance }}</td>
                         <td>${{ token.quote }}</td>
                         <td>
-                            <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
-                            View
-                            </button>
+                            <action-button>View</action-button>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="text-center mt-4">
+                <action-button>View Transactions</action-button>
                 <action-button
                     theme="error"
                     @click="$refs[data.key].showModal()"
