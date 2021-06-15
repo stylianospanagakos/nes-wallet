@@ -81,7 +81,6 @@ export default {
         },
         deleted() {
             this.removeWallet(this.data.key);
-            console.log('delete');
         }
     },
     components: {

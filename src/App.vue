@@ -72,8 +72,13 @@
             // fetch available networks
             this.fetchChains();
         },
+        watch: {
+            wallets(newItems) {
+                this.saveStorageItem(WALLETS_KEY, newItems);
+            }
+        },
         computed: {
-            ...mapState(['loading']),
+            ...mapState(['wallets', 'loading']),
             ...mapGetters(['networkOptions'])
         },
         methods: {

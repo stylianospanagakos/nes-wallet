@@ -103,13 +103,11 @@ export default new Vuex.Store({
 
             try {
                 const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
-                const wallet = createWallet({
+                commit('addWallet', createWallet({
                     ...data.data,
                     name,
                     network: state.networks[chainId] 
-                });
-                commit('addWallet', wallet);
-                return wallet;
+                }));
             } catch (error) {
                 commit('updateFormField', {
                     field: 'loading',
