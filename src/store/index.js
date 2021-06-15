@@ -13,6 +13,7 @@ export default new Vuex.Store({
     state: {
         networks: {},
         wallets: {},
+        searchText: '',
         loading: true,
         form: {
             name: {
@@ -80,6 +81,9 @@ export default new Vuex.Store({
         },
         removeWallet(state, payload) {
             Vue.delete(state.wallets, payload);
+        },
+        updateSearchText(state, payload) {
+            state.searchText = payload;
         },
         toggleAppLoading(state, payload) {
             state.loading = payload;
