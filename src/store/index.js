@@ -13,23 +13,25 @@ export default new Vuex.Store({
     state: {
         networks: {},
         wallets: {},
-        searchText: '',
         loading: true,
-        form: {
-            name: {
-                value: '',
-                error: ''
-            },
-            chainId: {
-                value: '',
-                error: ''
-            },
-            address: {
-                value: '',
-                error: ''
-            },
-            loading: false,
-            responseError: ''
+        home: {
+            searchText: '',
+            form: {
+                name: {
+                    value: '',
+                    error: ''
+                },
+                chainId: {
+                    value: '',
+                    error: ''
+                },
+                address: {
+                    value: '',
+                    error: ''
+                },
+                loading: false,
+                responseError: ''
+            }
         }
     },
     getters: {
@@ -56,25 +58,25 @@ export default new Vuex.Store({
                 }
             });
         },
-        updateFormField({ form }, { field, payload }) {
+        updateFormField(state, { section, field, payload }) {
             if (typeof payload === 'boolean' || typeof payload === 'string') {
-                form[field] = payload;
+                state[section].form[field] = payload;
             } else {
-                form[field] = {
-                    ...form[field],
+                state[section].form[field] = {
+                    ...state[section].form[field],
                     ...payload
                 }
             }
         },
-        resetForm({ form }) {
-            form.name.value = '';
-            form.name.error = '';
-            form.chainId.value = '';
-            form.chainId.error = '';
-            form.address.value = '';
-            form.address.error = '';
-            form.loading = false;
-            form.responseError = '';
+        resetForm(state, payload) {
+            state[payload].form.name.value = '';
+            state[payload].form.name.error = '';
+            state[payload].form.chainId.value = '';
+            state[payload].form.chainId.error = '';
+            state[payload].form.address.value = '';
+            state[payload].form.address.error = '';
+            state[payload].form.loading = false;
+            state[payload].form.responseError = '';
         },
         addWallet(state, payload) {
             Vue.set(state.wallets, payload.key, payload);
@@ -83,7 +85,7 @@ export default new Vuex.Store({
             Vue.delete(state.wallets, payload);
         },
         updateSearchText(state, payload) {
-            state.searchText = payload;
+            state.home.searchText = payload;
         },
         toggleAppLoading(state, payload) {
             state.loading = payload;
@@ -101,6 +103,7 @@ export default new Vuex.Store({
         },
         async fetchBalance({ commit, state }, { name, chainId, address }) {
             commit('updateFormField', {
+                section: 'home',
                 field: 'loading',
                 payload: true
             });
@@ -114,16 +117,21 @@ export default new Vuex.Store({
                 }));
             } catch (error) {
                 commit('updateFormField', {
+                    section: 'home',
                     field: 'loading',
                     payload: false
                 });
                 commit('updateFormField', {
+                    section: 'home',
                     field: 'responseError',
                     payload: error.response.data.error_message
                 });
                 throw new Error(error.response.data.error_message);
             }
-        }
+        },
+        // asyncFetchBalanceHistory({ commit }, { chainId, address }) {
+
+        // }
     },
     modules: {
     }
