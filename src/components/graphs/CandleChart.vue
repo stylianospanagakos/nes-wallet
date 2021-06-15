@@ -67,10 +67,10 @@
                                         ${w.globals.categoryLabels[dataPointIndex]}
                                     </div>
                                     <div class="apexcharts-tooltip-candlestick__body p-2">
-                                        <div class="apexcharts-tooltip-text">O: <span>${o}</span></div>
-                                        <div class="apexcharts-tooltip-text">H: <span>${h}</span></div>
-                                        <div class="apexcharts-tooltip-text">L: <span>${l}</span></div>
-                                        <div class="apexcharts-tooltip-text">C: <span>${c}</span></div>
+                                        <div class="apexcharts-tooltip-text">Open: <span>${o}</span></div>
+                                        <div class="apexcharts-tooltip-text">High: <span>${h}</span></div>
+                                        <div class="apexcharts-tooltip-text">Low: <span>${l}</span></div>
+                                        <div class="apexcharts-tooltip-text">Close: <span>${c}</span></div>
                                     </div>
                                 </div>`
                             );
