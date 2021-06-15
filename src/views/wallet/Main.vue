@@ -14,12 +14,18 @@
             <div v-if="details.loading">
                 <icon-loading :iconURL="wallet.logo_url"/>
             </div>
-            <div v-else>
+            <div v-else-if="details.tokens.length">
                 <token
                     v-for="token in details.tokens"
                     :key="`${token.contract_address}${token.contract_ticker_symbol}`"
                     :data="token"
                 />
+            </div>
+            <div v-else class="text-center mt-5">
+                <p>Apologies, we couldn't fetch your wallet details.</p>
+                <action-button
+                    @click="fetchBalanceHistory({chainId: wallet.chain_id, address: wallet.address.full})"
+                >Retry</action-button>
             </div>
         </div>
         <div v-else class="text-center">
