@@ -23,22 +23,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="token in data.tokens" :key="token.contract_address">
+                    <tr v-for="token in data.tokens" :key="`${token.contract_ticker_symbol}${token.contract_address}`">
                         <td>{{ token.contract_name }} ({{ token.contract_ticker_symbol }})</td>
                         <td>{{ token.balance }}</td>
                         <td>${{ token.quote }}</td>
                         <td>
-                            <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
-                            View
-                            </button>
+                            <action-button>View</action-button>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="text-center mt-4">
+                <action-button>View Transactions</action-button>
                 <action-button
                     theme="error"
+                    @click="$refs[data.key].showModal()"
                 >Delete Wallet</action-button>
+                <dialog :ref="data.key" class="nes-dialog is-rounded">
+                    <p class="nes-text is-error text-center my-3">Are you sure you want to delete this wallet?</p>
+                    <menu class="dialog-menu mb-0">
+                        <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
+                        <action-button class="d-inline-block" theme="error" @click="deleted">Delete</action-button>
+                    </menu>
+                </dialog>
             </div>
         </div>
     </container>
@@ -47,6 +54,7 @@
 <script>
 import Container from '../../components/Container.vue';
 import ActionButton from '../../components/ActionButton.vue';
+import {mapMutations} from 'vuex';
 
 export default {
     props: {
@@ -63,6 +71,15 @@ export default {
     computed: {
         tokensLength() {
             return this.data.tokens.length;
+        }
+    },
+    methods: {
+        ...mapMutations(['removeWallet']),
+        closeModal() {
+            this.$refs[this.data.key].close();
+        },
+        deleted() {
+            this.removeWallet(this.data.key);
         }
     },
     components: {

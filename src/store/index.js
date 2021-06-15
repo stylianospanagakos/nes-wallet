@@ -66,6 +66,8 @@ export default new Vuex.Store({
             }
         },
         resetForm({ form }) {
+            form.name.value = '';
+            form.name.error = '';
             form.chainId.value = '';
             form.chainId.error = '';
             form.address.value = '';
@@ -75,6 +77,9 @@ export default new Vuex.Store({
         },
         addWallet(state, payload) {
             Vue.set(state.wallets, payload.key, payload);
+        },
+        removeWallet(state, payload) {
+            Vue.delete(state.wallets, payload);
         },
         toggleAppLoading(state, payload) {
             state.loading = payload;
@@ -98,13 +103,11 @@ export default new Vuex.Store({
 
             try {
                 const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
-                const wallet = createWallet({
+                commit('addWallet', createWallet({
                     ...data.data,
                     name,
                     network: state.networks[chainId] 
-                });
-                commit('addWallet', wallet);
-                return wallet;
+                }));
             } catch (error) {
                 commit('updateFormField', {
                     field: 'loading',
