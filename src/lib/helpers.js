@@ -38,3 +38,30 @@ export const createWallet = ({ chain_id, address, items, name, network }) => {
     wallet.fiat_balance = formatFiatValue(wallet.fiat_balance);
     return wallet;
 }
+
+export const createToken = ({ contract_decimals, contract_address, contract_name, contract_ticker_symbol, holdings }) => {
+    let token = {
+        contract_address,
+        contract_name,
+        contract_ticker_symbol,
+        balance: holdings.length ?
+            formatTokenBalance(holdings[0].close.balance, contract_decimals) :
+            formatTokenBalance(0),
+        history: []
+    }
+    holdings.forEach(({timestamp, open, high, low, close}) => {
+        /**
+         * Candle chart format: [{ x: date, y: [O,H,L,C] }]
+         */
+        token.history.push({
+            x: new Date(timestamp),
+            y: [
+                formatTokenBalance(open.balance, contract_decimals),
+                formatTokenBalance(high.balance, contract_decimals),
+                formatTokenBalance(low.balance, contract_decimals),
+                formatTokenBalance(close.balance, contract_decimals)
+            ]
+        });
+    });
+    return token;
+}

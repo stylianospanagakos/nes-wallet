@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS, TOKEN_BALANCES} from '../config/endpoints';
+import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
-import {createWallet} from '../lib/helpers';
+import {createWallet, createToken} from '../lib/helpers';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
 // import moment from 'moment';
@@ -32,6 +32,10 @@ export default new Vuex.Store({
                 loading: false,
                 responseError: ''
             }
+        },
+        details: {
+            tokens: [],
+            loading: false
         }
     },
     getters: {
@@ -87,6 +91,12 @@ export default new Vuex.Store({
         updateSearchText(state, payload) {
             state.home.searchText = payload;
         },
+        addToken({ details }, payload) {
+            details.tokens.push(payload);
+        },
+        toggleDetailsLoading(state, payload) {
+            state.details.loading = payload;
+        },
         toggleAppLoading(state, payload) {
             state.loading = payload;
         }
@@ -129,9 +139,19 @@ export default new Vuex.Store({
                 throw new Error(error.response.data.error_message);
             }
         },
-        // asyncFetchBalanceHistory({ commit }, { chainId, address }) {
+        async fetchBalanceHistory({ commit }, { chainId, address }) {
+            commit('toggleDetailsLoading', true);
 
-        // }
+            try {
+                const { data } = await axios.get(vsprintf(HISTORICAL_PORTFOLIO, [chainId, address]));
+                console.log(data.items);
+                data.items.forEach(item => {
+                    commit('addToken', createToken(item));
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
     },
     modules: {
     }

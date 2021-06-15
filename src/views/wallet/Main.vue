@@ -11,6 +11,9 @@
                     </a>
                 </div>
             </div>
+            <div v-if="details.loading">
+                <icon-loading :iconURL="wallet.logo_url"/>
+            </div>
         </div>
         <div v-else class="text-center">
             <p class="nes-text is-error">Invalid wallet.</p>
@@ -24,23 +27,31 @@
 
 <script>
 import ActionButton from '../../components/ActionButton.vue';
-import {mapGetters} from 'vuex';
+import IconLoading from '../../components/IconLoading.vue';
+import {mapState, mapGetters, mapActions} from 'vuex';
 
 export default {
     created() {
         if (this.wallet) {
-            console.log('exists');
+            this.fetchBalanceHistory({
+                chainId: this.wallet.chain_id,
+                address: this.wallet.address.full
+            });
         }
     },
     computed: {
+        ...mapState(['details']),
         ...mapGetters(['walletItems']),
         wallet() {
             return this.walletItems.find(item => item.uuid === this.$route.params.uuid);
         }
     },
-    methods: {},
+    methods: {
+        ...mapActions(['fetchBalanceHistory'])
+    },
     components: {
-        ActionButton
+        ActionButton,
+        IconLoading
     }
 }
 </script>
