@@ -1,6 +1,6 @@
 <template>
     <vue-apex-charts
-        :type="type"
+        type="candlestick"
         :options="options"
         :series="series"
     >
@@ -9,14 +9,9 @@
 
 <script>
     import VueApexCharts from 'vue-apexcharts';
-    import moment from 'moment';
 
     export default {
         props: {
-            type: {
-                type: String,
-                default: 'area'
-            },
             label: {
                 type: String,
                 default: 'Total'
@@ -25,11 +20,11 @@
                 type: Array,
                 default: () => []
             },
-            mainColor: {
+            upColor: {
                 type: String,
                 default: '#5578EB'
             },
-            altColor: {
+            downColor: {
                 type: String,
                 default: '#E1EDD9'
             },
@@ -49,33 +44,48 @@
                             enabled: true
                         }
                     },
+                    candlestick: {
+                        colors: {
+                            upward: this.upColor,
+                            downward: this.downColor
+                        }
+                    },
+                    stroke: {
+                        width: 2
+                    },
+                    tooltip: {
+                        enabled: true,
+                        custom: function({ seriesIndex, dataPointIndex, w }) {
+                            const o = w.globals.seriesCandleO[seriesIndex][dataPointIndex]
+                            const h = w.globals.seriesCandleH[seriesIndex][dataPointIndex]
+                            const l = w.globals.seriesCandleL[seriesIndex][dataPointIndex]
+                            const c = w.globals.seriesCandleC[seriesIndex][dataPointIndex]
+                            return (
+                            '<div class="apexcharts-tooltip-candlestick" style="font-size:0.7rem;">' +
+                            '<div>O: <span class="value">' +
+                            o +
+                            '</span></div>' +
+                            '<div>H: <span class="value">' +
+                            h +
+                            '</span></div>' +
+                            '<div>L: <span class="value">' +
+                            l +
+                            '</span></div>' +
+                            '<div>C: <span class="value">' +
+                            c +
+                            '</span></div>' +
+                            '</div>'
+                            )
+                        }
+                    },
                     dataLabels: {
                         enabled: false
-                    },
-                    colors: [this.mainColor],
-                    stroke: {
-                        curve: 'smooth'
                     },
                     grid: {
                         show: false,
                         padding: {
                             bottom: 3,
                             top: 5
-                        }
-                    },
-                    tooltip: {
-                        enabled: true,
-                        style: {
-                            fontSize: '12px',
-                            fontFamily: 'Press Start 2P'
-                        },
-                        x: {
-                            formatter: (value, series) => {
-                                return moment(this.data[series.dataPointIndex].x).format("DD MMM 'YY");
-                            }
-                        },
-                        y: {
-                            formatter: (value) => typeof this.formatter === 'function' ? this.formatter(value) : value
                         }
                     },
                     xaxis: {
@@ -90,39 +100,22 @@
                         }
                     },
                     yaxis: {
+                        tooltip: {
+                            enabled: false
+                        },
                         labels: {
                             show: false
                         }
                     },
-                    markers: {
-                        size: 0.01,
-                        colors: this.altColor,
-                        strokeColors: this.mainColor,
-                        strokeWidth: 3,
-                        strokeOpacity: 1,
-                        strokeDashArray: 10,
-                        fillOpacity: 1,
-                        discrete: [],
-                        shape: "circle",
-                        offsetX: 0,
-                        offsetY: 0,
-                        hover: {
-                            sizeOffset: 6
-                        }
-                    },
                     plotOptions: {
                         bar: {
-                            columnWidth: '20%',
-                            borderRadius: 15
+                            columnWidth: '20%'
                         }
                     }
                 },
-                series: [
-                    {
-                        name: this.label,
-                        data: this.data
-                    }
-                ]
+                series: [{
+                    data: this.data
+                }]
             }
         },
         components: {
