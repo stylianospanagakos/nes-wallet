@@ -8,46 +8,23 @@
             </div>
             <div class="col text-end">
                 <action-button
+                    class="d-inline-block"
                     @click="expanded = !expanded"
-                >{{ expanded ? 'Hide' : 'View' }} Details</action-button>
-            </div>
-        </div>
-        <div v-show="expanded" class="nes-table-responsive mt-4">
-            <table class="nes-table w-100 is-bordered is-centered m-0">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Balance</th>
-                        <th>History</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="token in data.tokens" :key="`${token.contract_ticker_symbol}${token.contract_address}`">
-                        <td>{{ token.contract_name }} ({{ token.contract_ticker_symbol }})</td>
-                        <td>{{ token.balance }}</td>
-                        <td>${{ token.quote }}</td>
-                        <td>
-                            <action-button>View</action-button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="text-center mt-4">
-                <action-button>View Transactions</action-button>
+                >View</action-button>
                 <action-button
+                    class="d-inline-block ms-2"
                     theme="error"
                     @click="$refs[data.key].showModal()"
-                >Delete Wallet</action-button>
-                <dialog :ref="data.key" class="nes-dialog is-rounded">
-                    <p class="nes-text is-error text-center my-3">Are you sure you want to delete this wallet?</p>
-                    <menu class="dialog-menu mb-0">
-                        <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
-                        <action-button class="d-inline-block" theme="error" @click="deleted">Delete</action-button>
-                    </menu>
-                </dialog>
+                >Delete</action-button>
             </div>
         </div>
+        <dialog :ref="data.key" class="nes-dialog is-rounded mx-auto my-5">
+            <p class="nes-text is-error text-center my-3">Are you sure you want to delete this wallet?</p>
+            <menu class="dialog-menu mb-0 text-end">
+                <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
+                <action-button class="d-inline-block" theme="error" @click="deleted">Delete</action-button>
+            </menu>
+        </dialog>
     </container>
 </template>
 
@@ -61,11 +38,6 @@ export default {
         data: {
             type: Object,
             required: true
-        }
-    },
-    data() {
-        return {
-            expanded: false
         }
     },
     computed: {
