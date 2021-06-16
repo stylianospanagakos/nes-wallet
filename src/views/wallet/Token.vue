@@ -13,7 +13,11 @@
             </div>
             <div class="col-md-6 text-end">
                 <action-button class="d-inline-block me-2">Transfers</action-button>
-                <action-button class="d-inline-block" :plain="true">History</action-button>
+                <action-button
+                    class="d-inline-block"
+                    :plain="true"
+                    @click="$router.push({name: 'history', params: {wallet: wallet.uuid, token: data.contract_address.full, symbol: data.contract_ticker_symbol}})"
+                >History</action-button>
             </div>
         </div>
     </container>
@@ -27,6 +31,10 @@ import {mapMutations} from 'vuex';
 export default {
     props: {
         data: {
+            type: Object,
+            required: true
+        },
+        wallet: {
             type: Object,
             required: true
         }

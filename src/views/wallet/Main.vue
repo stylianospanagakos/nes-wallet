@@ -23,6 +23,7 @@
                 <token
                     v-for="token in filteredTokens"
                     :key="`${token.contract_address}${token.contract_ticker_symbol}`"
+                    :wallet="wallet"
                     :data="token"
                 />
                 <p v-if="!filteredTokens.length" class="text-center my-5">

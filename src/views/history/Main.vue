@@ -1,13 +1,14 @@
 <template>
     <div>
-        
+        <action-button>Back</action-button>
+        <icon-loading/>
     </div>
 </template>
 
 <script>
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
-import {mapState} from 'vuex';
+import {mapState, mapGetters, mapActions} from 'vuex';
 
 export default {
     created() {
