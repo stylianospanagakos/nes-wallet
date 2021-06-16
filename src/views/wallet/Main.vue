@@ -66,7 +66,7 @@ export default {
         ...mapState(['details']),
         ...mapGetters(['walletItems']),
         wallet() {
-            return this.walletItems.find(item => item.uuid === this.$route.params.uuid);
+            return this.walletItems.find(item => item.uuid === this.$route.params.wallet);
         },
         searchTextValue: {
             get() {
