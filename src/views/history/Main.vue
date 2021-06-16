@@ -14,6 +14,20 @@
         <div v-if="views.history.loading">
             <icon-loading :iconURL="wallet.logo_url"/>
         </div>
+        <div v-else-if="showGraphs">
+            
+        </div>
+        <div v-else class="text-center mt-5">
+            <p>Apologies, we couldn't fetch token's data.</p>
+            <action-button
+                @click="fetchPortfolioHistory({
+                    chainId: wallet.chain_id,
+                    address: wallet.address.full,
+                    contract: $route.params.token,
+                    symbol: $route.params.symbol
+                })"
+            >Retry</action-button>
+        </div>
     </div>
     <div v-else class="text-center">
         <p class="nes-text is-error">Invalid wallet.</p>
@@ -46,6 +60,9 @@ export default {
         wallet() {
             return this.walletItems.find(item => item.uuid === this.$route.params.wallet);
         },
+        showGraphs() {
+            return this.views.history.line.length && this.views.history.candlestick.length;
+        }
     },
     methods: {
         ...mapActions(['fetchPortfolioHistory'])
