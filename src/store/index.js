@@ -40,6 +40,7 @@ export default new Vuex.Store({
                 loading: false
             },
             history: {
+                showCandlestick: false,
                 candlestick: [],
                 line: [],
                 loading: false
@@ -142,6 +143,9 @@ export default new Vuex.Store({
         updateHistoryGraphs({ views }, { line, candlestick }) {
             views.history.line = line;
             views.history.candlestick = candlestick;
+        },
+        toggleChart({ views }, payload) {
+            views.history.showCandlestick = payload;
         },
         toggleViewLoading(state, {view, value}) {
             state.views[view].loading = value;

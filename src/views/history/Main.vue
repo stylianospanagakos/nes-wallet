@@ -24,7 +24,9 @@
                         </span>
                     </p>
                 </div>
-                <div class="col text-end"></div>
+                <div class="col text-end">
+                    <check-box label="Candlestick Chart" v-model="showCandlestick"/>
+                </div>
             </div>
             <line-graph
                 label="Balance"
@@ -55,8 +57,9 @@
 <script>
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
+import CheckBox from '../../components/CheckBox.vue';
 import LineGraph from '../../components/graphs/LineGraph.vue';
-import {mapState, mapGetters, mapActions} from 'vuex';
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     created() {
@@ -78,6 +81,14 @@ export default {
         showGraphs() {
             return this.views.history.line.length && this.views.history.candlestick.length;
         },
+        showCandlestick: {
+            get() {
+                return this.views.history.showCandlestick;
+            },
+            set(value) {
+                this.toggleChart(value);
+            }
+        },
         percentageChange() {
             if (this.showGraphs) {
                 const itemsLength = this.views.history.line.length;
@@ -97,11 +108,13 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['toggleChart']),
         ...mapActions(['fetchPortfolioHistory'])
     },
     components: {
         ActionButton,
         IconLoading,
+        CheckBox,
         LineGraph
     }
 }
