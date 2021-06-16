@@ -1,16 +1,16 @@
 <template>
-    <dialog class="nes-dialog is-rounded">
-        <icon-loading v-if="form.loading" :iconURL="networkLogo"/>
+    <dialog class="nes-dialog is-rounded mx-auto my-5">
+        <icon-loading v-if="home.form.loading" :iconURL="networkLogo"/>
         <form v-else @submit.prevent method="dialog">
             <input-text
                 placeholder="Name"
                 v-model="nameValue"
-                :error="form.name.error"
+                :error="home.form.name.error"
             />
             <input-text
                 placeholder="Address"
                 v-model="addressValue"
-                :error="form.address.error"
+                :error="home.form.address.error"
             />
             <select-input
                 placeholder="Network"
@@ -18,9 +18,9 @@
                 label-key="label"
                 value-key="chain_id"
                 v-model="chainIdValue"
-                :error="form.chainId.error"
+                :error="home.form.chainId.error"
             />
-            <p class="nes-text is-error text-center my-3">{{ form.responseError }}</p>
+            <p class="nes-text is-error text-center my-3">{{ home.form.responseError }}</p>
             <menu class="dialog-menu mb-0">
                 <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
                 <action-button class="d-inline-block" @click="clicked">Save</action-button>
@@ -40,14 +40,15 @@ import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['form', 'networks']),
+        ...mapState(['home', 'networks']),
         ...mapGetters(['networkOptions']),
         nameValue: {
             get() {
-                return this.form.name.value;
+                return this.home.form.name.value;
             },
             set(value) {
                 this.updateFormField({
+                    section: 'home',
                     field: 'name',
                     payload: {
                         value,
@@ -58,10 +59,11 @@ export default {
         },
         addressValue: {
             get() {
-                return this.form.address.value;
+                return this.home.form.address.value;
             },
             set(value) {
                 this.updateFormField({
+                    section: 'home',
                     field: 'address',
                     payload: {
                         value,
@@ -72,10 +74,11 @@ export default {
         },
         chainIdValue: {
             get() {
-                return this.form.chainId.value;
+                return this.home.form.chainId.value;
             },
             set(value) {
                 this.updateFormField({
+                    section: 'home',
                     field: 'chainId',
                     payload: {
                         value,
@@ -85,7 +88,7 @@ export default {
             }
         },
         networkLogo() {
-            const chainId = this.form.chainId.value;
+            const chainId = this.home.form.chainId.value;
             if (chainId) {
                 return this.networks[chainId].logo_url;
             }
@@ -94,14 +97,14 @@ export default {
     },
     methods: {
         ...mapMutations(['updateFormField']),
-        ...mapActions(['fetchBalance']),
+        ...mapActions(['fetchWallet']),
         clicked() {
             if (this.validateForm([
-                { field: 'name', value: this.nameValue, rule: this.isFieldEmpty },
-                { field: 'chainId', value: this.chainIdValue, rule: this.isFieldEmpty },
-                { field: 'address', value: this.addressValue, rule: this.isFieldEmpty }
+                { section: 'home', field: 'name', value: this.nameValue, rule: this.isFieldEmpty },
+                { section: 'home', field: 'chainId', value: this.chainIdValue, rule: this.isFieldEmpty },
+                { section: 'home', field: 'address', value: this.addressValue, rule: this.isFieldEmpty }
             ])) {
-                this.fetchBalance({
+                this.fetchWallet({
                     name: this.nameValue,
                     chainId: this.chainIdValue,
                     address: this.addressValue
@@ -128,9 +131,3 @@ export default {
     mixins: [FieldsValidationMixin, LocalStorageMixin]
 }
 </script>
-
-<style scoped>
-    .nes-dialog {
-        top: -45%;
-    }
-</style>

@@ -15,6 +15,9 @@
                 :key="wallet.key"
                 :data="wallet"
             />
+            <p v-if="!filteredWallets.length" class="text-center my-5">
+                No wallets found for '{{ searchTextValue }}'.
+            </p>
         </div>
         <div v-else class="text-center my-5">
             <p>You haven't added any wallets yet.</p>
@@ -31,14 +34,14 @@ import {mapState, mapGetters, mapMutations} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['searchText']),
+        ...mapState(['home']),
         ...mapGetters(['walletItems']),
         searchTextValue: {
             get() {
-                return this.searchText;
+                return this.home.searchText;
             },
             set(value) {
-                this.updateSearchText(value);
+                this.updateSearchText({section: 'home', value});
             }
         },
         filteredWallets() {
@@ -57,7 +60,7 @@ export default {
     methods: {
         ...mapMutations(['resetForm', 'updateSearchText']),
         openModal() {
-            this.resetForm();
+            this.resetForm('home');
             this.$refs.walletForm.$el.showModal();
         }
     },

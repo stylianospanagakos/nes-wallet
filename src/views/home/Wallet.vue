@@ -2,52 +2,29 @@
     <container :title="data.name" :iconURL="data.logo_url">
         <div class="row align-items-center">
             <div class="col">
-                <p class="my-0">Total: ${{ data.fiat_balance }}</p>
-                <small class="nes-text is-primary">Includes {{ tokensLength }} Token{{ tokensLength === 1 ? '' : 's' }}</small>
-                <small class="d-block text-muted my-1">{{ data.address.truncated }}</small>
+                <p class="my-0">Value: ${{ data.fiat_balance }}</p>
+                <small class="d-block nes-text is-primary my-2">Holds {{ data.tokens_count }} Token{{ data.tokens_count === 1 ? '' : 's' }}</small>
+                <small class="d-block text-muted">{{ data.address.truncated }}</small>
             </div>
             <div class="col text-end">
                 <action-button
-                    @click="expanded = !expanded"
-                >{{ expanded ? 'Hide' : 'View' }} Details</action-button>
-            </div>
-        </div>
-        <div v-show="expanded" class="nes-table-responsive mt-4">
-            <table class="nes-table w-100 is-bordered is-centered m-0">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Balance</th>
-                        <th>History</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="token in data.tokens" :key="`${token.contract_ticker_symbol}${token.contract_address}`">
-                        <td>{{ token.contract_name }} ({{ token.contract_ticker_symbol }})</td>
-                        <td>{{ token.balance }}</td>
-                        <td>${{ token.quote }}</td>
-                        <td>
-                            <action-button>View</action-button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="text-center mt-4">
-                <action-button>View Transactions</action-button>
+                    class="d-inline-block"
+                    @click="$router.push({name: 'wallet', params: {uuid: data.uuid}})"
+                >View</action-button>
                 <action-button
+                    class="d-inline-block ms-2"
                     theme="error"
                     @click="$refs[data.key].showModal()"
-                >Delete Wallet</action-button>
-                <dialog :ref="data.key" class="nes-dialog is-rounded">
-                    <p class="nes-text is-error text-center my-3">Are you sure you want to delete this wallet?</p>
-                    <menu class="dialog-menu mb-0">
-                        <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
-                        <action-button class="d-inline-block" theme="error" @click="deleted">Delete</action-button>
-                    </menu>
-                </dialog>
+                >Delete</action-button>
             </div>
         </div>
+        <dialog :ref="data.key" class="nes-dialog is-rounded mx-auto my-5">
+            <p class="nes-text is-error text-center my-3">Are you sure you want to delete this wallet?</p>
+            <menu class="dialog-menu mb-0 text-end">
+                <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
+                <action-button class="d-inline-block" theme="error" @click="deleted">Delete</action-button>
+            </menu>
+        </dialog>
     </container>
 </template>
 
@@ -61,16 +38,6 @@ export default {
         data: {
             type: Object,
             required: true
-        }
-    },
-    data() {
-        return {
-            expanded: false
-        }
-    },
-    computed: {
-        tokensLength() {
-            return this.data.tokens.length;
         }
     },
     methods: {

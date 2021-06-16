@@ -1,3 +1,5 @@
+import {v4 as uuidv4} from 'uuid';
+
 export const formatTokenBalance = (balance, decimals) => {
     const value = decimals > 0 ?
         parseInt(balance) / Math.pow(10, decimals) :
@@ -14,8 +16,10 @@ export const formatAddress = (address) => {
 }
 
 export const createWallet = ({ chain_id, address, items, name, network }) => {
+    const key = `${chain_id.toString()}_${address}`;
     let wallet = {
-        key: `${chain_id.toString()}_${address}`,
+        key,
+        uuid: uuidv4(key),
         name,
         fiat_balance: 0,
         chain_id,
@@ -24,20 +28,61 @@ export const createWallet = ({ chain_id, address, items, name, network }) => {
             truncated: formatAddress(address)
         },
         logo_url: network.logo_url,
-        tokens: []
+        tokens_count: 0
     };
     items.forEach(item => {
-        // format values
-        let balance = formatTokenBalance(item.balance, item.contract_decimals);
-        let quote = formatFiatValue(item.quote);
         // update wallet's fiat balance
         wallet.fiat_balance += item.quote;
-        wallet.tokens.push({
-            ...item,
-            balance,
-            quote
-        });
+        wallet.tokens_count++;
     });
     wallet.fiat_balance = formatFiatValue(wallet.fiat_balance);
     return wallet;
+}
+
+export const createToken = ({ contract_decimals, contract_address, contract_name, contract_ticker_symbol, quote, balance, supports_erc, logo_url }) => {
+    let token = {
+        contract_address: {
+            full: contract_address,
+            truncated: formatAddress(contract_address)
+        },
+        contract_name,
+        contract_ticker_symbol,
+        logo_url,
+        balance: formatTokenBalance(balance, contract_decimals),
+        fiat_balance: formatFiatValue(quote),
+        erc_codes: supports_erc ? supports_erc.map(item => item.split('erc')[1]) : null
+    }
+    return token;
+}
+
+export const createHistoryGraphData = ({ holdings, contract_decimals }) => {
+    const line = [],
+        candle = [];
+    holdings.forEach(({timestamp, open, high, low, close}) => {
+        let date = new Date(timestamp),
+            openFormatted = formatTokenBalance(open.balance, contract_decimals),
+            highFormatted = formatTokenBalance(high.balance, contract_decimals),
+            lowFormatted = formatTokenBalance(low.balance, contract_decimals),
+            closeFormatted = formatTokenBalance(close.balance, contract_decimals);
+
+        /**
+         * Line chart format [{ x: date, y: 76 }]
+         */
+        line.push({
+            x: date,
+            y: closeFormatted
+        });
+        /**
+         * Candle chart format: [{ x: date, y: [O,H,L,C] }]
+         */
+        candle.push({
+            x: date,
+            y: [openFormatted, highFormatted, lowFormatted, closeFormatted]
+        });
+    });
+    // reverse order of history items
+    return {
+        line: line.reverse(),
+        candle: candle.reverse()
+    };
 }

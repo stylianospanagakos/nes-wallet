@@ -35,11 +35,7 @@ export default {
 </script>
 
 <style scoped>
-  a {
-    color: inherit;
-  }
   a:hover {
-      color: #209cee;
       text-decoration: none;
   }
 </style>
