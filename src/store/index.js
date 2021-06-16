@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
-import {createWallet, createToken} from '../lib/helpers';
+import {createWallet, createToken, createHistoryGraphData} from '../lib/helpers';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
 // import moment from 'moment';
@@ -105,6 +105,28 @@ export default new Vuex.Store({
                 }
             });
         },
+        resetView(state, payload) {
+            const section = state.views[payload];
+            Object.keys(section).forEach(field => {
+                switch (typeof section[field]) {
+                    case 'string':
+                        section[field] = '';
+                        break;
+                    case 'boolean':
+                        section[field] = false;
+                        break;
+                    case 'number':
+                        section[field] = 0;
+                        break;
+                    default:
+                        if (Array.isArray(section[field])) {
+                            section[field] = [];
+                        } else {
+                            section[field] = {}
+                        }
+                }
+            });
+        },
         addWallet(state, payload) {
             Vue.set(state.wallets, payload.key, payload);
         },
@@ -117,8 +139,9 @@ export default new Vuex.Store({
         addToken({ views }, payload) {
             views.wallet.tokens.push(payload);
         },
-        resetTokens({ views }) {
-            views.wallet.tokens = [];
+        updateHistoryGraphs({ views }, { line, candlestick }) {
+            views.history.line = line;
+            views.history.candlestick = candlestick;
         },
         toggleViewLoading(state, {view, value}) {
             state.views[view].loading = value;
@@ -166,8 +189,8 @@ export default new Vuex.Store({
             }
         },
         async fetchBalances({ commit }, { chainId, address }) {
+            commit('resetView', 'wallet');
             commit('toggleViewLoading', {view: 'wallet', value: true});
-            commit('resetTokens');
 
             try {
                 const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
@@ -181,16 +204,17 @@ export default new Vuex.Store({
             }
         },
         async fetchPortfolioHistory({ commit }, { chainId, address, contract, symbol }) {
+            commit('resetView', 'history');
             commit('toggleViewLoading', {view: 'history', value: true});
 
             try {
                 const matchCriteria = JSON.stringify({contract_address: contract, contract_ticker_symbol: symbol});
                 const { data } = await axios.get(vsprintf(HISTORICAL_PORTFOLIO, [chainId, address]) + '?match=' + matchCriteria);
-                console.log(data);
+                commit('updateHistoryGraphs', createHistoryGraphData(data.data.items[0]));
             } catch (error) {
                 console.error(error);
             } finally {
-                commit('toggleViewLoading', {view: 'wallet', value: false});
+                commit('toggleViewLoading', {view: 'history', value: false});
             }
         }
     },

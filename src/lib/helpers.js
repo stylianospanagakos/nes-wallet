@@ -57,7 +57,7 @@ export const createToken = ({ contract_decimals, contract_address, contract_name
 
 export const createHistoryGraphData = ({ holdings, contract_decimals }) => {
     const line = [],
-        candle = [];
+        candlestick = [];
     holdings.forEach(({timestamp, open, high, low, close}) => {
         let date = new Date(timestamp),
             openFormatted = formatTokenBalance(open.balance, contract_decimals),
@@ -73,9 +73,9 @@ export const createHistoryGraphData = ({ holdings, contract_decimals }) => {
             y: closeFormatted
         });
         /**
-         * Candle chart format: [{ x: date, y: [O,H,L,C] }]
+         * Candlestick chart format: [{ x: date, y: [O,H,L,C] }]
          */
-        candle.push({
+         candlestick.push({
             x: date,
             y: [openFormatted, highFormatted, lowFormatted, closeFormatted]
         });
@@ -83,6 +83,6 @@ export const createHistoryGraphData = ({ holdings, contract_decimals }) => {
     // reverse order of history items
     return {
         line: line.reverse(),
-        candle: candle.reverse()
+        candlestick: candlestick.reverse()
     };
 }
