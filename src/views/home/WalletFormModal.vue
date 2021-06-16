@@ -97,14 +97,14 @@ export default {
     },
     methods: {
         ...mapMutations(['updateFormField']),
-        ...mapActions(['fetchBalance']),
+        ...mapActions(['fetchWallet']),
         clicked() {
             if (this.validateForm([
                 { section: 'home', field: 'name', value: this.nameValue, rule: this.isFieldEmpty },
                 { section: 'home', field: 'chainId', value: this.chainIdValue, rule: this.isFieldEmpty },
                 { section: 'home', field: 'address', value: this.addressValue, rule: this.isFieldEmpty }
             ])) {
-                this.fetchBalance({
+                this.fetchWallet({
                     name: this.nameValue,
                     chainId: this.chainIdValue,
                     address: this.addressValue

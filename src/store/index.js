@@ -129,7 +129,7 @@ export default new Vuex.Store({
             }
             commit('toggleAppLoading', false);
         },
-        async fetchBalance({ commit, state }, { name, chainId, address }) {
+        async fetchWallet({ commit, state }, { name, chainId, address }) {
             commit('updateFormField', {
                 section: 'home',
                 field: 'loading',
