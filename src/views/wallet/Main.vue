@@ -15,6 +15,11 @@
                 <icon-loading :iconURL="wallet.logo_url"/>
             </div>
             <div v-else-if="details.tokens.length">
+                <input-text
+                    class="mt-4"
+                    placeholder="Search contract name, symbol"
+                    v-model="searchTextValue"
+                />
                 <token
                     v-for="token in details.tokens"
                     :key="`${token.contract_address}${token.contract_ticker_symbol}`"
@@ -39,6 +44,7 @@
 </template>
 
 <script>
+import InputText from '../../components/InputText.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
 import Token from './Token.vue';
@@ -58,12 +64,33 @@ export default {
         ...mapGetters(['walletItems']),
         wallet() {
             return this.walletItems.find(item => item.uuid === this.$route.params.uuid);
+        },
+        searchTextValue: {
+            get() {
+                return this.details.searchText;
+            },
+            set(value) {
+                this.updateSearchText(value);
+            }
+        },
+        filteredTokens() {
+            if (this.searchTextValue.length) {
+                return this.details.tokens.filter(({ contract_name, contract_ticker_symbol }) => {
+                    const lowerName = contract_name.toLowerCase(),
+                        lowerSymbol = contract_ticker_symbol.toLowerCase(),
+                        lowerSearch = this.searchTextValue.toLowerCase();
+                    return lowerName.includes(lowerSearch) ||
+                        lowerSymbol.includes(lowerSearch);
+                });
+            }
+            return this.details.tokens;
         }
     },
     methods: {
         ...mapActions(['fetchBalances'])
     },
     components: {
+        InputText,
         ActionButton,
         IconLoading,
         Token
