@@ -28,10 +28,18 @@
                     <check-box label="Candlestick Chart" v-model="showCandlestick"/>
                 </div>
             </div>
-            <line-graph
-                label="Balance"
-                :data="views.history.line"
-            />
+            <div v-if="showCandlestick">
+                <candle-chart
+                    label="Balance"
+                    :data="views.history.candlestick"
+                />
+            </div>
+            <div v-else>
+                <line-graph
+                    label="Balance"
+                    :data="views.history.line"
+                />
+            </div>
         </div>
         <div v-else class="text-center mt-5">
             <p>Apologies, we couldn't fetch token's data.</p>
@@ -59,6 +67,7 @@ import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
 import CheckBox from '../../components/CheckBox.vue';
 import LineGraph from '../../components/graphs/LineGraph.vue';
+import CandleChart from '../../components/graphs/CandleChart.vue';
 import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
@@ -115,7 +124,8 @@ export default {
         ActionButton,
         IconLoading,
         CheckBox,
-        LineGraph
+        LineGraph,
+        CandleChart
     }
 }
 </script>
