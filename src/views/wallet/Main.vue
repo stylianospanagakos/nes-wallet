@@ -24,7 +24,7 @@
             <div v-else class="text-center mt-5">
                 <p>Apologies, we couldn't fetch your wallet details.</p>
                 <action-button
-                    @click="fetchBalanceHistory({chainId: wallet.chain_id, address: wallet.address.full})"
+                    @click="fetchBalances({chainId: wallet.chain_id, address: wallet.address.full})"
                 >Retry</action-button>
             </div>
         </div>
@@ -47,7 +47,7 @@ import {mapState, mapGetters, mapActions} from 'vuex';
 export default {
     created() {
         if (this.wallet) {
-            this.fetchBalanceHistory({
+            this.fetchBalances({
                 chainId: this.wallet.chain_id,
                 address: this.wallet.address.full
             });
@@ -61,7 +61,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['fetchBalanceHistory'])
+        ...mapActions(['fetchBalances'])
     },
     components: {
         ActionButton,

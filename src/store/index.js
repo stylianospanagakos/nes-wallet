@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO} from '../config/endpoints';
+import {CHAINS, TOKEN_BALANCES} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
 import {createWallet, createToken} from '../lib/helpers';
 import axios from '../lib/axios';
@@ -129,7 +129,7 @@ export default new Vuex.Store({
             }
             commit('toggleAppLoading', false);
         },
-        async fetchBalance({ commit, state }, { name, chainId, address }) {
+        async fetchWallet({ commit, state }, { name, chainId, address }) {
             commit('updateFormField', {
                 section: 'home',
                 field: 'loading',
@@ -157,17 +157,17 @@ export default new Vuex.Store({
                 throw new Error(error.response.data.error_message);
             }
         },
-        async fetchBalanceHistory({ commit }, { chainId, address }) {
+        async fetchBalances({ commit }, { chainId, address }) {
             commit('toggleDetailsLoading', true);
             commit('resetTokens');
 
             try {
-                const { data } = await axios.get(vsprintf(HISTORICAL_PORTFOLIO, [chainId, address]));
-                data.items.forEach(item => {
+                const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+                data.data.items.forEach(item => {
                     commit('addToken', createToken(item));
                 });
             } catch (error) {
-                console.log(error);
+                console.error(error);
             } finally {
                 commit('toggleDetailsLoading', false);
             }
