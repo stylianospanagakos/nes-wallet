@@ -27,21 +27,20 @@
                         <div class="col-md-6 text-start">
                             <p class="my-0">Balance: 12313</p>
                             <small class="d-block text-muted my-2">Fiat Value: $12312.42</small>
-                            <div>
-                            <span class="nes-badge is-splited w-auto">
-                                <span class="is-dark w-auto position-relative px-1">erc</span>
-                                <span class="is-success w-auto position-relative px-1">20</span>
-                            </span>
-                            <span class="nes-badge is-splited w-auto ms-3">
-                                <span class="is-dark w-auto position-relative px-1">erc</span>
-                                <span class="is-success w-auto position-relative px-1">271</span>
-                            </span>
+                            <div class="mt-3">
+                                <span class="nes-badge is-splited w-auto">
+                                    <span class="is-dark w-auto position-relative px-1">erc</span>
+                                    <span class="is-success w-auto position-relative px-1">20</span>
+                                </span>
+                                <span class="nes-badge is-splited w-auto ms-3">
+                                    <span class="is-dark w-auto position-relative px-1">erc</span>
+                                    <span class="is-success w-auto position-relative px-1">271</span>
+                                </span>
                             </div>
                         </div>
                         <div class="col-md-6 text-end">
-                            <a href="#" class="nes-badge w-auto">
-                                <span class="is-success position-relative">cryptocurrency</span>
-                            </a>
+                            <action-button class="d-inline-block me-2">Transfers</action-button>
+                            <action-button class="d-inline-block" :plain="true">History</action-button>
                         </div>
                     </div>
                 </container>

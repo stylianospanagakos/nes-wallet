@@ -15,12 +15,17 @@
                     </span>
                 </div>
             </div>
+            <div class="col-md-6 text-end">
+                <action-button class="d-inline-block me-2">Transfers</action-button>
+                <action-button class="d-inline-block" :plain="true">History</action-button>
+            </div>
         </div>
     </container>
 </template>
 
 <script>
 import Container from '../../components/Container.vue';
+import ActionButton from '../../components/ActionButton.vue';
 import {mapMutations} from 'vuex';
 
 export default {
@@ -40,7 +45,8 @@ export default {
         }
     },
     components: {
-        Container
+        Container,
+        ActionButton
     }
 }
 </script>
