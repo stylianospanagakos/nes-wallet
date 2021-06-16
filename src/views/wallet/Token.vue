@@ -3,15 +3,11 @@
         <div class="row align-items-center">
             <div class="col-md-6">
                 <p class="my-0">Balance: {{ data.balance }}</p>
-                <small class="d-block text-muted my-2">{{ data.contract_address.truncated }}</small>
-                <div>
-                    <span class="nes-badge is-splited w-auto">
+                <small class="d-block text-muted my-2">Fiat Value: ${{ data.fiat_balance }}</small>
+                <div v-if="data.erc_codes">
+                    <span v-for="code in data.erc_codes" :key="code" class="nes-badge is-splited w-auto me-3">
                         <span class="is-dark w-auto position-relative px-1">erc</span>
-                        <span class="is-success w-auto position-relative px-1">20</span>
-                    </span>
-                    <span class="nes-badge is-splited w-auto ms-3">
-                        <span class="is-dark w-auto position-relative px-1">erc</span>
-                        <span class="is-success w-auto position-relative px-1">271</span>
+                        <span class="is-success w-auto position-relative px-1">{{ code }}</span>
                     </span>
                 </div>
             </div>

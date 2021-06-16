@@ -163,11 +163,11 @@ export default new Vuex.Store({
 
             try {
                 const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
-                data.items.forEach(item => {
+                data.data.items.forEach(item => {
                     commit('addToken', createToken(item));
                 });
             } catch (error) {
-                console.log(error);
+                console.error(error);
             } finally {
                 commit('toggleDetailsLoading', false);
             }
