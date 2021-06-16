@@ -14,17 +14,17 @@ const routes = [
     path: '/wallets/:wallet',
     name: 'wallet',
     // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
+    // this generates a separate chunk (wallet.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/wallet/Main.vue')
+    component: () => import(/* webpackChunkName: "wallet" */ '../views/wallet/Main.vue')
   },
   {
-    path: '/wallets/:wallet/tokens/:token/history',
+    path: '/wallets/:wallet/tokens/:token/:symbol/history',
     name: 'history',
     // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
+    // this generates a separate chunk (history.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/wallet/Main.vue')
+    component: () => import(/* webpackChunkName: "history" */ '../views/history/Main.vue')
   }
 ]
 

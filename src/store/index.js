@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS, TOKEN_BALANCES} from '../config/endpoints';
+import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
 import {createWallet, createToken} from '../lib/helpers';
 import axios from '../lib/axios';
@@ -37,6 +37,11 @@ export default new Vuex.Store({
             wallet: {
                 searchText: '',
                 tokens: [],
+                loading: false
+            },
+            history: {
+                candlestick: [],
+                line: [],
                 loading: false
             }
         }
@@ -115,8 +120,8 @@ export default new Vuex.Store({
         resetTokens({ views }) {
             views.wallet.tokens = [];
         },
-        toggleWalletLoading(state, payload) {
-            state.views.wallet.loading = payload;
+        toggleViewLoading(state, {view, value}) {
+            state.views[view].loading = value;
         },
         toggleAppLoading(state, payload) {
             state.loading = payload;
@@ -161,7 +166,7 @@ export default new Vuex.Store({
             }
         },
         async fetchBalances({ commit }, { chainId, address }) {
-            commit('toggleWalletLoading', true);
+            commit('toggleViewLoading', {view: 'wallet', value: true});
             commit('resetTokens');
 
             try {
@@ -172,7 +177,20 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error(error);
             } finally {
-                commit('toggleWalletLoading', false);
+                commit('toggleViewLoading', {view: 'wallet', value: false});
+            }
+        },
+        async fetchPortfolioHistory({ commit }, { chainId, address, contract, symbol }) {
+            commit('toggleViewLoading', {view: 'history', value: true});
+
+            try {
+                const matchCriteria = JSON.stringify({contract_address: contract, contract_ticker_symbol: symbol});
+                const { data } = await axios.get(vsprintf(HISTORICAL_PORTFOLIO, [chainId, address]) + '?match=' + matchCriteria);
+                console.log(data);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                commit('toggleViewLoading', {view: 'wallet', value: false});
             }
         }
     },
