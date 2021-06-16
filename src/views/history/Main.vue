@@ -15,7 +15,21 @@
             <icon-loading :iconURL="wallet.logo_url"/>
         </div>
         <div v-else-if="showGraphs">
-            
+            <div class="row align-items-center mt-5">
+                <div class="col">
+                    <p class="nes-text">
+                        Change:
+                        <span :class="`nes-text ${percentageChange > 0 ? 'is-success' : percentageChange < 0 ? 'is-error' : ''}`">
+                            {{ percentageChange.toFixed(2) }}%
+                        </span>
+                    </p>
+                </div>
+                <div class="col text-end"></div>
+            </div>
+            <line-graph
+                label="Balance"
+                :data="views.history.line"
+            />
         </div>
         <div v-else class="text-center mt-5">
             <p>Apologies, we couldn't fetch token's data.</p>
@@ -41,6 +55,7 @@
 <script>
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
+import LineGraph from '../../components/graphs/LineGraph.vue';
 import {mapState, mapGetters, mapActions} from 'vuex';
 
 export default {
@@ -62,6 +77,23 @@ export default {
         },
         showGraphs() {
             return this.views.history.line.length && this.views.history.candlestick.length;
+        },
+        percentageChange() {
+            if (this.showGraphs) {
+                const itemsLength = this.views.history.line.length;
+                const last = parseFloat(this.views.history.line[itemsLength - 1].y);
+                const first = parseFloat(this.views.history.line[0].y);
+                const difference = last - first;
+                if (difference === 0) {
+                    return 0;
+                } else if (difference > 0) {
+                    return (difference / first) * 100
+                } else {
+                    const decrease = first - last;
+                    return -(decrease / first) * 100
+                }
+            }
+            return null;
         }
     },
     methods: {
@@ -69,7 +101,8 @@ export default {
     },
     components: {
         ActionButton,
-        IconLoading
+        IconLoading,
+        LineGraph
     }
 }
 </script>
