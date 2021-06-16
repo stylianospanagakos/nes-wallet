@@ -21,10 +21,13 @@
                     v-model="searchTextValue"
                 />
                 <token
-                    v-for="token in details.tokens"
+                    v-for="token in filteredTokens"
                     :key="`${token.contract_address}${token.contract_ticker_symbol}`"
                     :data="token"
                 />
+                <p v-if="!filteredTokens.length" class="text-center my-5">
+                    No tokens found for '{{ searchTextValue }}'.
+                </p>
             </div>
             <div v-else class="text-center mt-5">
                 <p>Apologies, we couldn't fetch your wallet details.</p>
@@ -48,7 +51,7 @@ import InputText from '../../components/InputText.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
 import Token from './Token.vue';
-import {mapState, mapGetters, mapActions} from 'vuex';
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     created() {
@@ -70,7 +73,7 @@ export default {
                 return this.details.searchText;
             },
             set(value) {
-                this.updateSearchText(value);
+                this.updateSearchText({section: 'details', value});
             }
         },
         filteredTokens() {
@@ -87,6 +90,7 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['updateSearchText']),
         ...mapActions(['fetchBalances'])
     },
     components: {

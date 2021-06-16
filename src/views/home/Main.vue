@@ -41,7 +41,7 @@ export default {
                 return this.home.searchText;
             },
             set(value) {
-                this.updateSearchText(value);
+                this.updateSearchText({section: 'home', value});
             }
         },
         filteredWallets() {
