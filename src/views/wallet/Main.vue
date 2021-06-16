@@ -11,10 +11,10 @@
                     </a>
                 </div>
             </div>
-            <div v-if="details.loading">
+            <div v-if="views.wallet.loading">
                 <icon-loading :iconURL="wallet.logo_url"/>
             </div>
-            <div v-else-if="details.tokens.length">
+            <div v-else-if="views.wallet.tokens.length">
                 <input-text
                     class="mt-4"
                     placeholder="Search contract name, symbol"
@@ -63,22 +63,22 @@ export default {
         }
     },
     computed: {
-        ...mapState(['details']),
+        ...mapState(['views']),
         ...mapGetters(['walletItems']),
         wallet() {
             return this.walletItems.find(item => item.uuid === this.$route.params.wallet);
         },
         searchTextValue: {
             get() {
-                return this.details.searchText;
+                return this.views.wallet.searchText;
             },
             set(value) {
-                this.updateSearchText({section: 'details', value});
+                this.updateSearchText({section: 'wallet', value});
             }
         },
         filteredTokens() {
             if (this.searchTextValue.length) {
-                return this.details.tokens.filter(({ contract_name, contract_ticker_symbol }) => {
+                return this.views.wallet.tokens.filter(({ contract_name, contract_ticker_symbol }) => {
                     const lowerName = contract_name.toLowerCase(),
                         lowerSymbol = contract_ticker_symbol.toLowerCase(),
                         lowerSearch = this.searchTextValue.toLowerCase();
@@ -86,7 +86,7 @@ export default {
                         lowerSymbol.includes(lowerSearch);
                 });
             }
-            return this.details.tokens;
+            return this.views.wallet.tokens;
         }
     },
     methods: {

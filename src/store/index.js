@@ -14,29 +14,31 @@ export default new Vuex.Store({
         networks: {},
         wallets: {},
         loading: true,
-        home: {
-            searchText: '',
-            form: {
-                name: {
-                    value: '',
-                    error: ''
-                },
-                chainId: {
-                    value: '',
-                    error: ''
-                },
-                address: {
-                    value: '',
-                    error: ''
-                },
-                loading: false,
-                responseError: ''
+        views: {
+            home: {
+                searchText: '',
+                form: {
+                    name: {
+                        value: '',
+                        error: ''
+                    },
+                    chainId: {
+                        value: '',
+                        error: ''
+                    },
+                    address: {
+                        value: '',
+                        error: ''
+                    },
+                    loading: false,
+                    responseError: ''
+                }
+            },
+            wallet: {
+                searchText: '',
+                tokens: [],
+                loading: false
             }
-        },
-        details: {
-            searchText: '',
-            tokens: [],
-            loading: false
         }
     },
     getters: {
@@ -65,16 +67,16 @@ export default new Vuex.Store({
         },
         updateFormField(state, { section, field, payload }) {
             if (typeof payload === 'boolean' || typeof payload === 'string') {
-                state[section].form[field] = payload;
+                state.views[section].form[field] = payload;
             } else {
-                state[section].form[field] = {
-                    ...state[section].form[field],
+                state.views[section].form[field] = {
+                    ...state.views[section].form[field],
                     ...payload
                 }
             }
         },
         resetForm(state, payload) {
-            const form = state[payload].form;
+            const form = state.views[payload].form;
             Object.keys(form).forEach(field => {
                 switch (typeof form[field]) {
                     case 'string':
@@ -105,16 +107,16 @@ export default new Vuex.Store({
             Vue.delete(state.wallets, payload);
         },
         updateSearchText(state, { section, value }) {
-            state[section].searchText = value;
+            state.views[section].searchText = value;
         },
-        addToken({ details }, payload) {
-            details.tokens.push(payload);
+        addToken({ views }, payload) {
+            views.wallet.tokens.push(payload);
         },
-        resetTokens({ details }) {
-            details.tokens = [];
+        resetTokens({ views }) {
+            views.wallet.tokens = [];
         },
-        toggleDetailsLoading(state, payload) {
-            state.details.loading = payload;
+        toggleWalletLoading(state, payload) {
+            state.views.wallet.loading = payload;
         },
         toggleAppLoading(state, payload) {
             state.loading = payload;
@@ -159,7 +161,7 @@ export default new Vuex.Store({
             }
         },
         async fetchBalances({ commit }, { chainId, address }) {
-            commit('toggleDetailsLoading', true);
+            commit('toggleWalletLoading', true);
             commit('resetTokens');
 
             try {
@@ -170,7 +172,7 @@ export default new Vuex.Store({
             } catch (error) {
                 console.error(error);
             } finally {
-                commit('toggleDetailsLoading', false);
+                commit('toggleWalletLoading', false);
             }
         }
     },

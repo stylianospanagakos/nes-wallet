@@ -1,16 +1,16 @@
 <template>
     <dialog class="nes-dialog is-rounded mx-auto my-5">
-        <icon-loading v-if="home.form.loading" :iconURL="networkLogo"/>
+        <icon-loading v-if="views.home.form.loading" :iconURL="networkLogo"/>
         <form v-else @submit.prevent method="dialog">
             <input-text
                 placeholder="Name"
                 v-model="nameValue"
-                :error="home.form.name.error"
+                :error="views.home.form.name.error"
             />
             <input-text
                 placeholder="Address"
                 v-model="addressValue"
-                :error="home.form.address.error"
+                :error="views.home.form.address.error"
             />
             <select-input
                 placeholder="Network"
@@ -18,9 +18,9 @@
                 label-key="label"
                 value-key="chain_id"
                 v-model="chainIdValue"
-                :error="home.form.chainId.error"
+                :error="views.home.form.chainId.error"
             />
-            <p class="nes-text is-error text-center my-3">{{ home.form.responseError }}</p>
+            <p class="nes-text is-error text-center my-3">{{ views.home.form.responseError }}</p>
             <menu class="dialog-menu mb-0">
                 <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
                 <action-button class="d-inline-block" @click="clicked">Save</action-button>
@@ -40,11 +40,11 @@ import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['home', 'networks']),
+        ...mapState(['views', 'networks']),
         ...mapGetters(['networkOptions']),
         nameValue: {
             get() {
-                return this.home.form.name.value;
+                return this.views.home.form.name.value;
             },
             set(value) {
                 this.updateFormField({
@@ -59,7 +59,7 @@ export default {
         },
         addressValue: {
             get() {
-                return this.home.form.address.value;
+                return this.views.home.form.address.value;
             },
             set(value) {
                 this.updateFormField({
@@ -74,7 +74,7 @@ export default {
         },
         chainIdValue: {
             get() {
-                return this.home.form.chainId.value;
+                return this.views.home.form.chainId.value;
             },
             set(value) {
                 this.updateFormField({
@@ -88,7 +88,7 @@ export default {
             }
         },
         networkLogo() {
-            const chainId = this.home.form.chainId.value;
+            const chainId = this.views.home.form.chainId.value;
             if (chainId) {
                 return this.networks[chainId].logo_url;
             }

@@ -34,11 +34,11 @@ import {mapState, mapGetters, mapMutations} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['home']),
+        ...mapState(['views']),
         ...mapGetters(['walletItems']),
         searchTextValue: {
             get() {
-                return this.home.searchText;
+                return this.views.home.searchText;
             },
             set(value) {
                 this.updateSearchText({section: 'home', value});
