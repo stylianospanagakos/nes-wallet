@@ -1,7 +1,25 @@
 <template>
-    <div>
-        <action-button>Back</action-button>
-        <icon-loading/>
+    <div v-if="wallet">
+        <div class="row">
+            <div class="col">
+                <h1>{{ wallet.name }}</h1>
+            </div>
+            <div class="col text-end">
+                <a @click="$router.push({name: 'wallet', params: {wallet: wallet.uuid}})">
+                    <i class="nes-icon close"></i>
+                </a>
+            </div>
+        </div>
+        <div v-if="views.history.loading">
+            <icon-loading :iconURL="wallet.logo_url"/>
+        </div>
+    </div>
+    <div v-else class="text-center">
+        <p class="nes-text is-error">Invalid wallet.</p>
+        <action-button
+            class="mb-5"
+            @click="$router.push({name: 'home'})"
+        >Go Home</action-button>
     </div>
 </template>
 

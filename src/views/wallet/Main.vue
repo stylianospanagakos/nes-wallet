@@ -1,49 +1,47 @@
 <template>
-    <div>
-        <div v-if="wallet">
-            <div class="row">
-                <div class="col">
-                    <h1>{{ wallet.name }}</h1>
-                </div>
-                <div class="col text-end">
-                    <a @click="$router.push({name: 'home'})">
-                        <i class="nes-icon close"></i>
-                    </a>
-                </div>
+    <div v-if="wallet">
+        <div class="row">
+            <div class="col">
+                <h1>{{ wallet.name }}</h1>
             </div>
-            <div v-if="views.wallet.loading">
-                <icon-loading :iconURL="wallet.logo_url"/>
-            </div>
-            <div v-else-if="views.wallet.tokens.length">
-                <input-text
-                    class="mt-4"
-                    placeholder="Search contract name, symbol"
-                    v-model="searchTextValue"
-                />
-                <token
-                    v-for="token in filteredTokens"
-                    :key="`${token.contract_address}${token.contract_ticker_symbol}`"
-                    :wallet="wallet"
-                    :data="token"
-                />
-                <p v-if="!filteredTokens.length" class="text-center my-5">
-                    No tokens found for '{{ searchTextValue }}'.
-                </p>
-            </div>
-            <div v-else class="text-center mt-5">
-                <p>Apologies, we couldn't fetch your wallet details.</p>
-                <action-button
-                    @click="fetchBalances({chainId: wallet.chain_id, address: wallet.address.full})"
-                >Retry</action-button>
+            <div class="col text-end">
+                <a @click="$router.push({name: 'home'})">
+                    <i class="nes-icon close"></i>
+                </a>
             </div>
         </div>
-        <div v-else class="text-center">
-            <p class="nes-text is-error">Invalid wallet.</p>
+        <div v-if="views.wallet.loading">
+            <icon-loading :iconURL="wallet.logo_url"/>
+        </div>
+        <div v-else-if="views.wallet.tokens.length">
+            <input-text
+                class="mt-4"
+                placeholder="Search contract name, symbol"
+                v-model="searchTextValue"
+            />
+            <token
+                v-for="token in filteredTokens"
+                :key="`${token.contract_address}${token.contract_ticker_symbol}`"
+                :wallet="wallet"
+                :data="token"
+            />
+            <p v-if="!filteredTokens.length" class="text-center my-5">
+                No tokens found for '{{ searchTextValue }}'.
+            </p>
+        </div>
+        <div v-else class="text-center mt-5">
+            <p>Apologies, we couldn't fetch your wallet details.</p>
             <action-button
-                class="mb-5"
-                @click="$router.push({name: 'home'})"
-            >Go Back</action-button>
+                @click="fetchBalances({chainId: wallet.chain_id, address: wallet.address.full})"
+            >Retry</action-button>
         </div>
+    </div>
+    <div v-else class="text-center">
+        <p class="nes-text is-error">Invalid wallet.</p>
+        <action-button
+            class="mb-5"
+            @click="$router.push({name: 'home'})"
+        >Go Back</action-button>
     </div>
 </template>
 
