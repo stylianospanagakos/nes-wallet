@@ -34,6 +34,7 @@ export default new Vuex.Store({
             }
         },
         details: {
+            searchText: '',
             tokens: [],
             loading: false
         }
@@ -103,8 +104,8 @@ export default new Vuex.Store({
         removeWallet(state, payload) {
             Vue.delete(state.wallets, payload);
         },
-        updateSearchText(state, payload) {
-            state.home.searchText = payload;
+        updateSearchText(state, { section, value }) {
+            state[section].searchText = value;
         },
         addToken({ details }, payload) {
             details.tokens.push(payload);
