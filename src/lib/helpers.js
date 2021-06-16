@@ -39,7 +39,7 @@ export const createWallet = ({ chain_id, address, items, name, network }) => {
     return wallet;
 }
 
-export const createToken = ({ contract_decimals, contract_address, contract_name, contract_ticker_symbol, holdings, logo_url }) => {
+export const createToken = ({ contract_decimals, contract_address, contract_name, contract_ticker_symbol, quote, balance, supports_erc, logo_url }) => {
     let token = {
         contract_address: {
             full: contract_address,
@@ -48,14 +48,16 @@ export const createToken = ({ contract_decimals, contract_address, contract_name
         contract_name,
         contract_ticker_symbol,
         logo_url,
-        balance: holdings.length ?
-            formatTokenBalance(holdings[0].close.balance, contract_decimals) :
-            formatTokenBalance(0),
-        history: {
-            line: [],
-            candle: []
-        }
+        balance: formatTokenBalance(balance, contract_decimals),
+        fiat_balance: formatFiatValue(quote),
+        erc_codes: supports_erc ? supports_erc.map(item => item.split('erc')[1]) : null
     }
+    return token;
+}
+
+export const createHistoryGraphData = ({ holdings, contract_decimals }) => {
+    const line = [],
+        candle = [];
     holdings.forEach(({timestamp, open, high, low, close}) => {
         let date = new Date(timestamp),
             openFormatted = formatTokenBalance(open.balance, contract_decimals),
@@ -66,20 +68,21 @@ export const createToken = ({ contract_decimals, contract_address, contract_name
         /**
          * Line chart format [{ x: date, y: 76 }]
          */
-        token.history.line.push({
+        line.push({
             x: date,
             y: closeFormatted
         });
         /**
          * Candle chart format: [{ x: date, y: [O,H,L,C] }]
          */
-        token.history.candle.push({
+        candle.push({
             x: date,
             y: [openFormatted, highFormatted, lowFormatted, closeFormatted]
         });
     });
     // reverse order of history items
-    token.history.line.reverse();
-    token.history.candle.reverse();
-    return token;
+    return {
+        line: line.reverse(),
+        candle: candle.reverse()
+    };
 }
