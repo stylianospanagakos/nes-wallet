@@ -105,3 +105,19 @@ export const createTransfer = ({ block_signed_at, gas_offered, gas_price, gas_sp
         tx_hash
     }
 }
+
+export const createTransaction = ({ block_signed_at, gas_offered, gas_price, gas_spent, successful, value, from_address, to_address, tx_hash, contract_decimals }, address) => {
+    return {
+        amount: formatTokenBalance(value, contract_decimals),
+        successful,
+        block_signed_at: moment(block_signed_at).format('D MMM YY HH:mm'),
+        gas_offered,
+        gas_price,
+        gas_spent,
+        from_address,
+        to_address,
+        transfer_type: to_address === address ? 'IN' : 'OUT',
+        display_address: formatAddress(to_address),
+        tx_hash
+    }
+}

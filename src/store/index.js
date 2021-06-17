@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO, TRANSFERS, TRANSACTIONS} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
-import {createWallet, createToken, createHistoryGraphData, createTransfer} from '../lib/helpers';
+import {createWallet, createToken, createHistoryGraphData, createTransfer, createTransaction} from '../lib/helpers';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
 // import moment from 'moment';
@@ -163,6 +163,9 @@ export default new Vuex.Store({
         addTransfer({ views }, payload) {
             views.transfers.items.push(payload);
         },
+        addTransaction({ views }, payload) {
+            views.transactions.items.push(payload);
+        },
         toggleViewLoading(state, {view, value}) {
             state.views[view].loading = value;
         },
@@ -230,7 +233,7 @@ export default new Vuex.Store({
             try {
                 const { data } = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]) + '?no-logs=true');
                 data.data.items.forEach(item => {
-                    commit('addTransfer', createTransfer(item));
+                    commit('addTransaction', createTransaction(item, address));
                 });
             } catch (error) {
                 console.error(error);
