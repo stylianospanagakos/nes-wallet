@@ -20,13 +20,20 @@
                 placeholder="Search contract name, symbol"
                 v-model="searchTextValue"
             />
-            <div class="text-end mt-4">
-                <check-box label="Hide small balances" v-model="hideSmallValue"/>
+            <div class="row align-items-center mt-4">
+                <div class="col">
+                    <action-button
+                        theme="success"
+                        @click="$router.push({name: 'transactions', params: {wallet: wallet.uuid}})"
+                    >Wallet TXs</action-button>
+                </div>
+                <div class="col text-end">
+                    <check-box label="Hide small balances" v-model="hideSmallValue"/>
+                </div>
             </div>
             <token
-                v-for="(token, index) in filteredBalanceTokens"
+                v-for="token in filteredBalanceTokens"
                 :key="`${token.contract_address}${token.contract_ticker_symbol}`"
-                :class="index === 0 ? 'mt-3 mb-5' : ''"
                 :wallet="wallet"
                 :data="token"
             />

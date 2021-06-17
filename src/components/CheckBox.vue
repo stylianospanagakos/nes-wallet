@@ -1,6 +1,6 @@
 <template>
     <div class="py-2">
-        <label>
+        <label class="m-0">
             <input
                 type="checkbox"
                 class="nes-checkbox"
