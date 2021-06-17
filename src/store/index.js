@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO} from '../config/endpoints';
+import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO, TRANSFERS} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
-import {createWallet, createToken, createHistoryGraphData} from '../lib/helpers';
+import {createWallet, createToken, createHistoryGraphData, createTransfer} from '../lib/helpers';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
 // import moment from 'moment';
@@ -45,6 +45,10 @@ export default new Vuex.Store({
                 showCandlestick: false,
                 candlestick: [],
                 line: [],
+                loading: false
+            },
+            transfers: {
+                items: [],
                 loading: false
             }
         }
@@ -152,6 +156,9 @@ export default new Vuex.Store({
         toggleChart({ views }, payload) {
             views.history.showCandlestick = payload;
         },
+        addTransfer({ views }, payload) {
+            views.transfers.items.push(payload);
+        },
         toggleViewLoading(state, {view, value}) {
             state.views[view].loading = value;
         },
@@ -224,6 +231,22 @@ export default new Vuex.Store({
                 console.error(error);
             } finally {
                 commit('toggleViewLoading', {view: 'history', value: false});
+            }
+        },
+        async fetchContractTransfers({ commit }, { chainId, address, contract }) {
+            commit('resetView', 'transfers');
+            commit('toggleViewLoading', {view: 'transfers', value: true});
+
+            try {
+                const { data } = await axios.get(vsprintf(TRANSFERS, [chainId, address]) + '?contract-address=' + contract);
+                data.data.items.forEach(item => {
+                    commit('addTransfer', createTransfer(item));
+                });
+                console.log(data);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                commit('toggleViewLoading', {view: 'transfers', value: false});
             }
         }
     },
