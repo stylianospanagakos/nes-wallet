@@ -25,6 +25,14 @@ const routes = [
     // this generates a separate chunk (history.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "history" */ '../views/history/Main.vue')
+  },
+  {
+    path: '/wallets/:wallet/tokens/:token/:symbol/transfers',
+    name: 'transfers',
+    // route level code-splitting
+    // this generates a separate chunk (transfers.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "history" */ '../views/transfers/Main.vue')
   }
 ]
 
