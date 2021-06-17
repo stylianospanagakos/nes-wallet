@@ -46,6 +46,10 @@ export default new Vuex.Store({
                 candlestick: [],
                 line: [],
                 loading: false
+            },
+            transfers: {
+                items: [],
+                loading: false
             }
         }
     },
@@ -225,6 +229,10 @@ export default new Vuex.Store({
             } finally {
                 commit('toggleViewLoading', {view: 'history', value: false});
             }
+        },
+        async fetchContractTransfers({ commit }, { chainId, address, contract }) {
+            commit('resetView', 'transfers');
+            commit('toggleViewLoading', {view: 'transfers', value: true});
         }
     },
     modules: {
