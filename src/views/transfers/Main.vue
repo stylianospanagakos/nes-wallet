@@ -2,8 +2,8 @@
     <div v-if="wallet">
         <div class="row">
             <div class="col">
-                <h1>{{ $route.params.symbol }}</h1>
-                <small class="text-muted">{{ wallet.name }}</small>
+                <h1>Transfers</h1>
+                <small class="text-muted">ERC20 {{ $route.params.symbol }}</small>
             </div>
             <div class="col text-end">
                 <a @click="$router.push({name: 'wallet', params: {wallet: wallet.uuid}})">

@@ -2,7 +2,8 @@
     <div v-if="wallet">
         <div class="row">
             <div class="col">
-                <h1>{{ wallet.name }}</h1>
+                <h1>Tokens</h1>
+                <small class="text-muted">{{ wallet.name }}</small>
             </div>
             <div class="col text-end">
                 <a @click="$router.push({name: 'home'})">
