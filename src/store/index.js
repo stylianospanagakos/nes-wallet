@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO, TRANSFERS} from '../config/endpoints';
+import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO, TRANSFERS, TRANSACTIONS} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
 import {createWallet, createToken, createHistoryGraphData, createTransfer} from '../lib/helpers';
 import axios from '../lib/axios';
@@ -48,6 +48,10 @@ export default new Vuex.Store({
                 loading: false
             },
             transfers: {
+                items: [],
+                loading: false
+            },
+            transactions: {
                 items: [],
                 loading: false
             }
@@ -219,6 +223,21 @@ export default new Vuex.Store({
                 commit('toggleViewLoading', {view: 'wallet', value: false});
             }
         },
+        async fetchWalletTransactions({ commit }, { chainId, address }) {
+            commit('resetView', 'transactions');
+            commit('toggleViewLoading', {view: 'transactions', value: true});
+
+            try {
+                const { data } = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]) + '?no-logs=true');
+                data.data.items.forEach(item => {
+                    commit('addTransfer', createTransfer(item));
+                });
+            } catch (error) {
+                console.error(error);
+            } finally {
+                commit('toggleViewLoading', {view: 'transactions', value: false});
+            }
+        },
         async fetchPortfolioHistory({ commit }, { chainId, address, contract, symbol }) {
             commit('resetView', 'history');
             commit('toggleViewLoading', {view: 'history', value: true});
@@ -242,7 +261,6 @@ export default new Vuex.Store({
                 data.data.items.forEach(item => {
                     commit('addTransfer', createTransfer(item));
                 });
-                console.log(data);
             } catch (error) {
                 console.error(error);
             } finally {
