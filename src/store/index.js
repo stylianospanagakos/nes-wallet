@@ -17,6 +17,7 @@ export default new Vuex.Store({
         views: {
             home: {
                 searchText: '',
+                hideSmall: false,
                 form: {
                     name: {
                         value: '',
@@ -36,6 +37,7 @@ export default new Vuex.Store({
             },
             wallet: {
                 searchText: '',
+                hideSmall: false,
                 tokens: [],
                 loading: false
             },
@@ -133,6 +135,9 @@ export default new Vuex.Store({
         },
         removeWallet(state, payload) {
             Vue.delete(state.wallets, payload);
+        },
+        toggleSmall(state, { section, value }) {
+            state.views[section].hideSmall = value;
         },
         updateSearchText(state, { section, value }) {
             state.views[section].searchText = value;

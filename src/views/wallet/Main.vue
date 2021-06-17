@@ -19,13 +19,17 @@
                 placeholder="Search contract name, symbol"
                 v-model="searchTextValue"
             />
+            <div class="text-end mt-4">
+                <check-box label="Hide small balances" v-model="hideSmallValue"/>
+            </div>
             <token
-                v-for="token in filteredTokens"
+                v-for="(token, index) in filteredBalanceTokens"
                 :key="`${token.contract_address}${token.contract_ticker_symbol}`"
+                :class="index === 0 ? 'mt-3 mb-5' : ''"
                 :wallet="wallet"
                 :data="token"
             />
-            <p v-if="!filteredTokens.length" class="text-center my-5">
+            <p v-if="!filteredBalanceTokens.length" class="text-center my-5">
                 No tokens found for '{{ searchTextValue }}'.
             </p>
         </div>
@@ -47,6 +51,7 @@
 
 <script>
 import InputText from '../../components/InputText.vue';
+import CheckBox from '../../components/CheckBox.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
 import Token from './Token.vue';
@@ -75,7 +80,15 @@ export default {
                 this.updateSearchText({section: 'wallet', value});
             }
         },
-        filteredTokens() {
+        hideSmallValue: {
+            get() {
+                return this.views.wallet.hideSmall;
+            },
+            set(value) {
+                this.toggleSmall({section: 'wallet', value});
+            }
+        },
+        filteredSearchTokens() {
             if (this.searchTextValue.length) {
                 return this.views.wallet.tokens.filter(({ contract_name, contract_ticker_symbol }) => {
                     const lowerName = contract_name.toLowerCase(),
@@ -86,14 +99,23 @@ export default {
                 });
             }
             return this.views.wallet.tokens;
+        },
+        filteredBalanceTokens() {
+            if (this.hideSmallValue) {
+                return this.filteredSearchTokens.filter(({ fiat_balance }) => {
+                    return parseFloat(fiat_balance) > 1;
+                });
+            }
+            return this.filteredSearchTokens;
         }
     },
     methods: {
-        ...mapMutations(['updateSearchText']),
+        ...mapMutations(['updateSearchText', 'toggleSmall']),
         ...mapActions(['fetchBalances'])
     },
     components: {
         InputText,
+        CheckBox,
         ActionButton,
         IconLoading,
         Token

@@ -10,12 +10,16 @@
                 placeholder="Search name, address"
                 v-model="searchTextValue"
             />
+            <div class="text-end mt-4">
+                <check-box label="Hide small balances" v-model="hideSmallValue"/>
+            </div>
             <wallet
-                v-for="wallet in filteredWallets"
+                v-for="(wallet, index) in filteredBalanceWallets"
                 :key="wallet.key"
+                :class="index === 0 ? 'mt-3 mb-5' : ''"
                 :data="wallet"
             />
-            <p v-if="!filteredWallets.length" class="text-center my-5">
+            <p v-if="!filteredBalanceWallets.length" class="text-center my-5">
                 No wallets found for '{{ searchTextValue }}'.
             </p>
         </div>
@@ -28,6 +32,7 @@
 <script>
 import WalletFormModal from './WalletFormModal.vue';
 import Wallet from './Wallet.vue';
+import CheckBox from '../../components/CheckBox.vue';
 import InputText from '../../components/InputText.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import {mapState, mapGetters, mapMutations} from 'vuex';
@@ -44,21 +49,36 @@ export default {
                 this.updateSearchText({section: 'home', value});
             }
         },
-        filteredWallets() {
+        hideSmallValue: {
+            get() {
+                return this.views.home.hideSmall;
+            },
+            set(value) {
+                this.toggleSmall({section: 'home', value});
+            }
+        },
+        filteredSearchWallets() {
             if (this.searchTextValue.length) {
                 return this.walletItems.filter(({ name, address }) => {
                     const lowerName = name.toLowerCase(),
                         lowerAddress = address.full.toLowerCase(),
                         lowerSearch = this.searchTextValue.toLowerCase();
-                    return lowerName.includes(lowerSearch) ||
-                        lowerAddress.includes(lowerSearch);
+                    return lowerName.includes(lowerSearch) || lowerAddress.includes(lowerSearch);
                 });
             }
             return this.walletItems;
+        },
+        filteredBalanceWallets() {
+            if (this.hideSmallValue) {
+                return this.filteredSearchWallets.filter(({ fiat_balance }) => {
+                    return parseFloat(fiat_balance) > 1;
+                });
+            }
+            return this.filteredSearchWallets;
         }
     },
     methods: {
-        ...mapMutations(['resetForm', 'updateSearchText']),
+        ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall']),
         openModal() {
             this.resetForm('home');
             this.$refs.walletForm.$el.showModal();
@@ -67,6 +87,7 @@ export default {
     components: {
         WalletFormModal,
         Wallet,
+        CheckBox,
         InputText,
         ActionButton
     }
