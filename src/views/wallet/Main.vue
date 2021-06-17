@@ -24,6 +24,7 @@
                 <div class="col">
                     <action-button
                         theme="success"
+                        @click="$router.push({name: 'transactions', params: {wallet: wallet.uuid}})"
                     >Wallet TXs</action-button>
                 </div>
                 <div class="col text-end">
