@@ -17,7 +17,7 @@
         <div v-else-if="showGraphs">
             <div class="row align-items-center mt-5">
                 <div class="col">
-                    <p class="nes-text">
+                    <p class="nes-text m-0">
                         Change:
                         <span :class="`nes-text ${percentageChange > 0 ? 'is-success' : percentageChange < 0 ? 'is-error' : ''}`">
                             {{ percentageChange.toFixed(2) }}%
