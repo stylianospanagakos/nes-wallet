@@ -10,9 +10,13 @@
                 placeholder="Search name, address"
                 v-model="searchTextValue"
             />
+            <div class="text-end mt-4">
+                <check-box label="Hide small balances" v-model="hideSmallValue"/>
+            </div>
             <wallet
-                v-for="wallet in filteredWallets"
+                v-for="(wallet, index) in filteredWallets"
                 :key="wallet.key"
+                :class="index === 0 ? 'mt-3 mb-5' : ''"
                 :data="wallet"
             />
             <p v-if="!filteredWallets.length" class="text-center my-5">
@@ -28,6 +32,7 @@
 <script>
 import WalletFormModal from './WalletFormModal.vue';
 import Wallet from './Wallet.vue';
+import CheckBox from '../../components/CheckBox.vue';
 import InputText from '../../components/InputText.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import {mapState, mapGetters, mapMutations} from 'vuex';
@@ -44,6 +49,14 @@ export default {
                 this.updateSearchText({section: 'home', value});
             }
         },
+        hideSmallValue: {
+            get() {
+                return this.views.home.hideSmall;
+            },
+            set(value) {
+                this.toggleSmall({section: 'home', value});
+            }
+        },
         filteredWallets() {
             if (this.searchTextValue.length) {
                 return this.walletItems.filter(({ name, address }) => {
@@ -58,7 +71,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['resetForm', 'updateSearchText']),
+        ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall']),
         openModal() {
             this.resetForm('home');
             this.$refs.walletForm.$el.showModal();
@@ -67,6 +80,7 @@ export default {
     components: {
         WalletFormModal,
         Wallet,
+        CheckBox,
         InputText,
         ActionButton
     }
