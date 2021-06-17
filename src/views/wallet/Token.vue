@@ -13,6 +13,7 @@
             </div>
             <div class="col-md-6 text-end">
                 <action-button
+                    v-if="data.erc_codes"
                     class="d-inline-block me-2"
                     @click="$router.push({name: 'transfers', params: {wallet: wallet.uuid, token: data.contract_address.full, symbol: data.contract_ticker_symbol}})"
                 >Transfers</action-button>
