@@ -26,11 +26,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="transfer in views.transfers.items" :key="transfer.tx_hash">
+                        <tr v-for="transfer in views.transactions.items" :key="transfer.tx_hash">
                             <td>{{ transfer.block_signed_at }}</td>
                             <td>
                                 <span class="nes-badge">
-                                    <span :class="`is-${ transfer.successful ? 'success' : 'error' }} w-auto`">
+                                    <span :class="`is-${ transfer.successful ? 'success' : 'error' } w-auto`">
                                         {{ transfer.successful ? 'Success' : 'Fail' }}
                                     </span>
                                 </span>
