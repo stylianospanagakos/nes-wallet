@@ -14,12 +14,12 @@
                 <check-box label="Hide small balances" v-model="hideSmallValue"/>
             </div>
             <wallet
-                v-for="(wallet, index) in filteredWallets"
+                v-for="(wallet, index) in filteredBalanceWallets"
                 :key="wallet.key"
                 :class="index === 0 ? 'mt-3 mb-5' : ''"
                 :data="wallet"
             />
-            <p v-if="!filteredWallets.length" class="text-center my-5">
+            <p v-if="!filteredBalanceWallets.length" class="text-center my-5">
                 No wallets found for '{{ searchTextValue }}'.
             </p>
         </div>
@@ -57,17 +57,24 @@ export default {
                 this.toggleSmall({section: 'home', value});
             }
         },
-        filteredWallets() {
+        filteredSearchWallets() {
             if (this.searchTextValue.length) {
                 return this.walletItems.filter(({ name, address }) => {
                     const lowerName = name.toLowerCase(),
                         lowerAddress = address.full.toLowerCase(),
                         lowerSearch = this.searchTextValue.toLowerCase();
-                    return lowerName.includes(lowerSearch) ||
-                        lowerAddress.includes(lowerSearch);
+                    return lowerName.includes(lowerSearch) || lowerAddress.includes(lowerSearch);
                 });
             }
             return this.walletItems;
+        },
+        filteredBalanceWallets() {
+            if (this.hideSmallValue) {
+                return this.filteredSearchWallets.filter(({ fiat_balance }) => {
+                    return parseFloat(fiat_balance) > 1;
+                });
+            }
+            return this.filteredSearchWallets;
         }
     },
     methods: {
