@@ -16,7 +16,7 @@
             <wallet
                 v-for="(wallet, index) in filteredBalanceWallets"
                 :key="wallet.key"
-                :class="index === 0 ? 'mt-3 mb-5' : ''"
+                :class="index === 0 ? 'mt-4 mb-5' : ''"
                 :data="wallet"
             />
             <p v-if="!filteredBalanceWallets.length" class="text-center my-5">

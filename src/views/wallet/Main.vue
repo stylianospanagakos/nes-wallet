@@ -24,7 +24,7 @@
                 <div class="col">
                     <action-button
                         theme="success"
-                    >Wallet Txs</action-button>
+                    >Wallet TXs</action-button>
                 </div>
                 <div class="col text-end">
                     <check-box label="Hide small balances" v-model="hideSmallValue"/>

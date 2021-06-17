@@ -19,6 +19,14 @@ const routes = [
     component: () => import(/* webpackChunkName: "wallet" */ '../views/wallet/Main.vue')
   },
   {
+    path: '/wallets/:wallet/transactions',
+    name: 'transactions',
+    // route level code-splitting
+    // this generates a separate chunk (transactions.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "transactions" */ '../views/transactions/Main.vue')
+  },
+  {
     path: '/wallets/:wallet/tokens/:token/:symbol/history',
     name: 'history',
     // route level code-splitting
