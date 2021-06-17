@@ -37,6 +37,7 @@ export default new Vuex.Store({
             },
             wallet: {
                 searchText: '',
+                hideSmall: false,
                 tokens: [],
                 loading: false
             },
