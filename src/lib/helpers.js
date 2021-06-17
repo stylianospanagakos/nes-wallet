@@ -1,4 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
+import moment from 'moment';
 
 export const formatTokenBalance = (balance, decimals) => {
     const value = decimals > 0 ?
@@ -92,13 +93,14 @@ export const createTransfer = ({ block_signed_at, gas_offered, gas_price, gas_sp
     return {
         amount: formatTokenBalance(delta, contract_decimals),
         successful,
-        block_signed_at,
+        block_signed_at: moment(block_signed_at).format('D MMM YY HH:mm'),
         gas_offered,
         gas_price,
         gas_spent,
         contract_ticker_symbol,
         from_address,
         to_address,
+        display_address: formatAddress(to_address),
         transfer_type,
         tx_hash
     }
