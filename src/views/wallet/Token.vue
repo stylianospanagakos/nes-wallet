@@ -12,7 +12,10 @@
                 </div>
             </div>
             <div class="col-md-6 text-end">
-                <action-button class="d-inline-block me-2">Transfers</action-button>
+                <action-button
+                    class="d-inline-block me-2"
+                    @click="$router.push({name: 'transfers', params: {wallet: wallet.uuid, token: data.contract_address.full}})"
+                >Transfers</action-button>
                 <action-button
                     class="d-inline-block"
                     :plain="true"

@@ -41,10 +41,7 @@
 <script>
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
-import CheckBox from '../../components/CheckBox.vue';
-import LineGraph from '../../components/graphs/LineGraph.vue';
-import CandleChart from '../../components/graphs/CandleChart.vue';
-import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
+import {mapState, mapGetters, mapActions} from 'vuex';
 
 export default {
     created() {
@@ -68,10 +65,7 @@ export default {
     },
     components: {
         ActionButton,
-        IconLoading,
-        CheckBox,
-        LineGraph,
-        CandleChart
+        IconLoading
     }
 }
 </script>

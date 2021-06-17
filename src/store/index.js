@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO} from '../config/endpoints';
+import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO, TRANSFERS} from '../config/endpoints';
 import {MAINNET_IDS} from '../config/supported_chains';
 import {createWallet, createToken, createHistoryGraphData} from '../lib/helpers';
 import axios from '../lib/axios';
@@ -233,6 +233,15 @@ export default new Vuex.Store({
         async fetchContractTransfers({ commit }, { chainId, address, contract }) {
             commit('resetView', 'transfers');
             commit('toggleViewLoading', {view: 'transfers', value: true});
+
+            try {
+                const { data } = await axios.get(vsprintf(TRANSFERS, [chainId, address]) + '?contract-address=' + contract);
+                console.log(data);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                commit('toggleViewLoading', {view: 'transfers', value: false});
+            }
         }
     },
     modules: {
