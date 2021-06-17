@@ -37,7 +37,10 @@
                             </td>
                             <td>{{ transfer.display_address }}</td>
                             <td>
-                                <span :class="`nes-text is-${transfer.transfer_type === 'IN' ? 'success' : 'error'}`">
+                                <span v-if="!parseFloat(transfer.amount)" :class="`nes-text`">
+                                    {{ transfer.amount }}
+                                </span>
+                                <span v-else :class="`nes-text is-${transfer.transfer_type === 'IN' ? 'success' : 'error'}`">
                                     {{ transfer.amount }}
                                 </span>
                             </td>
