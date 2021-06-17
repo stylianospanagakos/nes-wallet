@@ -233,7 +233,14 @@ export default new Vuex.Store({
             try {
                 const { data } = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]) + '?no-logs=true');
                 data.data.items.forEach(item => {
-                    commit('addTransaction', createTransaction(item, address));
+                    commit('addTransaction', createTransaction(
+                        {
+                            ...item,
+                            transfer_type: item.to_address === address ? 'IN' : 'OUT',
+                            contract_decimals: 18
+                        },
+                        address
+                    ));
                 });
             } catch (error) {
                 console.error(error);
