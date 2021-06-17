@@ -15,39 +15,10 @@
             <icon-loading :iconURL="wallet.logo_url"/>
         </div>
         <div v-else-if="views.transactions.items.length">
-            <div class="nes-table-responsive mt-5">
-                <table class="nes-table is-bordered is-centered">
-                    <thead>
-                        <tr>
-                            <th>When</th>
-                            <th>Status</th>
-                            <th>Address</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="transfer in views.transactions.items" :key="transfer.tx_hash">
-                            <td>{{ transfer.block_signed_at }}</td>
-                            <td>
-                                <span class="nes-badge">
-                                    <span :class="`is-${ transfer.successful ? 'success' : 'error' } w-auto`">
-                                        {{ transfer.successful ? 'Success' : 'Fail' }}
-                                    </span>
-                                </span>
-                            </td>
-                            <td>{{ transfer.display_address }}</td>
-                            <td>
-                                <span v-if="!parseFloat(transfer.amount)" :class="`nes-text`">
-                                    {{ transfer.amount }}
-                                </span>
-                                <span v-else :class="`nes-text is-${transfer.transfer_type === 'IN' ? 'success' : 'error'}`">
-                                    {{ transfer.amount }}
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <records-table
+                class="mt-5"
+                :items="views.transactions.items"
+            />
         </div>
         <div v-else class="text-center mt-5">
             <p>Apologies, we couldn't fetch token's data.</p>
@@ -71,6 +42,7 @@
 <script>
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
+import RecordsTable from '../transfers/RecordsTable.vue';
 import {mapState, mapGetters, mapActions} from 'vuex';
 
 export default {
@@ -94,7 +66,8 @@ export default {
     },
     components: {
         ActionButton,
-        IconLoading
+        IconLoading,
+        RecordsTable
     }
 }
 </script>
