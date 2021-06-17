@@ -238,8 +238,7 @@ export default new Vuex.Store({
                             ...item,
                             transfer_type: item.to_address === address ? 'IN' : 'OUT',
                             contract_decimals: 18
-                        },
-                        address
+                        }
                     ));
                 });
             } catch (error) {

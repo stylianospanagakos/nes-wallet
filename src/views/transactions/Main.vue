@@ -11,7 +11,7 @@
                 </a>
             </div>
         </div>
-        <div v-if="views.transfers.loading">
+        <div v-if="views.transactions.loading">
             <icon-loading :iconURL="wallet.logo_url"/>
         </div>
         <div v-else-if="views.transactions.items.length">
