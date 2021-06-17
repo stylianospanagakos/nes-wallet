@@ -86,3 +86,20 @@ export const createHistoryGraphData = ({ holdings, contract_decimals }) => {
         candlestick: candlestick.reverse()
     };
 }
+
+export const createTransfer = ({ block_signed_at, gas_offered, gas_price, gas_spent, successful, transfers }) => {
+    const { delta, from_address, to_address, transfer_type, tx_hash, contract_decimals, contract_ticker_symbol } = transfers[0];
+    return {
+        amount: formatTokenBalance(delta, contract_decimals),
+        successful,
+        block_signed_at,
+        gas_offered,
+        gas_price,
+        gas_spent,
+        contract_ticker_symbol,
+        from_address,
+        to_address,
+        transfer_type,
+        tx_hash
+    }
+}
