@@ -94,6 +94,7 @@ export default {
     methods: {
         ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
         openCurrencyModal() {
+            this.resetForm('home');
             this.updateCurrencyValue(this.currencies.default);
             this.$refs.currencyModal.$el.showModal();
         },
