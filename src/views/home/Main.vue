@@ -47,9 +47,25 @@ import Wallet from './Wallet.vue';
 import CheckBox from '../../components/CheckBox.vue';
 import InputText from '../../components/InputText.vue';
 import ActionButton from '../../components/ActionButton.vue';
-import {mapState, mapGetters, mapMutations} from 'vuex';
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
+    mounted() {
+        this.interval = setInterval(() => {
+            this.refreshWallets()
+                .then()
+                .catch(error => console.error(error));
+        }, 60000);
+    },
+    destroyed() {
+        clearInterval(this.interval);
+        this.interval = null;
+    },
+    data() {
+        return {
+            interval: null
+        }
+    },
     computed: {
         ...mapState(['currencies', 'views']),
         ...mapGetters(['currencySymbol', 'walletItems']),
@@ -91,6 +107,7 @@ export default {
     },
     methods: {
         ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
+        ...mapActions(['refreshWallets']),
         openCurrencyModal() {
             this.resetForm('home');
             this.updateCurrencyValue(this.currencies.default);
