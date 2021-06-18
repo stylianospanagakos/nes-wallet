@@ -2,11 +2,12 @@
     <div>
         <div class="row align-items-center">
             <div class="col">
-                <action-button theme="success">USD ($)</action-button>
+                <action-button theme="success" @click="openCurrencyModal">USD ($)</action-button>
+                <currency-modal ref="currencyModal"/>
             </div>
             <div class="col">
                 <div class="text-end">
-                    <action-button @click="openModal">+ Wallet</action-button>
+                    <action-button @click="openWalletModal">+ Wallet</action-button>
                     <wallet-form-modal ref="walletForm"/>
                 </div>
             </div>
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+import CurrencyModal from './CurrencyModal.vue';
 import WalletFormModal from './WalletFormModal.vue';
 import Wallet from './Wallet.vue';
 import CheckBox from '../../components/CheckBox.vue';
@@ -86,12 +88,16 @@ export default {
     },
     methods: {
         ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall']),
-        openModal() {
+        openCurrencyModal() {
+            this.$refs.currencyModal.$el.showModal();
+        },
+        openWalletModal() {
             this.resetForm('home');
             this.$refs.walletForm.$el.showModal();
         }
     },
     components: {
+        CurrencyModal,
         WalletFormModal,
         Wallet,
         CheckBox,
