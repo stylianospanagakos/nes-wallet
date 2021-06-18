@@ -84,6 +84,9 @@ export default new Vuex.Store({
                 };
             });
         },
+        currencySymbol({ currencies }) {
+            return currencies.options[currencies.default].symbol;
+        },
         networkOptions({ networks }) {
             return Object.keys(networks).map(item => {
                 return {...networks[item]};

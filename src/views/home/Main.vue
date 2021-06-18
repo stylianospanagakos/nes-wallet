@@ -28,6 +28,7 @@
                 :key="wallet.key"
                 :class="index === 0 ? 'mt-4 mb-5' : ''"
                 :data="wallet"
+                :currency="currencySymbol"
             />
             <p v-if="!filteredBalanceWallets.length" class="text-center my-5">
                 No wallets found for '{{ searchTextValue }}'.
@@ -51,10 +52,7 @@ import {mapState, mapGetters, mapMutations} from 'vuex';
 export default {
     computed: {
         ...mapState(['currencies', 'views']),
-        ...mapGetters(['walletItems']),
-        currencySymbol() {
-            return this.currencies.options[this.currencies.default].symbol;
-        },
+        ...mapGetters(['currencySymbol', 'walletItems']),
         searchTextValue: {
             get() {
                 return this.views.home.searchText;
