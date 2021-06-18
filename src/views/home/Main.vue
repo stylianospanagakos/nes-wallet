@@ -102,6 +102,11 @@ export default {
             this.$refs.walletForm.$el.showModal();
         }
     },
+    watch: {
+        'currencies.default'(newVal) {
+            console.log(newVal);
+        }
+    },
     components: {
         CurrencyModal,
         WalletFormModal,

@@ -36,6 +36,7 @@ export default new Vuex.Store({
             home: {
                 searchText: '',
                 hideSmall: false,
+                loading: false,
                 form: {
                     name: {
                         value: '',
