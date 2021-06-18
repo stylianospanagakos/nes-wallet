@@ -216,13 +216,32 @@ export default new Vuex.Store({
             }
             commit('toggleAppLoading', false);
         },
-        async refreshWallets({ commit, state }, currency) {
+        async refreshWallets({ commit, getters }, currency) {
             commit('updateFormField', {
                 section: 'home',
                 field: 'loading',
                 payload: true
             });
-            console.log(state, currency);
+
+            try {
+                // get all wallets
+                for (let index = 0; index < getters.walletItems.length; index++) {
+                    const {name, chain_id, address, logo_url} = getters.walletItems[index];
+                    const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chain_id, address.full]) + `?quote-currency=${currency}`);
+                    commit('addWallet', createWallet({
+                        ...data.data,
+                        name,
+                        logo_url
+                    }));
+                }
+            } catch (error) {
+                commit('updateFormField', {
+                    section: 'home',
+                    field: 'loading',
+                    payload: false
+                });
+                throw new Error(error.response.data.error_message);
+            }
         },
         async fetchWallet({ commit, state }, { name, chainId, address }) {
             commit('updateFormField', {
@@ -236,7 +255,7 @@ export default new Vuex.Store({
                 commit('addWallet', createWallet({
                     ...data.data,
                     name,
-                    network: state.networks[chainId] 
+                    logo_url: state.networks[chainId].logo_url 
                 }));
             } catch (error) {
                 commit('updateFormField', {
