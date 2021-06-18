@@ -11,6 +11,27 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        currencies: {
+            items: [
+                {
+                    currency: 'USD',
+                    symbol: '$'
+                },
+                {
+                    currency: 'CAD',
+                    symbol: '$'
+                },
+                {
+                    currency: 'EUR',
+                    symbol: '€'
+                },
+                {
+                    currency: 'INR',
+                    symbol: '₹'
+                }
+            ],
+            value: '' 
+        },
         networks: {},
         wallets: {},
         loading: true,
