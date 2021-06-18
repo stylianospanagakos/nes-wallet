@@ -50,6 +50,21 @@ import ActionButton from '../../components/ActionButton.vue';
 import {mapState, mapGetters, mapMutations} from 'vuex';
 
 export default {
+    mounted() {
+        this.interval = setInterval(function() {
+            console.log('INTERVAL');
+        }, 1000);
+    },
+    destroyed() {
+        clearInterval(this.interval);
+        this.interval = null;
+        console.log('DESTROYED');
+    },
+    data() {
+        return {
+            interval: null
+        }
+    },
     computed: {
         ...mapState(['currencies', 'views']),
         ...mapGetters(['currencySymbol', 'walletItems']),
