@@ -3,7 +3,7 @@
         <div class="row align-items-center">
             <div class="col">
                 <action-button theme="success" @click="openCurrencyModal">
-                    {{ currencies.default }} ({{ currencySymbol }})
+                    {{ currencySymbol }} {{ currencies.default }}
                 </action-button>
                 <currency-modal ref="currencyModal"/>
             </div>
