@@ -3,7 +3,7 @@
         <form @submit.prevent method="dialog">
             <select-input
                 placeholder="Currency"
-                :options="currencies.items"
+                :options="currencyOptions"
                 label-key="currency"
                 value-key="currency"
                 v-model="currencyValue"
@@ -19,11 +19,12 @@
 <script>
 import SelectInput from '../../components/SelectInput.vue';
 import ActionButton from '../../components/ActionButton.vue';
-import {mapState, mapMutations, mapActions} from 'vuex';
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     computed: {
         ...mapState(['currencies']),
+        ...mapGetters(['currencyOptions']),
         currencyValue: {
             get() {
                 return this.currencies.value;

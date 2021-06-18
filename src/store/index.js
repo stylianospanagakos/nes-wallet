@@ -12,24 +12,20 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         currencies: {
-            items: [
-                {
-                    currency: 'USD',
-                    symbol: '$',
-                },
-                {
-                    currency: 'CAD',
+            options: {
+                'USD': {
                     symbol: '$'
                 },
-                {
-                    currency: 'EUR',
+                'CAD': {
+                    symbol: '$'
+                },
+                'EUR': {
                     symbol: '€'
                 },
-                {
-                    currency: 'INR',
+                'INR': {
                     symbol: '₹'
                 }
-            ],
+            },
             default: 'USD',
             value: '' 
         },
@@ -80,6 +76,14 @@ export default new Vuex.Store({
         }
     },
     getters: {
+        currencyOptions({ currencies }) {
+            return Object.keys(currencies.options).map(currency => {
+                return {
+                    currency,
+                    ...currencies.options[currency]
+                };
+            });
+        },
         networkOptions({ networks }) {
             return Object.keys(networks).map(item => {
                 return {...networks[item]};

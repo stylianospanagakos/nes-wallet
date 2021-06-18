@@ -2,7 +2,9 @@
     <div>
         <div class="row align-items-center">
             <div class="col">
-                <action-button theme="success" @click="openCurrencyModal">USD ($)</action-button>
+                <action-button theme="success" @click="openCurrencyModal">
+                    {{ currencies.default }} ({{ currencySymbol }})
+                </action-button>
                 <currency-modal ref="currencyModal"/>
             </div>
             <div class="col">
@@ -50,6 +52,9 @@ export default {
     computed: {
         ...mapState(['currencies', 'views']),
         ...mapGetters(['walletItems']),
+        currencySymbol() {
+            return this.currencies.options[this.currencies.default].symbol;
+        },
         searchTextValue: {
             get() {
                 return this.views.home.searchText;
