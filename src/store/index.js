@@ -223,10 +223,13 @@ export default new Vuex.Store({
                 payload: true
             });
 
+            // keep original version of wallets
+            const originalWallets = getters.walletItems;
+
             try {
                 // get all wallets
-                for (let index = 0; index < getters.walletItems.length; index++) {
-                    const {name, chain_id, address, logo_url} = getters.walletItems[index];
+                for (let index = 0; index < originalWallets.length; index++) {
+                    const {name, chain_id, address, logo_url} = originalWallets[index];
                     const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chain_id, address.full]) + `?quote-currency=${currency}`);
                     commit('addWallet', createWallet({
                         ...data.data,
@@ -235,6 +238,10 @@ export default new Vuex.Store({
                     }));
                 }
             } catch (error) {
+                // if it fails, we need to restore to original version
+                originalWallets.forEach(wallet => {
+                    commit('addWallet', createWallet(wallet));
+                });
                 commit('updateFormField', {
                     section: 'home',
                     field: 'loading',
