@@ -79,8 +79,11 @@
             this.fetchChains();
         },
         watch: {
-            wallets(newItems) {
-                this.saveStorageItem(WALLETS_KEY, newItems);
+            wallets: {
+                handler(newItems) {
+                    this.saveStorageItem(WALLETS_KEY, newItems);    
+                },
+                deep: true
             },
             'currencies.default'(newValue) {
                 this.saveStorageItem(DEFAULT_CURRENCY, newValue);
