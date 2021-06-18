@@ -2,7 +2,7 @@
     <container :title="data.name" :iconURL="data.logo_url">
         <div class="row align-items-center">
             <div class="col">
-                <p class="my-0">Balance: {{currency}}{{ data.fiat_balance }}</p>
+                <p class="my-0">Balance: {{ currency }}{{ data.fiat_balance }}</p>
                 <small class="d-block nes-text is-primary my-2">Holds {{ data.tokens_count }} Token{{ data.tokens_count === 1 ? '' : 's' }}</small>
                 <small class="d-block text-muted">{{ data.address.truncated }}</small>
             </div>
