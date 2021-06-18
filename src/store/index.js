@@ -15,7 +15,7 @@ export default new Vuex.Store({
             items: [
                 {
                     currency: 'USD',
-                    symbol: '$'
+                    symbol: '$',
                 },
                 {
                     currency: 'CAD',
@@ -30,7 +30,8 @@ export default new Vuex.Store({
                     symbol: '₹'
                 }
             ],
-            value: 'USD' 
+            default: 'USD',
+            value: '' 
         },
         networks: {},
         wallets: {},
@@ -102,7 +103,10 @@ export default new Vuex.Store({
                 }
             });
         },
-        updateCurrency(state, payload) {
+        updateDefaultCurrency(state, payload) {
+            state.currencies.default = payload;
+        },
+        updateCurrencyValue(state, payload) {
             state.currencies.value = payload;
         },
         updateFormField(state, { section, field, payload }) {

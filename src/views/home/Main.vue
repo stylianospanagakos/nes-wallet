@@ -48,7 +48,7 @@ import {mapState, mapGetters, mapMutations} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['views']),
+        ...mapState(['currencies', 'views']),
         ...mapGetters(['walletItems']),
         searchTextValue: {
             get() {
@@ -87,8 +87,9 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall']),
+        ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
         openCurrencyModal() {
+            this.updateCurrencyValue(this.currencies.default);
             this.$refs.currencyModal.$el.showModal();
         },
         openWalletModal() {

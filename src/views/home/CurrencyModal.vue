@@ -29,15 +29,16 @@ export default {
                 return this.currencies.value;
             },
             set(value) {
-                this.updateCurrency(value);
+                this.updateCurrencyValue(value);
             }
         }
     },
     methods: {
-        ...mapMutations(['updateCurrency']),
+        ...mapMutations(['updateDefaultCurrency', 'updateCurrencyValue']),
         ...mapActions(['fetchWallet']),
         clicked() {
-            
+            this.updateDefaultCurrency(this.currencyValue);
+            this.closeModal();
         },
         closeModal() {
             this.$parent.$refs.currencyModal.$el.close();
