@@ -2,7 +2,7 @@
     <container :title="data.contract_ticker_symbol" :iconURL="data.logo_url">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <p class="my-0">Balance: ${{ data.fiat_balance }}</p>
+                <p class="my-0">Balance: {{ currency }}{{ data.fiat_balance }}</p>
                 <small class="d-block text-muted my-2">Tokens: {{ data.balance }}</small>
                 <div v-if="data.erc_codes">
                     <span v-for="code in data.erc_codes" :key="code" class="nes-badge is-splited w-auto me-3">
@@ -40,6 +40,10 @@ export default {
         },
         wallet: {
             type: Object,
+            required: true
+        },
+        currency: {
+            type: String,
             required: true
         }
     },

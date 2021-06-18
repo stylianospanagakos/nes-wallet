@@ -36,6 +36,7 @@
                 :key="`${token.contract_address}${token.contract_ticker_symbol}`"
                 :wallet="wallet"
                 :data="token"
+                :currency="currencySymbol"
             />
             <p v-if="!filteredBalanceTokens.length" class="text-center my-5">
                 No tokens found for '{{ searchTextValue }}'.
@@ -76,7 +77,7 @@ export default {
     },
     computed: {
         ...mapState(['views']),
-        ...mapGetters(['walletItems']),
+        ...mapGetters(['currencySymbol', 'walletItems']),
         wallet() {
             return this.walletItems.find(item => item.uuid === this.$route.params.wallet);
         },

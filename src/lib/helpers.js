@@ -16,7 +16,7 @@ export const formatAddress = (address) => {
     return `${address.slice(0, 14)}...${address.slice(-5)}`;
 }
 
-export const createWallet = ({ chain_id, address, items, name, network }) => {
+export const createWallet = ({ chain_id, address, items, name, logo_url }) => {
     const key = `${chain_id.toString()}_${address}`;
     let wallet = {
         key,
@@ -28,7 +28,7 @@ export const createWallet = ({ chain_id, address, items, name, network }) => {
             full: address,
             truncated: formatAddress(address)
         },
-        logo_url: network.logo_url,
+        logo_url,
         tokens_count: 0
     };
     items.forEach(item => {

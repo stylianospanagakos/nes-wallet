@@ -1,8 +1,18 @@
 <template>
     <div>
-        <div class="text-end">
-            <action-button @click="openModal">+ Wallet</action-button>
-            <wallet-form-modal ref="walletForm"/>
+        <div class="row align-items-center">
+            <div class="col">
+                <action-button theme="success" @click="openCurrencyModal">
+                    {{ currencySymbol }} {{ currencies.default }}
+                </action-button>
+                <currency-modal ref="currencyModal"/>
+            </div>
+            <div class="col">
+                <div class="text-end">
+                    <action-button @click="openWalletModal">+ Wallet</action-button>
+                    <wallet-form-modal ref="walletForm"/>
+                </div>
+            </div>
         </div>
         <div v-if="walletItems.length">
             <input-text
@@ -18,6 +28,7 @@
                 :key="wallet.key"
                 :class="index === 0 ? 'mt-4 mb-5' : ''"
                 :data="wallet"
+                :currency="currencySymbol"
             />
             <p v-if="!filteredBalanceWallets.length" class="text-center my-5">
                 No wallets found for '{{ searchTextValue }}'.
@@ -30,6 +41,7 @@
 </template>
 
 <script>
+import CurrencyModal from './CurrencyModal.vue';
 import WalletFormModal from './WalletFormModal.vue';
 import Wallet from './Wallet.vue';
 import CheckBox from '../../components/CheckBox.vue';
@@ -39,8 +51,8 @@ import {mapState, mapGetters, mapMutations} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['views']),
-        ...mapGetters(['walletItems']),
+        ...mapState(['currencies', 'views']),
+        ...mapGetters(['currencySymbol', 'walletItems']),
         searchTextValue: {
             get() {
                 return this.views.home.searchText;
@@ -78,13 +90,19 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall']),
-        openModal() {
+        ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
+        openCurrencyModal() {
+            this.resetForm('home');
+            this.updateCurrencyValue(this.currencies.default);
+            this.$refs.currencyModal.$el.showModal();
+        },
+        openWalletModal() {
             this.resetForm('home');
             this.$refs.walletForm.$el.showModal();
         }
     },
     components: {
+        CurrencyModal,
         WalletFormModal,
         Wallet,
         CheckBox,
