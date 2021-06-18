@@ -258,7 +258,7 @@ export default new Vuex.Store({
             });
 
             try {
-                const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+                const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]) + `?quote-currency=${state.currencies.default}`);
                 commit('addWallet', createWallet({
                     ...data.data,
                     name,
@@ -278,12 +278,12 @@ export default new Vuex.Store({
                 throw new Error(error.response.data.error_message);
             }
         },
-        async fetchBalances({ commit }, { chainId, address }) {
+        async fetchBalances({ commit, state }, { chainId, address }) {
             commit('resetView', 'wallet');
             commit('toggleViewLoading', {view: 'wallet', value: true});
 
             try {
-                const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]));
+                const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]) + `?quote-currency=${state.currencies.default}`);
                 data.data.items.forEach(item => {
                     commit('addToken', createToken(item));
                 });
@@ -293,12 +293,12 @@ export default new Vuex.Store({
                 commit('toggleViewLoading', {view: 'wallet', value: false});
             }
         },
-        async fetchWalletTransactions({ commit }, { chainId, address }) {
+        async fetchWalletTransactions({ commit, state }, { chainId, address }) {
             commit('resetView', 'transactions');
             commit('toggleViewLoading', {view: 'transactions', value: true});
 
             try {
-                const { data } = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]) + '?no-logs=true');
+                const { data } = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]) + `?no-logs=true&quote-currency=${state.currencies.default}`);
                 data.data.items.forEach(item => {
                     commit('addTransaction', createTransaction(
                         {
@@ -314,13 +314,13 @@ export default new Vuex.Store({
                 commit('toggleViewLoading', {view: 'transactions', value: false});
             }
         },
-        async fetchPortfolioHistory({ commit }, { chainId, address, contract, symbol }) {
+        async fetchPortfolioHistory({ commit, state }, { chainId, address, contract, symbol }) {
             commit('resetView', 'history');
             commit('toggleViewLoading', {view: 'history', value: true});
 
             try {
                 const matchCriteria = JSON.stringify({contract_address: contract, contract_ticker_symbol: symbol});
-                const { data } = await axios.get(vsprintf(HISTORICAL_PORTFOLIO, [chainId, address]) + '?match=' + matchCriteria);
+                const { data } = await axios.get(vsprintf(HISTORICAL_PORTFOLIO, [chainId, address]) + `?match=${matchCriteria}&quote-currency=${state.currencies.default}`);
                 commit('updateHistoryGraphs', createHistoryGraphData(data.data.items[0]));
             } catch (error) {
                 console.error(error);
@@ -328,12 +328,12 @@ export default new Vuex.Store({
                 commit('toggleViewLoading', {view: 'history', value: false});
             }
         },
-        async fetchContractTransfers({ commit }, { chainId, address, contract }) {
+        async fetchContractTransfers({ commit, state }, { chainId, address, contract }) {
             commit('resetView', 'transfers');
             commit('toggleViewLoading', {view: 'transfers', value: true});
 
             try {
-                const { data } = await axios.get(vsprintf(TRANSFERS, [chainId, address]) + '?contract-address=' + contract);
+                const { data } = await axios.get(vsprintf(TRANSFERS, [chainId, address]) + `?contract-address=${contract}&quote-currency=${state.currencies.default}`);
                 data.data.items.forEach(item => {
                     commit('addTransfer', createTransfer(item));
                 });
