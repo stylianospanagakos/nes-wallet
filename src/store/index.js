@@ -227,18 +227,27 @@ export default new Vuex.Store({
 
             // keep original version of wallets
             const originalWallets = getters.walletItems;
+            // create placeholder for transformed wallets
+            const newWallets = [];
 
             try {
                 // get all wallets
                 for (let index = 0; index < originalWallets.length; index++) {
                     const {name, chain_id, address, logo_url} = originalWallets[index];
                     const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chain_id, address.full]) + `?quote-currency=${currency}`);
-                    commit('addWallet', createWallet({
+                    // save formatted version in placeholder container
+                    newWallets.push(createWallet({
                         ...data.data,
                         name,
                         logo_url
                     }));
                 }
+                // after all requests are done, change store
+                // this happens because we want to avoid the fiat values of the wallets getting updated one by one
+                // without having the right value for default currency
+                newWallets.forEach(wallet => {
+                    commit('addWallet', wallet);
+                });
             } catch (error) {
                 // if it fails, we need to restore to original version
                 originalWallets.forEach(wallet => {
