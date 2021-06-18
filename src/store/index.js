@@ -30,7 +30,7 @@ export default new Vuex.Store({
                     symbol: '₹'
                 }
             ],
-            value: '' 
+            value: 'USD' 
         },
         networks: {},
         wallets: {},
@@ -101,6 +101,9 @@ export default new Vuex.Store({
                     Vue.set(state.networks, network.chain_id, network);
                 }
             });
+        },
+        updateCurrency(state, payload) {
+            state.currencies.value = payload;
         },
         updateFormField(state, { section, field, payload }) {
             if (typeof payload === 'boolean' || typeof payload === 'string') {

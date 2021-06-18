@@ -1,8 +1,15 @@
 <template>
     <div>
-        <div class="text-end">
-            <action-button @click="openModal">+ Wallet</action-button>
-            <wallet-form-modal ref="walletForm"/>
+        <div class="row align-items-center">
+            <div class="col">
+                <action-button theme="success">USD ($)</action-button>
+            </div>
+            <div class="col">
+                <div class="text-end">
+                    <action-button @click="openModal">+ Wallet</action-button>
+                    <wallet-form-modal ref="walletForm"/>
+                </div>
+            </div>
         </div>
         <div v-if="walletItems.length">
             <input-text
