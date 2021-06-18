@@ -1,6 +1,7 @@
 <template>
     <dialog class="nes-dialog is-rounded mx-auto my-5">
-        <form @submit.prevent method="dialog">
+        <icon-loading v-if="views.home.form.loading"/>
+        <form v-else @submit.prevent method="dialog">
             <select-input
                 placeholder="Currency"
                 :options="currencyOptions"
@@ -17,13 +18,14 @@
 </template>
 
 <script>
+import IconLoading from '../../components/IconLoading.vue';
 import SelectInput from '../../components/SelectInput.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['currencies']),
+        ...mapState(['currencies', 'views']),
         ...mapGetters(['currencyOptions']),
         currencyValue: {
             get() {
@@ -36,16 +38,27 @@ export default {
     },
     methods: {
         ...mapMutations(['updateDefaultCurrency', 'updateCurrencyValue']),
-        ...mapActions(['fetchWallet']),
+        ...mapActions(['fetchWallet', 'refreshWallets']),
         clicked() {
-            this.updateDefaultCurrency(this.currencyValue);
-            this.closeModal();
+            if (this.currencyValue !== this.currencies.default) {
+                this.refreshWallets(this.currencyValue)
+                    .then(() => {
+                        this.updateDefaultCurrency(this.currencyValue);
+                    }).catch(error => {
+                        console.error(error.message);
+                    }).finally(() => {
+                        this.closeModal();
+                    });
+            } else {
+                this.closeModal();
+            }
         },
         closeModal() {
             this.$parent.$refs.currencyModal.$el.close();
         }
     },
     components: {
+        IconLoading,
         SelectInput,
         ActionButton
     }
