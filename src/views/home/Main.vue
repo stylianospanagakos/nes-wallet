@@ -7,8 +7,9 @@
                 </action-button>
                 <currency-modal ref="currencyModal"/>
                 <action-button class="d-inline-block ms-2" :plain="true" @click="toggleDarkTheme(!darkTheme)">
-                    Dark {{ darkTheme ? 'On' : 'Off' }}
+                    Lights {{ darkTheme ? 'On' : 'Off' }}
                 </action-button>
+                <light-switch/>
             </div>
             <div class="col">
                 <div class="text-end">
@@ -47,6 +48,7 @@
 
 <script>
 import CurrencyModal from './CurrencyModal.vue';
+import LightSwitch from './LightSwitch.vue';
 import WalletFormModal from './WalletFormModal.vue';
 import Wallet from './Wallet.vue';
 import CheckBox from '../../components/CheckBox.vue';
@@ -125,6 +127,7 @@ export default {
     },
     components: {
         CurrencyModal,
+        LightSwitch,
         WalletFormModal,
         Wallet,
         CheckBox,
