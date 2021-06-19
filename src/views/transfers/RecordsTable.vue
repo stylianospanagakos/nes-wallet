@@ -1,5 +1,5 @@
 <template>
-    <div class="nes-table-responsive">
+    <div class="nes-table-responsive position-relative">
         <table class="nes-table is-bordered is-centered" :class="{'is-dark': dark}">
             <thead>
                 <tr>
