@@ -2,23 +2,24 @@
     <div v-if="wallet">
         <div class="row">
             <div class="col">
-                <h1>Tokens</h1>
+                <h1 :class="{'text-white': darkTheme}">Tokens</h1>
                 <small class="text-muted">{{ wallet.name }}</small>
             </div>
             <div class="col text-end">
                 <a @click="$router.push({name: 'home'})">
-                    <i class="nes-icon close"></i>
+                    <i class="nes-icon close" :class="{'bg-white': darkTheme}"></i>
                 </a>
             </div>
         </div>
         <div v-if="views.wallet.loading">
-            <icon-loading :iconURL="wallet.logo_url"/>
+            <icon-loading :iconURL="wallet.logo_url" :dark="darkTheme"/>
         </div>
         <div v-else-if="views.wallet.tokens.length">
             <input-text
                 class="mt-4"
                 placeholder="Search contract name, symbol"
                 v-model="searchTextValue"
+                :dark="darkTheme"
             />
             <div class="row align-items-center mt-4">
                 <div class="col">
@@ -28,7 +29,7 @@
                     >Wallet TXs</action-button>
                 </div>
                 <div class="col text-end">
-                    <check-box label="Hide small balances" v-model="hideSmallValue"/>
+                    <check-box label="Hide small balances" v-model="hideSmallValue" :dark="darkTheme"/>
                 </div>
             </div>
             <token
@@ -37,20 +38,21 @@
                 :wallet="wallet"
                 :data="token"
                 :currency="currencySymbol"
+                :dark="darkTheme"
             />
-            <p v-if="!filteredBalanceTokens.length" class="text-center my-5">
+            <p v-if="!filteredBalanceTokens.length" class="text-center my-5" :class="{'text-white': darkTheme}">
                 No tokens found for '{{ searchTextValue }}'.
             </p>
         </div>
         <div v-else class="text-center mt-5">
-            <p>Apologies, we couldn't fetch your wallet details.</p>
+            <p :class="{'text-white': darkTheme}">Apologies, we couldn't fetch your wallet details.</p>
             <action-button
                 @click="fetchBalances({chainId: wallet.chain_id, address: wallet.address.full})"
             >Retry</action-button>
         </div>
     </div>
     <div v-else class="text-center">
-        <p class="nes-text is-error">Invalid wallet.</p>
+        <p class="nes-text is-error" :class="{'text-white': darkTheme}">Invalid wallet.</p>
         <action-button
             class="mb-5"
             @click="$router.push({name: 'home'})"
@@ -76,7 +78,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['views']),
+        ...mapState(['darkTheme', 'views']),
         ...mapGetters(['currencySymbol', 'walletItems']),
         wallet() {
             return this.walletItems.find(item => item.uuid === this.$route.params.wallet);
