@@ -1,16 +1,18 @@
 <template>
-    <dialog class="nes-dialog is-rounded mx-auto my-5">
-        <icon-loading v-if="views.home.form.loading" :iconURL="networkLogo"/>
+    <dialog class="nes-dialog is-rounded mx-auto my-5" :class="{'is-dark': darkTheme}">
+        <icon-loading v-if="views.home.form.loading" :iconURL="networkLogo" :dark="darkTheme"/>
         <form v-else @submit.prevent method="dialog">
             <input-text
                 placeholder="Name"
                 v-model="nameValue"
                 :error="views.home.form.name.error"
+                :dark="darkTheme"
             />
             <input-text
                 placeholder="Address"
                 v-model="addressValue"
                 :error="views.home.form.address.error"
+                :dark="darkTheme"
             />
             <select-input
                 placeholder="Network"
@@ -19,6 +21,7 @@
                 value-key="chain_id"
                 v-model="chainIdValue"
                 :error="views.home.form.chainId.error"
+                :dark="darkTheme"
             />
             <p class="nes-text is-error text-center my-3">{{ views.home.form.responseError }}</p>
             <menu class="dialog-menu mb-0">
@@ -40,7 +43,7 @@ import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['views', 'networks']),
+        ...mapState(['darkTheme', 'views', 'networks']),
         ...mapGetters(['networkOptions']),
         nameValue: {
             get() {

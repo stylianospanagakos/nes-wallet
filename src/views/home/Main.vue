@@ -35,11 +35,11 @@
                 :currency="currencySymbol"
                 :dark="darkTheme"
             />
-            <p v-if="!filteredBalanceWallets.length" class="text-center my-5">
+            <p v-if="!filteredBalanceWallets.length" class="text-center my-5" :class="{'text-white': darkTheme}">
                 No wallets found for '{{ searchTextValue }}'.
             </p>
         </div>
-        <div v-else class="text-center my-5">
+        <div v-else class="text-center my-5" :class="{'text-white': darkTheme}">
             <p>You haven't added any wallets yet.</p>
         </div>
     </div>

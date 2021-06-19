@@ -2,13 +2,13 @@
     <div class="h-100" :class="{'is-dark': darkTheme}">
         <div class="container-boundaries p-5 mx-auto">
             <div v-if="loading">
-                <icon-loading/>
+                <icon-loading :dark="darkTheme"/>
             </div>
             <div v-else-if="networkOptions.length">
                 <router-view/>
             </div>
             <div v-else class="text-center">
-                <p>Apologies, there seems to be an issue with our service at the moment.</p>
+                <p :class="{'text-white': darkTheme}">Apologies, there seems to be an issue with our service at the moment.</p>
                 <action-button
                     @click="fetchChains"
                 >Retry</action-button>
@@ -75,7 +75,7 @@
     }
 </script>
 
-<style scoped>
+<style>
     .is-dark {
         background: #212529;
     }
