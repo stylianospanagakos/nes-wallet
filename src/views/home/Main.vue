@@ -6,7 +6,7 @@
                     {{ currencySymbol }} {{ currencies.default }}
                 </action-button>
                 <currency-modal ref="currencyModal"/>
-                <action-button class="d-inline-block ms-2" :plain="true" @click="toggleDarkTheme">
+                <action-button class="d-inline-block ms-2" :plain="true" @click="toggleDarkTheme(!darkTheme)">
                     {{ darkTheme ? 'Dark' : 'Light' }} Theme
                 </action-button>
             </div>

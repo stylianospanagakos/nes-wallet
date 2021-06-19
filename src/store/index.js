@@ -103,8 +103,8 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        toggleDarkTheme(state) {
-            state.darkTheme = !state.darkTheme;
+        toggleDarkTheme(state, payload) {
+            state.darkTheme = payload;
         },
         addNetworks(state, payload) {
             payload.forEach(network => {

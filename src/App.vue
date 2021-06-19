@@ -21,7 +21,7 @@
     import IconLoading from './components/IconLoading.vue';
     import ActionButton from './components/ActionButton.vue';
     import LocalStorageMixin from './mixins/LocalStorageMixin.vue';
-    import {WALLETS_KEY, DEFAULT_CURRENCY} from './config/local_storage';
+    import {DARK_THEME, DEFAULT_CURRENCY, WALLETS_KEY} from './config/local_storage';
     import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
     import "bootstrap/dist/css/bootstrap.min.css"
@@ -29,6 +29,11 @@
 
     export default {
         created() {
+            const theme = this.getStorageItem(DARK_THEME);
+            if (theme) {
+                this.toggleDarkTheme(true);
+            }
+
             // get default currency
             const currency = this.getStorageItem(DEFAULT_CURRENCY);
             if (currency) {
@@ -49,6 +54,9 @@
             this.fetchChains();
         },
         watch: {
+            darkTheme(newValue) {
+                this.saveStorageItem(DARK_THEME, newValue);
+            },
             wallets: {
                 handler(newItems) {
                     this.saveStorageItem(WALLETS_KEY, newItems);    
@@ -64,7 +72,7 @@
             ...mapGetters(['networkOptions'])
         },
         methods: {
-            ...mapMutations(['addWallet', 'updateDefaultCurrency']),
+            ...mapMutations(['toggleDarkTheme', 'addWallet', 'updateDefaultCurrency']),
             ...mapActions(['fetchChains'])
         },
         mixins: [LocalStorageMixin],
