@@ -2,7 +2,7 @@
     <div class="nes-field py-2">
         <input
             class="nes-input"
-            :class="{'is-error': error.length}"
+            :class="{'is-error': error.length, 'is-dark': dark}"
             :type="type"
             :placeholder="placeholder"
             :value="value"
@@ -29,6 +29,10 @@ export default {
         error: {
             type: String,
             default: ''
+        },
+        dark: {
+            type: Boolean,
+            default: false
         }
     }
 }

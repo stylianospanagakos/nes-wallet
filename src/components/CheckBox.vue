@@ -4,6 +4,7 @@
             <input
                 type="checkbox"
                 class="nes-checkbox"
+                :class="{'is-dark': dark}"
                 :checked="value"
                 @change="$emit('input', $event.target.checked)"
             />
@@ -20,6 +21,10 @@ export default {
             required: true
         },
         value: {
+            type: Boolean,
+            default: false
+        },
+        dark: {
             type: Boolean,
             default: false
         }

@@ -1,5 +1,5 @@
 <template>
-    <container :title="data.name" :iconURL="data.logo_url">
+    <container :title="data.name" :iconURL="data.logo_url" :class="{'is-dark': dark}">
         <div class="row align-items-center">
             <div class="col">
                 <p class="my-0">Balance: {{ currency }}{{ data.fiat_balance }}</p>
@@ -42,6 +42,10 @@ export default {
         currency: {
             type: String,
             required: true
+        },
+        dark: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {

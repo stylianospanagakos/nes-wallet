@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'is-dark': darkTheme}">
+    <div class="h-100" :class="{'is-dark': darkTheme}">
         <div class="container-boundaries p-5 mx-auto">
             <div v-if="loading">
                 <icon-loading/>

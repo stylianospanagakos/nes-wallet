@@ -2,10 +2,13 @@
     <div>
         <div class="row align-items-center">
             <div class="col">
-                <action-button theme="success" @click="openCurrencyModal">
+                <action-button class="d-inline-block" theme="success" @click="openCurrencyModal">
                     {{ currencySymbol }} {{ currencies.default }}
                 </action-button>
                 <currency-modal ref="currencyModal"/>
+                <action-button class="d-inline-block ms-2" :plain="true" @click="toggleDarkTheme">
+                    {{ darkTheme ? 'Dark' : 'Light' }} Theme
+                </action-button>
             </div>
             <div class="col">
                 <div class="text-end">
@@ -18,10 +21,11 @@
             <input-text
                 class="mt-4"
                 placeholder="Search name, address"
+                :dark="darkTheme"
                 v-model="searchTextValue"
             />
             <div class="text-end mt-4">
-                <check-box label="Hide small balances" v-model="hideSmallValue"/>
+                <check-box label="Hide small balances" :dark="darkTheme" v-model="hideSmallValue"/>
             </div>
             <wallet
                 v-for="(wallet, index) in filteredBalanceWallets"
@@ -29,6 +33,7 @@
                 :class="index === 0 ? 'mt-4 mb-5' : ''"
                 :data="wallet"
                 :currency="currencySymbol"
+                :dark="darkTheme"
             />
             <p v-if="!filteredBalanceWallets.length" class="text-center my-5">
                 No wallets found for '{{ searchTextValue }}'.
@@ -67,7 +72,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['currencies', 'views']),
+        ...mapState(['darkTheme', 'currencies', 'views']),
         ...mapGetters(['currencySymbol', 'walletItems']),
         searchTextValue: {
             get() {
@@ -106,7 +111,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
+        ...mapMutations(['toggleDarkTheme', 'resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
         ...mapActions(['refreshWallets']),
         openCurrencyModal() {
             this.resetForm('home');
