@@ -1,9 +1,11 @@
 <template>
-    <label class="rocker rocker-small">
-        <input type="checkbox">
-        <span class="switch-left">ON</span>
-        <span class="switch-right">OFF</span>
-  </label>
+    <div class="py-2">
+        <label class="rocker rocker-small">
+            <input type="checkbox">
+            <span class="switch-left">ON</span>
+            <span class="switch-right">OFF</span>
+        </label>
+    </div>
 </template>
 
 <style scoped>
@@ -66,7 +68,7 @@
 
 .switch-left {
   height: 2.4em;
-  width: 3.4em;
+  width: 3.2em;
   left: 0.85em;
   bottom: 0.4em;
   background-color: #ddd;
@@ -76,7 +78,6 @@
 .switch-right {
   right: 0.5em;
   bottom: 0;
-  background-color: #e76e55;
   color: #fff;
 }
 
