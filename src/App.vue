@@ -1,53 +1,23 @@
 <template>
-    <div class="container-boundaries p-5 mx-auto">
-        <div v-if="loading">
-            <icon-loading/>
-        </div>
-        <div v-else-if="networkOptions.length">
-            <div v-if="false" id="nav">
-                <router-link
-                    :to="{ name: 'home' }"
-                    v-slot="{ href, navigate, isActive, isExactActive }"
-                    exact
-                    custom
-                >
-                    <nav-option
-                        :href="href"
-                        :is-active="isActive"
-                        :is-exact-active="isExactActive"
-                        :navigate="navigate"
-                        title="Home"
-                    />
-                </router-link> |
-                <router-link
-                    :to="{ name: 'protocol' }"
-                    v-slot="{ href, navigate, isActive, isExactActive }"
-                    custom
-                >
-                    <nav-option
-                        :href="href"
-                        :is-active="isActive"
-                        :is-exact-active="isExactActive"
-                        :navigate="navigate"
-                        title="Protocols"
-                    />
-                </router-link>
+    <div :class="{'is-dark': darkTheme}">
+        <div class="container-boundaries p-5 mx-auto">
+            <div v-if="loading">
+                <icon-loading/>
             </div>
-            <div>
+            <div v-else-if="networkOptions.length">
                 <router-view/>
             </div>
-        </div>
-        <div v-else class="text-center">
-            <p>Apologies, there seems to be an issue with our service at the moment.</p>
-            <action-button
-                @click="fetchChains"
-            >Retry</action-button>
+            <div v-else class="text-center">
+                <p>Apologies, there seems to be an issue with our service at the moment.</p>
+                <action-button
+                    @click="fetchChains"
+                >Retry</action-button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import NavOption from './components/NavOption.vue';
     import IconLoading from './components/IconLoading.vue';
     import ActionButton from './components/ActionButton.vue';
     import LocalStorageMixin from './mixins/LocalStorageMixin.vue';
@@ -90,7 +60,7 @@
             }
         },
         computed: {
-            ...mapState(['wallets', 'currencies', 'loading']),
+            ...mapState(['darkTheme', 'wallets', 'currencies', 'loading']),
             ...mapGetters(['networkOptions'])
         },
         methods: {
@@ -99,7 +69,6 @@
         },
         mixins: [LocalStorageMixin],
         components: {
-            NavOption,
             IconLoading,
             ActionButton
         }
@@ -107,6 +76,9 @@
 </script>
 
 <style scoped>
+    .is-dark {
+        background: #212529;
+    }
     .container-boundaries {
         max-width: 900px;
     }

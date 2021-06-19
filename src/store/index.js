@@ -11,6 +11,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        darkTheme: false,
         currencies: {
             options: {
                 'USD': {
@@ -102,6 +103,9 @@ export default new Vuex.Store({
         }
     },
     mutations: {
+        toggleDarkTheme(state, payload) {
+            state.darkTheme = payload;
+        },
         addNetworks(state, payload) {
             payload.forEach(network => {
                 // for now, we only want to process the mainnet chain ids
