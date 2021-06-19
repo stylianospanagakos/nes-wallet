@@ -1,5 +1,5 @@
 <template>
-    <div class="nes-select py-2" :class="{'is-error': error.length}">
+    <div class="nes-select py-2" :class="{'is-error': error.length, 'is-dark': dark}">
         <select required :value="value" @input="$emit('input', $event.target.value)">
             <option selected disabled :value="null">{{ placeholder }}</option>
             <option
@@ -38,6 +38,10 @@ export default {
         valueKey: {
             type: String,
             required: true
+        },
+        dark: {
+            type: Boolean,
+            default: false
         }
     }
 }

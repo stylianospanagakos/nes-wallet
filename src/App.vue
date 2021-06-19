@@ -1,57 +1,27 @@
 <template>
-    <div class="container-boundaries p-5 mx-auto">
-        <div v-if="loading">
-            <icon-loading/>
-        </div>
-        <div v-else-if="networkOptions.length">
-            <div v-if="false" id="nav">
-                <router-link
-                    :to="{ name: 'home' }"
-                    v-slot="{ href, navigate, isActive, isExactActive }"
-                    exact
-                    custom
-                >
-                    <nav-option
-                        :href="href"
-                        :is-active="isActive"
-                        :is-exact-active="isExactActive"
-                        :navigate="navigate"
-                        title="Home"
-                    />
-                </router-link> |
-                <router-link
-                    :to="{ name: 'protocol' }"
-                    v-slot="{ href, navigate, isActive, isExactActive }"
-                    custom
-                >
-                    <nav-option
-                        :href="href"
-                        :is-active="isActive"
-                        :is-exact-active="isExactActive"
-                        :navigate="navigate"
-                        title="Protocols"
-                    />
-                </router-link>
+    <div>
+        <div class="container-boundaries p-5 mx-auto">
+            <div v-if="loading">
+                <icon-loading :dark="!lightTheme"/>
             </div>
-            <div>
+            <div v-else-if="networkOptions.length">
                 <router-view/>
             </div>
-        </div>
-        <div v-else class="text-center">
-            <p>Apologies, there seems to be an issue with our service at the moment.</p>
-            <action-button
-                @click="fetchChains"
-            >Retry</action-button>
+            <div v-else class="text-center">
+                <p :class="{'text-white': !lightTheme}">Apologies, there seems to be an issue with our service at the moment.</p>
+                <action-button
+                    @click="fetchChains"
+                >Retry</action-button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import NavOption from './components/NavOption.vue';
     import IconLoading from './components/IconLoading.vue';
     import ActionButton from './components/ActionButton.vue';
     import LocalStorageMixin from './mixins/LocalStorageMixin.vue';
-    import {WALLETS_KEY, DEFAULT_CURRENCY} from './config/local_storage';
+    import {LIGHT_THEME, DEFAULT_CURRENCY, WALLETS_KEY} from './config/local_storage';
     import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
     import "bootstrap/dist/css/bootstrap.min.css"
@@ -59,6 +29,12 @@
 
     export default {
         created() {
+            const theme = this.getStorageItem(LIGHT_THEME);
+            if (theme !== null) {
+                this.updateBodyClass(theme);
+                this.toggleLightTheme(theme);
+            }
+
             // get default currency
             const currency = this.getStorageItem(DEFAULT_CURRENCY);
             if (currency) {
@@ -79,6 +55,10 @@
             this.fetchChains();
         },
         watch: {
+            lightTheme(newValue) {
+                this.updateBodyClass(newValue);
+                this.saveStorageItem(LIGHT_THEME, newValue);
+            },
             wallets: {
                 handler(newItems) {
                     this.saveStorageItem(WALLETS_KEY, newItems);    
@@ -90,23 +70,32 @@
             }
         },
         computed: {
-            ...mapState(['wallets', 'currencies', 'loading']),
+            ...mapState(['lightTheme', 'wallets', 'currencies', 'loading']),
             ...mapGetters(['networkOptions'])
         },
         methods: {
-            ...mapMutations(['addWallet', 'updateDefaultCurrency']),
-            ...mapActions(['fetchChains'])
+            ...mapMutations(['toggleLightTheme', 'addWallet', 'updateDefaultCurrency']),
+            ...mapActions(['fetchChains']),
+            updateBodyClass(light) {
+                if (light) {
+                    document.body.classList.remove('is-dark');
+                } else {
+                    document.body.className = 'is-dark';
+                }
+            }
         },
         mixins: [LocalStorageMixin],
         components: {
-            NavOption,
             IconLoading,
             ActionButton
         }
     }
 </script>
 
-<style scoped>
+<style>
+    .is-dark {
+        background: #212529;
+    }
     .container-boundaries {
         max-width: 900px;
     }

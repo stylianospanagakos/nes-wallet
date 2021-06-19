@@ -2,10 +2,14 @@
     <div>
         <div class="row align-items-center">
             <div class="col">
-                <action-button theme="success" @click="openCurrencyModal">
+                <action-button class="d-inline-block" theme="success" @click="openCurrencyModal">
                     {{ currencySymbol }} {{ currencies.default }}
                 </action-button>
                 <currency-modal ref="currencyModal"/>
+                <light-switch
+                    class="d-inline-block align-middle m-1"
+                    v-model="lightSwitchValue"
+                />
             </div>
             <div class="col">
                 <div class="text-end">
@@ -18,10 +22,11 @@
             <input-text
                 class="mt-4"
                 placeholder="Search name, address"
+                :dark="!lightSwitchValue"
                 v-model="searchTextValue"
             />
             <div class="text-end mt-4">
-                <check-box label="Hide small balances" v-model="hideSmallValue"/>
+                <check-box label="Hide small balances" :dark="!lightSwitchValue" v-model="hideSmallValue"/>
             </div>
             <wallet
                 v-for="(wallet, index) in filteredBalanceWallets"
@@ -29,12 +34,13 @@
                 :class="index === 0 ? 'mt-4 mb-5' : ''"
                 :data="wallet"
                 :currency="currencySymbol"
+                :dark="!lightSwitchValue"
             />
-            <p v-if="!filteredBalanceWallets.length" class="text-center my-5">
+            <p v-if="!filteredBalanceWallets.length" class="text-center my-5" :class="{'text-white': !lightSwitchValue}">
                 No wallets found for '{{ searchTextValue }}'.
             </p>
         </div>
-        <div v-else class="text-center my-5">
+        <div v-else class="text-center my-5" :class="{'text-white': !lightSwitchValue}">
             <p>You haven't added any wallets yet.</p>
         </div>
     </div>
@@ -42,6 +48,7 @@
 
 <script>
 import CurrencyModal from './CurrencyModal.vue';
+import LightSwitch from './LightSwitch.vue';
 import WalletFormModal from './WalletFormModal.vue';
 import Wallet from './Wallet.vue';
 import CheckBox from '../../components/CheckBox.vue';
@@ -67,8 +74,16 @@ export default {
         }
     },
     computed: {
-        ...mapState(['currencies', 'views']),
+        ...mapState(['lightTheme', 'currencies', 'views']),
         ...mapGetters(['currencySymbol', 'walletItems']),
+        lightSwitchValue: {
+            get() {
+                return this.lightTheme;
+            },
+            set(value) {
+                this.toggleLightTheme(value);
+            }
+        },
         searchTextValue: {
             get() {
                 return this.views.home.searchText;
@@ -106,7 +121,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
+        ...mapMutations(['toggleLightTheme', 'resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
         ...mapActions(['refreshWallets']),
         openCurrencyModal() {
             this.resetForm('home');
@@ -120,6 +135,7 @@ export default {
     },
     components: {
         CurrencyModal,
+        LightSwitch,
         WalletFormModal,
         Wallet,
         CheckBox,

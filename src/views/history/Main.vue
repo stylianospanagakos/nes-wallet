@@ -2,12 +2,12 @@
     <div v-if="wallet">
         <div class="row">
             <div class="col">
-                <h1>History</h1>
+                <h1 :class="{'text-white': !lightTheme}">History</h1>
                 <small class="text-muted">{{ $route.params.symbol }}</small>
             </div>
             <div class="col text-end">
                 <a @click="$router.push({name: 'wallet', params: {wallet: wallet.uuid}})">
-                    <i class="nes-icon close"></i>
+                    <close-icon :dark="!lightTheme"/>
                 </a>
             </div>
         </div>
@@ -17,7 +17,7 @@
         <div v-else-if="showGraphs">
             <div class="row align-items-center mt-5">
                 <div class="col">
-                    <p class="nes-text m-0">
+                    <p class="nes-text m-0" :class="{'text-white': !lightTheme}">
                         Change:
                         <span :class="`nes-text ${percentageChange > 0 ? 'is-success' : percentageChange < 0 ? 'is-error' : ''}`">
                             {{ percentageChange.toFixed(2) }}%
@@ -25,7 +25,7 @@
                     </p>
                 </div>
                 <div class="col text-end">
-                    <check-box label="Candlestick Chart" v-model="showCandlestick"/>
+                    <check-box label="Candlestick Chart" v-model="showCandlestick" :dark="!lightTheme"/>
                 </div>
             </div>
             <div v-if="showCandlestick">
@@ -65,6 +65,7 @@
 <script>
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
+import CloseIcon from '../../components/CloseIcon.vue';
 import CheckBox from '../../components/CheckBox.vue';
 import LineGraph from '../../components/graphs/LineGraph.vue';
 import CandleChart from '../../components/graphs/CandleChart.vue';
@@ -82,7 +83,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['views']),
+        ...mapState(['lightTheme', 'views']),
         ...mapGetters(['walletItems']),
         wallet() {
             return this.walletItems.find(item => item.uuid === this.$route.params.wallet);
@@ -123,6 +124,7 @@ export default {
     components: {
         ActionButton,
         IconLoading,
+        CloseIcon,
         CheckBox,
         LineGraph,
         CandleChart

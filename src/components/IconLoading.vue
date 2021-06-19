@@ -6,7 +6,7 @@
         <div v-else class="bounce-animation">
             <i class="nes-icon coin is-large"></i>
         </div>
-        <p class="mt-3">Loading...</p>
+        <p class="mt-3" :class="{'text-white': dark}">Loading...</p>
     </div>
 </template>
 
@@ -16,6 +16,10 @@ export default {
         iconURL: {
             type: String,
             default: ''
+        },
+        dark: {
+            type: Boolean,
+            default: false
         }
     }
 }

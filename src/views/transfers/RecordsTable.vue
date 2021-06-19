@@ -1,6 +1,6 @@
 <template>
-    <div class="nes-table-responsive">
-        <table class="nes-table is-bordered is-centered">
+    <div class="nes-table-responsive position-relative">
+        <table class="nes-table is-bordered is-centered" :class="{'is-dark': dark}">
             <thead>
                 <tr>
                     <th>When</th>
@@ -40,6 +40,10 @@ export default {
         items: {
             type: Array,
             default: () => []
+        },
+        dark: {
+            type: Boolean,
+            default: false
         }
     }
 }
