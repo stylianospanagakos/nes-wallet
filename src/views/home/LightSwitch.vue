@@ -1,42 +1,47 @@
 <template>
     <div class="py-2">
-        <label class="rocker rocker-small">
-            <input type="checkbox">
+        <label class="light-switch light-switch__small">
+            <input
+                type="checkbox"
+                :checked="value"
+                @change="$emit('input', $event.target.checked)"
+            />
             <span class="switch-left">ON</span>
             <span class="switch-right">OFF</span>
         </label>
     </div>
 </template>
 
+<script>
+export default {
+    props: {
+        value: {
+            type: Boolean,
+            default: false
+        }
+    }
+}
+</script>
+
 <style scoped>
-/* Switch starts here */
-.rocker {
+.light-switch {
   display: inline-block;
   position: relative;
-  /*
-  SIZE OF SWITCH
-  ==============
-  All sizes are in em - therefore
-  changing the font-size here
-  will change the size of the switch.
-  See .rocker-small below as example.
-  */
   font-size: 2em;
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
-  color: #888;
   width: 8em;
   height: 4em;
   overflow: hidden;
   border-bottom: 0.5em solid #eee;
 }
 
-.rocker-small {
+.light-switch__small {
   font-size: 0.75em; /* Sizes the switch */
 }
 
-.rocker::before {
+.light-switch::before {
   content: "";
   position: absolute;
   top: 0.5em;
@@ -48,7 +53,7 @@
   border-bottom: 0;
 }
 
-.rocker input {
+.light-switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -119,7 +124,6 @@ input:checked + .switch-left::before {
 
 input:checked + .switch-left + .switch-right {
   background-color: #ddd;
-  color: #888;
   bottom: 0.4em;
   right: 0.8em;
   height: 2.4em;
@@ -131,7 +135,6 @@ input:checked + .switch-left + .switch-right::before {
   background-color: #ccc;
 }
 
-/* Keyboard Users */
 input:focus + .switch-left {
   color: #333;
 }

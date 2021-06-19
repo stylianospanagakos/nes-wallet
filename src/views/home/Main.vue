@@ -6,10 +6,7 @@
                     {{ currencySymbol }} {{ currencies.default }}
                 </action-button>
                 <currency-modal ref="currencyModal"/>
-                <action-button class="d-inline-block ms-2" :plain="true" @click="toggleDarkTheme(!darkTheme)">
-                    Lights {{ darkTheme ? 'On' : 'Off' }}
-                </action-button>
-                <light-switch/>
+                <light-switch v-model="lightSwitchValue"/>
             </div>
             <div class="col">
                 <div class="text-end">
@@ -22,11 +19,11 @@
             <input-text
                 class="mt-4"
                 placeholder="Search name, address"
-                :dark="darkTheme"
+                :dark="lightSwitchValue"
                 v-model="searchTextValue"
             />
             <div class="text-end mt-4">
-                <check-box label="Hide small balances" :dark="darkTheme" v-model="hideSmallValue"/>
+                <check-box label="Hide small balances" :dark="lightSwitchValue" v-model="hideSmallValue"/>
             </div>
             <wallet
                 v-for="(wallet, index) in filteredBalanceWallets"
@@ -34,13 +31,13 @@
                 :class="index === 0 ? 'mt-4 mb-5' : ''"
                 :data="wallet"
                 :currency="currencySymbol"
-                :dark="darkTheme"
+                :dark="lightSwitchValue"
             />
-            <p v-if="!filteredBalanceWallets.length" class="text-center my-5" :class="{'text-white': darkTheme}">
+            <p v-if="!filteredBalanceWallets.length" class="text-center my-5" :class="{'text-white': lightSwitchValue}">
                 No wallets found for '{{ searchTextValue }}'.
             </p>
         </div>
-        <div v-else class="text-center my-5" :class="{'text-white': darkTheme}">
+        <div v-else class="text-center my-5" :class="{'text-white': lightSwitchValue}">
             <p>You haven't added any wallets yet.</p>
         </div>
     </div>
@@ -76,6 +73,14 @@ export default {
     computed: {
         ...mapState(['darkTheme', 'currencies', 'views']),
         ...mapGetters(['currencySymbol', 'walletItems']),
+        lightSwitchValue: {
+            get() {
+                return this.darkTheme;
+            },
+            set(value) {
+                this.toggleDarkTheme(value);
+            }
+        },
         searchTextValue: {
             get() {
                 return this.views.home.searchText;
