@@ -7,7 +7,7 @@
             </div>
             <div class="col text-end">
                 <a @click="$router.push({name: 'wallet', params: {wallet: wallet.uuid}})">
-                    <i class="nes-icon close" :class="{'bg-white': !lightTheme}"></i>
+                    <close-icon :dark="!lightTheme"/>
                 </a>
             </div>
         </div>
@@ -43,6 +43,7 @@
 <script>
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
+import CloseIcon from '../../components/CloseIcon.vue';
 import RecordsTable from '../transfers/RecordsTable.vue';
 import {mapState, mapGetters, mapActions} from 'vuex';
 
@@ -68,6 +69,7 @@ export default {
     components: {
         ActionButton,
         IconLoading,
+        CloseIcon,
         RecordsTable
     }
 }

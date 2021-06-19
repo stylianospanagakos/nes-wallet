@@ -7,7 +7,7 @@
             </div>
             <div class="col text-end">
                 <a @click="$router.push({name: 'home'})">
-                    <i class="nes-icon close" :class="{'bg-white': !lightTheme}"></i>
+                    <close-icon :dark="!lightTheme"/>
                 </a>
             </div>
         </div>
@@ -65,6 +65,7 @@ import InputText from '../../components/InputText.vue';
 import CheckBox from '../../components/CheckBox.vue';
 import ActionButton from '../../components/ActionButton.vue';
 import IconLoading from '../../components/IconLoading.vue';
+import CloseIcon from '../../components/CloseIcon.vue';
 import Token from './Token.vue';
 import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
@@ -129,6 +130,7 @@ export default {
         CheckBox,
         ActionButton,
         IconLoading,
+        CloseIcon,
         Token
     }
 }
