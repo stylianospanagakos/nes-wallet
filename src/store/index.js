@@ -11,7 +11,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        darkTheme: false,
+        lightTheme: false,
         currencies: {
             options: {
                 'USD': {
@@ -103,8 +103,8 @@ export default new Vuex.Store({
         }
     },
     mutations: {
-        toggleDarkTheme(state, payload) {
-            state.darkTheme = payload;
+        toggleLightTheme(state, payload) {
+            state.lightTheme = payload;
         },
         addNetworks(state, payload) {
             payload.forEach(network => {

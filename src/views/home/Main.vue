@@ -19,11 +19,11 @@
             <input-text
                 class="mt-4"
                 placeholder="Search name, address"
-                :dark="lightSwitchValue"
+                :dark="!lightSwitchValue"
                 v-model="searchTextValue"
             />
             <div class="text-end mt-4">
-                <check-box label="Hide small balances" :dark="lightSwitchValue" v-model="hideSmallValue"/>
+                <check-box label="Hide small balances" :dark="!lightSwitchValue" v-model="hideSmallValue"/>
             </div>
             <wallet
                 v-for="(wallet, index) in filteredBalanceWallets"
@@ -31,7 +31,7 @@
                 :class="index === 0 ? 'mt-4 mb-5' : ''"
                 :data="wallet"
                 :currency="currencySymbol"
-                :dark="lightSwitchValue"
+                :dark="!lightSwitchValue"
             />
             <p v-if="!filteredBalanceWallets.length" class="text-center my-5" :class="{'text-white': lightSwitchValue}">
                 No wallets found for '{{ searchTextValue }}'.
@@ -71,14 +71,14 @@ export default {
         }
     },
     computed: {
-        ...mapState(['darkTheme', 'currencies', 'views']),
+        ...mapState(['lightTheme', 'currencies', 'views']),
         ...mapGetters(['currencySymbol', 'walletItems']),
         lightSwitchValue: {
             get() {
-                return this.darkTheme;
+                return this.lightTheme;
             },
             set(value) {
-                this.toggleDarkTheme(value);
+                this.toggleLightTheme(value);
             }
         },
         searchTextValue: {
@@ -118,7 +118,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['toggleDarkTheme', 'resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
+        ...mapMutations(['toggleLightTheme', 'resetForm', 'updateSearchText', 'toggleSmall', 'updateCurrencyValue']),
         ...mapActions(['refreshWallets']),
         openCurrencyModal() {
             this.resetForm('home');

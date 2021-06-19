@@ -1,14 +1,14 @@
 <template>
-    <div class="h-100" :class="{'is-dark': darkTheme}">
+    <div class="h-100" :class="{'is-dark': !lightTheme}">
         <div class="container-boundaries p-5 mx-auto">
             <div v-if="loading">
-                <icon-loading :dark="darkTheme"/>
+                <icon-loading :dark="!lightTheme"/>
             </div>
             <div v-else-if="networkOptions.length">
                 <router-view/>
             </div>
             <div v-else class="text-center">
-                <p :class="{'text-white': darkTheme}">Apologies, there seems to be an issue with our service at the moment.</p>
+                <p :class="{'text-white': !lightTheme}">Apologies, there seems to be an issue with our service at the moment.</p>
                 <action-button
                     @click="fetchChains"
                 >Retry</action-button>
@@ -21,7 +21,7 @@
     import IconLoading from './components/IconLoading.vue';
     import ActionButton from './components/ActionButton.vue';
     import LocalStorageMixin from './mixins/LocalStorageMixin.vue';
-    import {DARK_THEME, DEFAULT_CURRENCY, WALLETS_KEY} from './config/local_storage';
+    import {LIGHT_THEME, DEFAULT_CURRENCY, WALLETS_KEY} from './config/local_storage';
     import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
     import "bootstrap/dist/css/bootstrap.min.css"
@@ -29,9 +29,9 @@
 
     export default {
         created() {
-            const theme = this.getStorageItem(DARK_THEME);
+            const theme = this.getStorageItem(LIGHT_THEME);
             if (theme) {
-                this.toggleDarkTheme(true);
+                this.toggleLightTheme(theme);
             }
 
             // get default currency
@@ -54,8 +54,8 @@
             this.fetchChains();
         },
         watch: {
-            darkTheme(newValue) {
-                this.saveStorageItem(DARK_THEME, newValue);
+            lightTheme(newValue) {
+                this.saveStorageItem(LIGHT_THEME, newValue);
             },
             wallets: {
                 handler(newItems) {
@@ -68,11 +68,11 @@
             }
         },
         computed: {
-            ...mapState(['darkTheme', 'wallets', 'currencies', 'loading']),
+            ...mapState(['lightTheme', 'wallets', 'currencies', 'loading']),
             ...mapGetters(['networkOptions'])
         },
         methods: {
-            ...mapMutations(['toggleDarkTheme', 'addWallet', 'updateDefaultCurrency']),
+            ...mapMutations(['toggleLightTheme', 'addWallet', 'updateDefaultCurrency']),
             ...mapActions(['fetchChains'])
         },
         mixins: [LocalStorageMixin],

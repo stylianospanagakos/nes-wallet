@@ -83,7 +83,6 @@ export default {
 .switch-right {
   right: 0.5em;
   bottom: 0;
-  color: #fff;
 }
 
 .switch-left::before,

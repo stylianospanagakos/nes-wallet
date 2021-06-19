@@ -1,6 +1,6 @@
 <template>
-    <dialog class="nes-dialog is-rounded mx-auto my-5" :class="{'is-dark': darkTheme}">
-        <icon-loading v-if="views.home.form.loading" :dark="darkTheme"/>
+    <dialog class="nes-dialog is-rounded mx-auto my-5" :class="{'is-dark': !lightTheme}">
+        <icon-loading v-if="views.home.form.loading" :dark="!lightTheme"/>
         <form v-else @submit.prevent method="dialog">
             <select-input
                 placeholder="Currency"
@@ -8,7 +8,7 @@
                 label-key="currency"
                 value-key="currency"
                 v-model="currencyValue"
-                :dark="darkTheme"
+                :dark="!lightTheme"
             />
             <menu class="dialog-menu mb-0">
                 <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
@@ -26,7 +26,7 @@ import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 
 export default {
     computed: {
-        ...mapState(['darkTheme', 'currencies', 'views']),
+        ...mapState(['lightTheme', 'currencies', 'views']),
         ...mapGetters(['currencyOptions']),
         currencyValue: {
             get() {
