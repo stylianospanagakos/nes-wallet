@@ -7,7 +7,7 @@
                 </action-button>
                 <currency-modal ref="currencyModal"/>
                 <action-button class="d-inline-block ms-2" :plain="true" @click="toggleDarkTheme(!darkTheme)">
-                    {{ darkTheme ? 'Dark' : 'Light' }} Theme
+                    Dark {{ darkTheme ? 'On' : 'Off' }}
                 </action-button>
             </div>
             <div class="col">
