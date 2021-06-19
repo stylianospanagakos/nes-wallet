@@ -36,11 +36,11 @@
                 :currency="currencySymbol"
                 :dark="!lightSwitchValue"
             />
-            <p v-if="!filteredBalanceWallets.length" class="text-center my-5" :class="{'text-white': lightSwitchValue}">
+            <p v-if="!filteredBalanceWallets.length" class="text-center my-5" :class="{'text-white': !lightSwitchValue}">
                 No wallets found for '{{ searchTextValue }}'.
             </p>
         </div>
-        <div v-else class="text-center my-5" :class="{'text-white': lightSwitchValue}">
+        <div v-else class="text-center my-5" :class="{'text-white': !lightSwitchValue}">
             <p>You haven't added any wallets yet.</p>
         </div>
     </div>
