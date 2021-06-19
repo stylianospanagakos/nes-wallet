@@ -2,26 +2,27 @@
     <div v-if="wallet">
         <div class="row">
             <div class="col">
-                <h1>Transactions</h1>
+                <h1 :class="{'text-white': darkTheme}">Transactions</h1>
                 <small class="text-muted">{{ wallet.name }}</small>
             </div>
             <div class="col text-end">
                 <a @click="$router.push({name: 'wallet', params: {wallet: wallet.uuid}})">
-                    <i class="nes-icon close"></i>
+                    <i class="nes-icon close" :class="{'bg-white': darkTheme}"></i>
                 </a>
             </div>
         </div>
         <div v-if="views.transactions.loading">
-            <icon-loading :iconURL="wallet.logo_url"/>
+            <icon-loading :iconURL="wallet.logo_url" :dark="darkTheme"/>
         </div>
         <div v-else-if="views.transactions.items.length">
             <records-table
                 class="mt-5"
                 :items="views.transactions.items"
+                :dark="darkTheme"
             />
         </div>
         <div v-else class="text-center mt-5">
-            <p>Apologies, we couldn't fetch token's data.</p>
+            <p :class="{'text-white': darkTheme}">Apologies, we couldn't fetch token's data.</p>
             <action-button
                 @click="fetchWalletTransactions({
                     chainId: wallet.chain_id,
@@ -31,7 +32,7 @@
         </div>
     </div>
     <div v-else class="text-center">
-        <p class="nes-text is-error">Invalid wallet.</p>
+        <p class="nes-text is-error" :class="{'text-white': darkTheme}">Invalid wallet.</p>
         <action-button
             class="mb-5"
             @click="$router.push({name: 'home'})"
@@ -55,7 +56,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['views']),
+        ...mapState(['darkTheme', 'views']),
         ...mapGetters(['walletItems']),
         wallet() {
             return this.walletItems.find(item => item.uuid === this.$route.params.wallet);
