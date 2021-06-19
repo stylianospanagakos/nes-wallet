@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'is-dark': !lightTheme}">
+    <div>
         <div class="container-boundaries p-5 mx-auto">
             <div v-if="loading">
                 <icon-loading :dark="!lightTheme"/>
@@ -30,7 +30,8 @@
     export default {
         created() {
             const theme = this.getStorageItem(LIGHT_THEME);
-            if (theme) {
+            if (theme !== null) {
+                this.updateBodyClass(theme);
                 this.toggleLightTheme(theme);
             }
 
@@ -55,6 +56,7 @@
         },
         watch: {
             lightTheme(newValue) {
+                this.updateBodyClass(newValue);
                 this.saveStorageItem(LIGHT_THEME, newValue);
             },
             wallets: {
@@ -73,7 +75,14 @@
         },
         methods: {
             ...mapMutations(['toggleLightTheme', 'addWallet', 'updateDefaultCurrency']),
-            ...mapActions(['fetchChains'])
+            ...mapActions(['fetchChains']),
+            updateBodyClass(light) {
+                if (light) {
+                    document.body.classList.remove('is-dark');
+                } else {
+                    document.body.className = 'is-dark';
+                }
+            }
         },
         mixins: [LocalStorageMixin],
         components: {

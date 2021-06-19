@@ -11,7 +11,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        lightTheme: false,
+        lightTheme: true,
         currencies: {
             options: {
                 'USD': {
