@@ -18,7 +18,7 @@
                 >Delete</action-button>
             </div>
         </div>
-        <dialog :ref="data.key" class="nes-dialog is-rounded mx-auto my-5">
+        <dialog :ref="data.key" class="nes-dialog is-rounded mx-auto my-5" :class="{'is-dark': dark}">
             <p class="nes-text is-error text-center my-3">Are you sure you want to delete this wallet?</p>
             <menu class="dialog-menu mb-0 text-end">
                 <action-button class="d-inline-block mx-2" :plain="true" @click="closeModal">Cancel</action-button>
