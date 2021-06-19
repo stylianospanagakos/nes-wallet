@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container-boundaries p-5 mx-auto">
+        <div class="container-boundaries p-5 mx-auto main">
             <div v-if="loading">
                 <icon-loading :dark="!lightTheme"/>
             </div>
@@ -13,6 +13,11 @@
                     @click="fetchChains"
                 >Retry</action-button>
             </div>
+        </div>
+        <div class="footer text-center" :class="{'text-white': !lightTheme}">
+            <p>
+                <small>Made with <i class="nes-icon is-small heart"></i> by SPan and powered by Covalent.</small>
+            </p>
         </div>
     </div>
 </template>
@@ -93,6 +98,12 @@
 </script>
 
 <style>
+    .main {
+        min-height: 100vh;
+        height: auto !important;
+        height: 100%;
+        margin: 0 auto -40px;
+    }
     .is-dark {
         background: #212529;
     }
