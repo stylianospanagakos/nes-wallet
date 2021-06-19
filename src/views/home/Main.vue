@@ -6,7 +6,10 @@
                     {{ currencySymbol }} {{ currencies.default }}
                 </action-button>
                 <currency-modal ref="currencyModal"/>
-                <light-switch v-model="lightSwitchValue"/>
+                <light-switch
+                    class="d-inline-block align-middle m-1"
+                    v-model="lightSwitchValue"
+                />
             </div>
             <div class="col">
                 <div class="text-end">

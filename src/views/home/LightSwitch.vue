@@ -1,6 +1,6 @@
 <template>
     <div class="py-2">
-        <label class="light-switch light-switch__small">
+        <label class="light-switch light-switch__small m-0">
             <input
                 type="checkbox"
                 :checked="value"
@@ -32,7 +32,7 @@ export default {
   text-align: center;
   text-transform: uppercase;
   width: 8em;
-  height: 4em;
+  height: 4.2em;
   overflow: hidden;
   border-bottom: 0.5em solid #eee;
 }
@@ -66,13 +66,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 2.5em;
+  height: 2.7em;
   width: 3.4em;
   transition: 0.2s;
 }
 
 .switch-left {
-  height: 2.4em;
+  height: 2.7em;
   width: 3.2em;
   left: 0.85em;
   bottom: 0.4em;
@@ -111,7 +111,7 @@ input:checked + .switch-left {
   color: #fff;
   bottom: 0px;
   left: 0.5em;
-  height: 2.5em;
+  height: 2.7em;
   width: 3.4em;
   transform: rotate(0deg) skewX(0deg);
 }
@@ -125,7 +125,7 @@ input:checked + .switch-left + .switch-right {
   background-color: #ddd;
   bottom: 0.4em;
   right: 0.8em;
-  height: 2.4em;
+  height: 2.7em;
   width: 3.4em;
   transform: rotate(-15deg) skewX(-15deg);
 }
@@ -139,6 +139,10 @@ input:focus + .switch-left {
 }
 
 input:checked:focus + .switch-left {
+  color: #fff;
+}
+
+input:not(:checked) + .switch-left + .switch-right {
   color: #fff;
 }
 
