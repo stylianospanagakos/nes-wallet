@@ -17,6 +17,8 @@ You need to create your own `.env` file and copy the contents of the `.env.examp
 
 Access [Covalent's API](https://www.covalenthq.com/docs/api) to register your own key and add it as value to the `VUE_APP_COVALENT_API_KEY` variable.
 
+If you also want to include testnets as part of the network options, change the value of `VUE_APP_ENABLE_TESTNETS` to `true`.
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
