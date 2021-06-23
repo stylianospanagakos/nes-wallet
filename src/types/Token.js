@@ -1,6 +1,6 @@
 import {formatAddress, formatTokenBalance, formatFiatValue} from '../lib/helpers';
 
-export const Token = ({
+export default ({
     contract_decimals,
     contract_address,
     contract_name,

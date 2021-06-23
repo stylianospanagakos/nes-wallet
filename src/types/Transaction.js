@@ -1,7 +1,7 @@
 import {formatTokenBalance, formatAddress} from '../lib/helpers';
 import moment from 'moment';
 
-export const Transaction = ({
+export default ({
     block_signed_at,
     gas_offered,
     gas_price,

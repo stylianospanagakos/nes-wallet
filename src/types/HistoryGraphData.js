@@ -1,6 +1,6 @@
 import {formatTokenBalance} from '../lib/helpers';
 
-export const HistoryGraphData = ({ holdings, contract_decimals }) => {
+export default ({ holdings, contract_decimals }) => {
     const line = [],
         candlestick = [];
     holdings.forEach(({timestamp, open, high, low, close}) => {
