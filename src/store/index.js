@@ -2,10 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO, TRANSFERS, TRANSACTIONS} from '../config/endpoints';
 import {MAINNET_IDS, TESTNET_IDS} from '../config/supported_chains';
-import {createWallet, createToken, createHistoryGraphData, createTransfer, createTransaction} from '../lib/helpers';
+import Wallet from '../types/Wallet';
+import Token from '../types/Token';
+import Transaction from '../types/Transaction';
+import Transfer from '../types/Transfer';
+import HistoryGraphData from '../types/HistoryGraphData';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
-// import moment from 'moment';
 
 Vue.use(Vuex)
 
@@ -251,7 +254,7 @@ export default new Vuex.Store({
                     const {name, chain_id, address, logo_url} = originalWallets[index];
                     const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chain_id, address.full]) + `?quote-currency=${symbol}`);
                     // save formatted version in placeholder container
-                    newWallets.push(createWallet({
+                    newWallets.push(Wallet({
                         ...data.data,
                         name,
                         logo_url
@@ -267,7 +270,7 @@ export default new Vuex.Store({
                 if (currency) {
                     // if it fails, we need to restore to original version
                     originalWallets.forEach(wallet => {
-                        commit('addWallet', createWallet(wallet));
+                        commit('addWallet', Wallet(wallet));
                     });
                     commit('updateFormField', {
                         section: 'home',
@@ -287,7 +290,7 @@ export default new Vuex.Store({
 
             try {
                 const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]) + `?quote-currency=${state.currencies.default}`);
-                commit('addWallet', createWallet({
+                commit('addWallet', Wallet({
                     ...data.data,
                     name,
                     logo_url: state.networks[chainId].logo_url 
@@ -313,7 +316,7 @@ export default new Vuex.Store({
             try {
                 const { data } = await axios.get(vsprintf(TOKEN_BALANCES, [chainId, address]) + `?quote-currency=${state.currencies.default}`);
                 data.data.items.forEach(item => {
-                    commit('addToken', createToken(item));
+                    commit('addToken', Token(item));
                 });
             } catch (error) {
                 console.error(error);
@@ -328,7 +331,7 @@ export default new Vuex.Store({
             try {
                 const { data } = await axios.get(vsprintf(TRANSACTIONS, [chainId, address]) + `?no-logs=true&quote-currency=${state.currencies.default}`);
                 data.data.items.forEach(item => {
-                    commit('addTransaction', createTransaction(
+                    commit('addTransaction', Transaction(
                         {
                             ...item,
                             transfer_type: item.to_address === address ? 'IN' : 'OUT',
@@ -349,7 +352,7 @@ export default new Vuex.Store({
             try {
                 const matchCriteria = JSON.stringify({contract_address: contract, contract_ticker_symbol: symbol});
                 const { data } = await axios.get(vsprintf(HISTORICAL_PORTFOLIO, [chainId, address]) + `?match=${matchCriteria}&quote-currency=${state.currencies.default}`);
-                commit('updateHistoryGraphs', createHistoryGraphData(data.data.items[0]));
+                commit('updateHistoryGraphs', HistoryGraphData(data.data.items[0]));
             } catch (error) {
                 console.error(error);
             } finally {
@@ -363,7 +366,7 @@ export default new Vuex.Store({
             try {
                 const { data } = await axios.get(vsprintf(TRANSFERS, [chainId, address]) + `?contract-address=${contract}&quote-currency=${state.currencies.default}`);
                 data.data.items.forEach(item => {
-                    commit('addTransfer', createTransfer(item));
+                    commit('addTransfer', Transfer(item));
                 });
             } catch (error) {
                 console.error(error);
