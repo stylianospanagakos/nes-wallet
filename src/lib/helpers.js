@@ -1,4 +1,3 @@
-import {v4 as uuidv4} from 'uuid';
 import moment from 'moment';
 
 export const formatTokenBalance = (balance, decimals) => {
@@ -46,24 +45,6 @@ export const createHistoryGraphData = ({ holdings, contract_decimals }) => {
         line: line.reverse(),
         candlestick: candlestick.reverse()
     };
-}
-
-export const createTransfer = ({ block_signed_at, gas_offered, gas_price, gas_spent, successful, transfers }) => {
-    const { delta, from_address, to_address, transfer_type, tx_hash, contract_decimals, contract_ticker_symbol } = transfers[0];
-    return {
-        amount: formatTokenBalance(delta, contract_decimals),
-        successful,
-        block_signed_at: moment(block_signed_at).format('D MMM YY HH:mm'),
-        gas_offered,
-        gas_price,
-        gas_spent,
-        contract_ticker_symbol,
-        from_address,
-        to_address,
-        display_address: formatAddress(to_address),
-        transfer_type,
-        tx_hash
-    }
 }
 
 export const createTransaction = ({ block_signed_at, gas_offered, gas_price, gas_spent, successful, value, from_address, to_address, transfer_type, tx_hash, contract_decimals }) => {

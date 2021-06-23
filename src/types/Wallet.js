@@ -1,4 +1,5 @@
 import {formatAddress, formatFiatValue} from '../lib/helpers';
+import {v4 as uuidv4} from 'uuid';
 
 export const Wallet = ({ chain_id, address, items, name, logo_url }) => {
     const key = `${chain_id.toString()}_${address}`;
