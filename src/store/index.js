@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {CHAINS, TOKEN_BALANCES, HISTORICAL_PORTFOLIO, TRANSFERS, TRANSACTIONS} from '../config/endpoints';
-import {MAINNET_IDS} from '../config/supported_chains';
+import {MAINNET_IDS, TESTNET_IDS} from '../config/supported_chains';
 import {createWallet, createToken, createHistoryGraphData, createTransfer, createTransaction} from '../lib/helpers';
 import axios from '../lib/axios';
 import { vsprintf } from 'sprintf-js';
@@ -108,8 +108,15 @@ export default new Vuex.Store({
         },
         addNetworks(state, payload) {
             payload.forEach(network => {
-                // for now, we only want to process the mainnet chain ids
+                // process the mainnet chain ids
                 if (MAINNET_IDS.includes(parseInt(network.chain_id))) {
+                    Vue.set(state.networks, network.chain_id, network);
+                }
+                // add testnets based on env variable
+                if (
+                    process.env.VUE_APP_ENABLE_TESTNETS === 'true' &&
+                    TESTNET_IDS.includes(parseInt(network.chain_id))
+                ) {
                     Vue.set(state.networks, network.chain_id, network);
                 }
             });
